@@ -1,0 +1,5 @@
+PIN interpreter and SymPy; threads=1; use ./h run
+EXACT construct Rational/Integer from strings or integers; floats/mpmath are diagnostic absent error proof
+SYMBOL assumptions aid simplification; they do not prove target hypotheses
+CONTROL swell with factors, sparse Poly/domain, coefficient lists, staged transforms; avoid simplify loops
+SEPARATE generator from small verifier; name quick audit versus full replay truthfully

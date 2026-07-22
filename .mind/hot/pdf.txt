@@ -1,0 +1,5 @@
+SOURCE modular TeX; metadata single file; stable labels; no manual layout patching
+BUILD maintained Makefile through resource guard; inspect log; zero unresolved refs/overfull boxes
+TYPOGRAPHY semantic environments; restrained headings; consistent notation; legible equations/tables/captions
+VERIFY render every page; inspect reading scale and thumbnails; check fonts, metadata, links, final page
+RELEASE PDF, source archive, checksums, metadata, revision identity agree

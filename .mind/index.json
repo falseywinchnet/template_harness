@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "hot_max_bytes": 900,
+  "more_max_bytes": 2400,
+  "topics": {
+    "bootstrap": {
+      "aliases": ["start", "intake"],
+      "hot": ".mind/hot/bootstrap.txt",
+      "more": ".mind/more/bootstrap.txt",
+      "full": ["docs/BOOTSTRAP.md", "docs/SCIENTIFIC_METHOD.md"]
+    },
+    "round": {
+      "aliases": ["recovery", "advance", "refine"],
+      "hot": ".mind/hot/round.txt",
+      "more": ".mind/more/round.txt",
+      "full": ["docs/OPERATIONS.md", "docs/SPECIFICATION.md"]
+    },
+    "evidence": {
+      "aliases": ["claim", "claims", "sources"],
+      "hot": ".mind/hot/evidence.txt",
+      "more": ".mind/more/evidence.txt",
+      "full": ["docs/SCIENTIFIC_METHOD.md", "research/README.md", "research/TARGET.md"]
+    },
+    "compute": {
+      "aliases": ["performance", "algorithm"],
+      "hot": ".mind/hot/compute.txt",
+      "more": ".mind/more/compute.txt",
+      "full": ["docs/RESOURCE_SAFETY.md", "docs/COMPUTE_DESIGN.md", "computations/COMPUTE_PLAN.md"]
+    },
+    "python": {
+      "aliases": ["sympy", "numeric", "numerics"],
+      "hot": ".mind/hot/python.txt",
+      "more": ".mind/more/python.txt",
+      "full": ["docs/PYTHON_COMPUTATION.md", "computations/README.md"]
+    },
+    "lean": {
+      "aliases": ["formal", "formalization", "mathlib"],
+      "hot": ".mind/hot/lean.txt",
+      "more": ".mind/more/lean.txt",
+      "full": ["docs/LEAN_CLAIM_STANDARD.md", "docs/LEAN_ENGINEERING.md", "formal/README.md"]
+    },
+    "paper": {
+      "aliases": ["writing", "manuscript", "rhetoric"],
+      "hot": ".mind/hot/paper.txt",
+      "more": ".mind/more/paper.txt",
+      "full": ["docs/PAPER_NARRATIVE.md", "paper/PAPER_MAP.md", "paper/EDITORIAL_AUDIT.md"]
+    },
+    "pdf": {
+      "aliases": ["latex", "tex", "layout"],
+      "hot": ".mind/hot/pdf.txt",
+      "more": ".mind/more/pdf.txt",
+      "full": ["docs/PDF_HOUSE_STYLE.md", "paper/README.md", "paper/RELEASE_MANIFEST.md"]
+    },
+    "release": {
+      "aliases": ["publish", "publication", "archive"],
+      "hot": ".mind/hot/release.txt",
+      "more": ".mind/more/release.txt",
+      "full": ["paper/RELEASE_MANIFEST.md", "paper/REVISION_HISTORY.md", "docs/PDF_HOUSE_STYLE.md"]
+    },
+    "context": {
+      "aliases": ["compact", "compaction", "handoff", "tokens"],
+      "hot": ".mind/hot/context.txt",
+      "more": ".mind/more/context.txt",
+      "full": ["docs/CONTEXT_ECONOMY.md", "docs/OPERATIONS.md"]
+    }
+  }
+}

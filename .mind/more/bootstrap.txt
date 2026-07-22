@@ -1,0 +1,6 @@
+INPUT title; field; exact question; hypothesis if any; exact falsifying observation; objective target-interior witness; deliverable/audience; non-goals; existing evidence; formal-system constraint; compute scale; interruption recovery; model-round cost; context reserve
+DO NOT invent hypothesis, source, deadline, venue, authorship, or required formalization
+CONTAINMENT split object identity, initialization, preservation, reachability
+PLAN retain only justified P items; acceptance must be observable
+GATE user approves material charter choices unless initial request already fixed them
+VERIFY ./h register PLAN.md; ./h doctor; ./h report --write

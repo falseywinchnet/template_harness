@@ -1,0 +1,5 @@
+FIRST ./h
+ASK one compact intake; follow up only if target, falsifier, deliverable, method, budget, or objective interior changes
+FREEZE exact question; falsifier; raw interior witness; scope; evidence locations; model/compute budget
+WRITE PROJECT.md; tailor PLAN.md; ./h register PLAN.md; ./h doctor
+OPEN one mode only after charter choices are settled

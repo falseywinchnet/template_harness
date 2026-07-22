@@ -49,7 +49,9 @@ To record a completed intake directly:
   --deliverable "A reproducible paper and supporting artifacts" \
   --interior "A raw admissible instance and its strict/nondegenerate result" \
   --containment "Object identity, initialization, preservation, and reachability, if applicable" \
-  --compute "Expected scale, runtime/memory budget, and restart needs"
+  --compute "Expected scale, runtime/memory budget, and restart needs" \
+  --model-budget "Acceptable model time and cost per round" \
+  --context-reserve "Verified window and manual handoff threshold"
 ```
 
 ## The everyday loop
@@ -81,6 +83,38 @@ cutoffs, and crashes. Recovery is explicit:
 The recovery card points to the round directory and its last exact next action.
 The lock is removed only after a successful `close`; every earlier failure leaves
 the recovery handle intact.
+
+## Spend model context deliberately
+
+The template has a two-step intent index. It returns decision cues before full
+documentation:
+
+```sh
+./mind how lean
+./mind how lean more
+./mind how pdf
+```
+
+The first response is capped at 900 bytes. `more` is capped at 2,400 bytes and
+ends with the exact full-document paths. There is no deeper summary tier. This
+keeps routine orientation cheap while preserving a direct route to complete
+standards when the task genuinely requires them.
+
+Before deliberate compaction or at the project's context-reserve threshold,
+Sol writes a bounded operational handoff:
+
+```sh
+./h context save --state "known facts and decisions" --next "one exact action" \
+  --why "intent that must survive" --files "authoritative paths" \
+  --risks "live unknowns" --verify "last checks and their boundary"
+```
+
+`./h context` marks the handoff stale if the register, active round, Git
+revision, or worktree has changed. Project Codex hooks protect manual compaction
+and restore the durable handoff on compact/resume after the user reviews and
+trusts them with `/hooks`. The custom compaction prompt remains a fallback;
+command hooks cannot ask a model to create the missing judgment. See
+`docs/CONTEXT_ECONOMY.md`.
 
 ## Safe local computation
 
@@ -161,6 +195,8 @@ large project becomes expensive:
   model editing, and revision classification.
 - `docs/RESOURCE_SAFETY.md` — exclusive lowered-priority execution, numerical
   thread limits, four-minute watchdog cleanup, and timeout recovery.
+- `docs/CONTEXT_ECONOMY.md` — hot/warm/cold guidance, model-round budgets,
+  manual handoffs, compaction reserve, and the exact Codex integration boundary.
 
 Start computational work by completing `computations/COMPUTE_PLAN.md`. This
 forces the algorithm's scale, arithmetic, completeness, resource envelope, and
@@ -204,6 +240,8 @@ settled and remains visible in history.
 - `PLAN.md` — editable Markdown source for `P` items.
 - `STATUS.md`, `NEXT.md` — generated macro and resume views.
 - `.harness/` — canonical JSON register, configuration, and append-only events.
+- `.mind/`, `mind` — bounded progressive-disclosure cards and their command.
+- `.codex/` — project compaction prompt and trusted lifecycle-hook definitions.
 - `work/` — one durable directory per advancement or refinement round.
 - `research/` — target, claims, dependencies, sources, and audit contracts.
 - `computations/` — compute plans, benchmarks, and a canonical manifest example.

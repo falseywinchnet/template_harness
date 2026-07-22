@@ -1,0 +1,7 @@
+HOUSE STYLE conservative field-appropriate page, type, spacing, margins; avoid orphan headings, stranded captions, sparse final page
+MATH define notation before use; break displays at relations; align meaning; equation numbers only when referenced
+FIGURES vector when possible; readable at final size; caption states object/encoding/domain/uncertainty without interpretation inflation
+TABLES semantic headers/units; no screenshot tables; repeated decimals justified; notes carry scope
+ACCESSIBILITY title/author metadata; logical reading order; alt text or textual equivalent; color is not sole carrier
+GATES make; PDF log audit; source style audit; extracted-text release audit; page render inspection; deterministic archive
+FIX source structure, then rebuild and re-render; never approve from successful TeX exit alone

@@ -20,7 +20,7 @@
       "updated_at": "2026-07-22T20:54:47+00:00"
     },
     "P002": {
-      "acceptance": "Target and exclusions are explicit and approved",
+      "acceptance": "Target, exclusions, deliverable, model time/cost per round, verified context window, reserve threshold, and manual handoff rule are explicit and approved",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -36,8 +36,8 @@
         "charter",
         "scope"
       ],
-      "title": "Freeze scope, non-goals, deliverable, and audience",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "title": "Freeze scope, non-goals, deliverable, audience, and model budget",
+      "updated_at": "2026-07-22T22:41:28+00:00"
     },
     "P003": {
       "acceptance": "Every target claim has an ID, exact falsifier, object-identity and instantiation edges, initialization distinct from preservation, status, and immediate prerequisites",

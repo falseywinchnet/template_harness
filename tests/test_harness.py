@@ -4,6 +4,7 @@ import io
 import json
 import os
 import runpy
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -14,8 +15,12 @@ from unittest import mock
 from harness.cli import (
     _json_report,
     _project_markdown,
+    main as harness_main,
     parser as cli_parser,
 )
+from harness.context import handoff_status, render_handoff, save_handoff
+from harness.mind import render as render_mind
+from harness.mind import validate_index
 from harness.parser import PlanParseError, parse_plan_text
 from harness.reports import full_report, recovery_brief
 from harness.runtime import (
@@ -29,6 +34,7 @@ from harness.store import HarnessError, Store, atomic_json
 
 
 POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_project.py"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
 PDF_POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_pdf.py"))
 MANUSCRIPT_POLICY = runpy.run_path(
     str(Path(__file__).resolve().parents[1] / "scripts/audit_manuscript.py")
@@ -102,17 +108,126 @@ class HarnessTest(unittest.TestCase):
             "compute": "Exact rationals; 2 GB; resumable.",
             "interior": "A raw admissible witness with strict margin.",
             "containment": "Initialization and preservation are separate.",
+            "model_budget": "One bounded round under one dollar.",
+            "context_reserve": "Checkpoint with 30 percent remaining.",
         }
         project = _project_markdown(fields)
         self.assertIn("## Computational scale and resources", project)
         self.assertIn(fields["compute"], project)
         self.assertIn(fields["interior"], project)
         self.assertIn(fields["containment"], project)
+        self.assertIn(fields["model_budget"], project)
+        self.assertIn(fields["context_reserve"], project)
         args = cli_parser().parse_args(
-            ["bootstrap", "--compute", "small", "--interior", "witness"]
+            [
+                "bootstrap",
+                "--compute",
+                "small",
+                "--interior",
+                "witness",
+                "--model-budget",
+                "bounded",
+                "--context-reserve",
+                "30 percent",
+            ]
         )
         self.assertEqual(args.compute, "small")
         self.assertEqual(args.interior, "witness")
+        self.assertEqual(args.model_budget, "bounded")
+        self.assertEqual(args.context_reserve, "30 percent")
+
+    def test_mind_cards_are_bounded_and_have_one_more_tier(self):
+        self.assertEqual(validate_index(REPO_ROOT), [])
+        hot = render_mind(REPO_ROOT, "sympy")
+        warm = render_mind(REPO_ROOT, "python", more=True)
+        self.assertIn("MORE ./mind how python more", hot)
+        self.assertIn("FULL docs/PYTHON_COMPUTATION.md", warm)
+        self.assertNotIn("\n\n", hot)
+
+    def test_context_handoff_detects_register_change(self):
+        self.assertEqual(handoff_status(self.store)[0], "EMPTY")
+        save_handoff(
+            self.store,
+            {
+                "state": "C003 reduced to two cases",
+                "next": "check the singular endpoint",
+                "why": "endpoint decides the target",
+                "files": "research/TARGET.md",
+                "risks": "orientation unknown",
+                "verify": "algebra replay passed",
+            },
+        )
+        self.assertEqual(handoff_status(self.store), ("FRESH", []))
+        self.assertIn("NEXT check the singular endpoint", render_handoff(self.store))
+        self.register("- [ ] New item | stage=analysis | mode=advance")
+        status, reasons = handoff_status(self.store)
+        self.assertEqual(status, "STALE")
+        self.assertIn("register changed", reasons)
+
+    def test_context_save_also_updates_open_round_checkpoint(self):
+        self.register("- [ ] P001 | Analyze | stage=analysis | mode=advance | tags=core")
+        self.store.start_round("advance", ["core"])
+        with redirect_stdout(io.StringIO()):
+            result = harness_main(
+                [
+                    "context",
+                    "save",
+                    "--state",
+                    "two cases remain",
+                    "--next",
+                    "check the endpoint",
+                    "--why",
+                    "endpoint decides C001",
+                ],
+                root=self.root,
+            )
+        self.assertEqual(result, 0)
+        refreshed = Store(self.root)
+        record = refreshed.rounds[refreshed.register["active_round"]]
+        self.assertEqual(record["last_note"]["text"], "two cases remain")
+        self.assertEqual(record["last_note"]["next"], "check the endpoint")
+        self.assertEqual(handoff_status(refreshed), ("FRESH", []))
+
+    def test_context_handoff_detects_worktree_change(self):
+        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "harness@example.invalid"],
+            cwd=self.root,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Harness Test"], cwd=self.root, check=True
+        )
+        subprocess.run(["git", "add", ".harness"], cwd=self.root, check=True)
+        subprocess.run(
+            ["git", "commit", "-qm", "baseline"], cwd=self.root, check=True
+        )
+        save_handoff(self.store, {"state": "baseline", "next": "continue"})
+        self.assertEqual(handoff_status(self.store), ("FRESH", []))
+        (self.root / "result.txt").write_text("new result\n", encoding="utf-8")
+        status, reasons = handoff_status(self.store)
+        self.assertEqual(status, "STALE")
+        self.assertIn("worktree changed", reasons)
+
+    def test_context_hook_blocks_stale_manual_compaction_and_injects_on_resume(self):
+        pre = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts/context_hook.py")],
+            input=json.dumps({"hook_event_name": "PreCompact", "trigger": "manual"}),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        pre_output = json.loads(pre.stdout)
+        self.assertFalse(pre_output["continue"])
+        resumed = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts/context_hook.py")],
+            input=json.dumps({"hook_event_name": "SessionStart"}),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        resumed_output = json.loads(resumed.stdout)
+        self.assertIn("additionalContext", resumed_output["hookSpecificOutput"])
 
     def test_registration_allocates_and_preserves_runtime_status(self):
         self.register("- [ ] First | stage=hypothesis | mode=advance")

@@ -1,0 +1,6 @@
+REPRESENTATION decides feasibility; benchmark smallest end-to-end stage before full scale
+BUDGET each subtask <=240s local; checkpoint between stages; deterministic cache keys include inputs, code identity, parameters, arithmetic
+AVOID dense symbolic expansion, blind subdivision, repeated parsing/import, accidental exact algebraic numbers, overlapping workers
+PIVOT if observed growth exceeds declared model; wait only for external contention; otherwise refactor representation/scale/import/checkpoint
+SAFETY ./h run owns compute lock, lowered priority, process group, thread caps, watchdog, timeout audit
+MEMORY requested limits are advisory; algorithmic bounds plus exclusivity are the safety boundary

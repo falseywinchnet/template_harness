@@ -36,7 +36,9 @@ Ask for:
    whether long computations must resume after interruption.
 10. one independently constructible target-domain instance, the result expected
     there, and what prevents it from being only a boundary/equality case;
-11. for containment/invariance claims, the source object, target region, and
+11. expected model time and cost per round, verified context window, desired
+    reserve before compaction, and any provider rate or funding constraint;
+12. for containment/invariance claims, the source object, target region, and
     whether initialization, preservation, and reachability are each intended.
 
 Do not require the user to know workflow vocabulary. Translate their answer
@@ -57,6 +59,12 @@ Local material work is always decomposed into stages of at most 240 seconds and
 run through `./h run`; read `docs/RESOURCE_SAFETY.md`. Available memory remains
 a design input, not a promise that a process-level memory request will protect
 the machine.
+
+Use `--model-budget` for acceptable time/cost per round and `--context-reserve`
+for the verified model window and manual-handoff threshold. Record measured
+provider values rather than advertised maxima. Keep the default 30% action point
+when no better measurement exists. Read `docs/CONTEXT_ECONOMY.md`; do not set an
+absolute Codex auto-compaction threshold until the active model window is known.
 
 Then edit the research control files:
 
@@ -112,4 +120,6 @@ exact next action if it is not obvious from the acceptance gate.
 - material computations have an initial scale/resource estimate and verification
   class, bounded stages, and timeout pivot rather than an implicit promise to
   optimize later;
+- model rounds have a time/cost boundary, context reserve, and manual handoff
+  rule;
 - `./h doctor` passes and the macro report reflects the charter.

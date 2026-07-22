@@ -1,0 +1,5 @@
+ORIENT ./h then ./h context
+HOT use ./mind how TOPIC; invoke more only if unresolved question remains; cold docs only from FULL line
+RESERVE at <=30% context remaining or before deliberate /compact: stop; write manual handoff
+SAVE ./h context save --state "facts/decisions" --next "one exact action" --why "intent/invariant" --files "authoritative paths" --risks "unresolved" --verify "last checks"
+AFTER compact disregard continuity guesses; reread ./h context; execute NEXT

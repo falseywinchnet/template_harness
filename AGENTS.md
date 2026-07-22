@@ -10,6 +10,11 @@ Run `./h`. Its recovery card is the minimum sufficient context. If a round is
 open, continue it from the recorded work directory and exact `NEXT` action;
 do not start another round or reread the whole repository.
 
+For method guidance, run `./mind how TOPIC`. Stop at the hot card when it answers
+the current decision. Invoke `more` only for a material unresolved question;
+open cold documents only from that response's `FULL` line. Do not scan all
+guides for orientation.
+
 Read only the files needed for the active item. Prefer `PROJECT.md`, the active
 round's `ROUND.md`/`NEXT.md`, and the relevant target or claim entry over broad
 repository scans. Use `./h report --json` when structured state costs fewer
@@ -58,6 +63,25 @@ it. Record a short checkpoint whenever the exact next action changes:
 Preserve failures in the round's `FAILURES.md`. Close only with a factual
 summary; pass `--done P...` only when each item's acceptance text is satisfied.
 
+## Context boundary
+
+Follow `docs/CONTEXT_ECONOMY.md`. In Codex CLI, watch `/status` or the
+`context-remaining` status line. At 30% remaining, before deliberate `/compact`,
+before a large-output phase, or when a round changes direction, stop and write:
+
+```sh
+./h context save --state "facts/decisions" --next "one exact action" \
+  --why "intent/invariant" --files "paths/IDs" \
+  --risks "unknowns/forbidden assumptions" --verify "last checks/boundary"
+```
+
+Use jagged shorthand, exact identifiers, and unresolved contradictions; do not
+write a smooth transcript summary. After compaction or session resume, run
+`./h context` before other work and treat inferred continuity as provisional.
+If the handoff is stale, run `./h`, inspect the named authoritative files, and
+rewrite it. Hooks are a guardrail only and must be reviewed/trusted with
+`/hooks`; they cannot author the manual judgment.
+
 ## Evidence discipline
 
 - A computation is not a theorem; a manuscript assertion is not evidence.
@@ -71,60 +95,21 @@ summary; pass `--done P...` only when each item's acceptance text is satisfied.
   strictness sources before calling an implication a proof.
 - Keep counterexamples and conflicting evidence. Never silently upgrade status.
 
-## Verification and publication
+## Domain gates
 
-Use the lightest verification method that actually supports the claim. If Lean
-is used, read `docs/LEAN_ENGINEERING.md`, `docs/LEAN_CLAIM_STANDARD.md`, and
-`formal/README.md`. Design the
-module DAG before it grows, pin versions, serialize builds, keep a performance
-ledger, and use the focused/target/full/audit build ladder. Never claim
-kernel-checking without a same-tree `lake build` and axiom audit. A successful
-typecheck proves only the elaborated statement; compare it to
-`research/TARGET.md` in both directions.
+Use the lightest verification method that supports the claim. Before domain
+work, query the matching card: `compute`, `python`, `lean`, `paper`, `pdf`, or
+`release`. Its hot instructions are mandatory. Use `more` when the current
+decision is not resolved there.
 
-Never promote a conditional helper merely because Lean accepts it. Before
-`FORMALLY_PROVED`, require a raw admissible-domain witness, objective
-target-interior theorem, target-object identity, actual-target instantiation,
-and exact counterexample-normal-form equivalence. For containment or dynamics,
-initialization/direct membership and preservation are different obligations;
-closure or “no escape seam” cannot establish that the public object is inside.
-Use the staged statuses in `docs/LEAN_CLAIM_STANDARD.md` and preserve the
-remaining interpretation boundary instead of compressing it into a theorem name.
+Open every `FULL` document before a status-changing gate: designing a material
+computation; promoting a formal claim beyond kernel checking; freezing the
+manuscript; or building a release candidate. Tool success never promotes a
+scientific status by itself. Compare formal statements to `research/TARGET.md`
+in both directions, keep quick audits distinct from full replays, complete the
+paper's semantic and visual audits, and preserve historical releases.
 
-Before a material computation, complete `computations/COMPUTE_PLAN.md` and read
-`docs/COMPUTE_DESIGN.md`. Estimate term/cell growth, coefficient bit size, time,
-memory, precision, cache keys, and adaptive termination before scaling. Prefer
-symmetry, forced factors, sparse recurrences, dependency-preserving coordinates,
-and generator/verifier separation over dense expansion or blind subdivision.
-Stop when observed growth invalidates the declared budget.
-
-For Python/SymPy work, follow `docs/PYTHON_COMPUTATION.md`. Exact claims use
-exact construction; binary floats and mpmath are discovery/diagnostic unless a
-separate error proof exists. SymPy symbol assumptions are not facts about the
-target object. Quick audits, full replays, and release verifiers must be named
-truthfully.
-
-For paper work, follow `docs/PAPER_NARRATIVE.md` and
-`docs/PDF_HOUSE_STYLE.md`. Freeze the public claim spine and section burdens in
-`paper/PAPER_MAP.md` before broad drafting. Write in reader dependency order,
-not discovery chronology; remove non-load-bearing routes rather than explaining
-that they are unused. Keep implementation and provenance in verification unless
-they are themselves the scientific method. Delete performative contrasts,
-disclaimers, declarations of rigor or completeness, stage directions,
-reviewer-facing defenses, and figures of speech. Keep filenames, commands,
-internal IDs, hashes, repositories, tools, models, and replay language inside a
-dedicated verification, reproducibility, availability, data, or software
-section. Run `make style-audit` during drafting and require the strict version
-inside `make release-audit`. Complete `paper/EDITORIAL_AUDIT.md`,
-keep metadata in `paper/manuscript/metadata.tex`, build through the maintained
-Makefile, inspect the log, render every page, and check the deterministic
-archive. A successful TeX process is not visual approval.
-
-Before publication, complete the claim/evidence audit, independent reproduction,
-manuscript map, release manifest, metadata, and revision history. Generated
-artifacts must be reproducible from documented commands. Historical releases
-are immutable; classify post-submission edits before changing the current
-manuscript and correct public artifacts with a new revision record.
+## Version control
 
 Do not commit or push unless the user asks. Before any commit, run `./h doctor`
 and the relevant configured checks.

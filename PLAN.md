@@ -5,7 +5,7 @@ dependencies, and acceptance gates after bootstrap, then run
 `./h register PLAN.md`. Keep stable explicit IDs once work begins.
 
 - [ ] P001 | State the research question, initial hypothesis, and falsification boundary | stage=hypothesis | mode=advance | tags=charter,hypothesis | depends=- | accept=Question, admissible data, exact negated conclusion, and objective target-interior witness are precise enough to decide outcomes
-- [ ] P002 | Freeze scope, non-goals, deliverable, and audience | stage=scope | mode=refine | tags=charter,scope | depends=P001 | accept=Target and exclusions are explicit and approved
+- [ ] P002 | Freeze scope, non-goals, deliverable, audience, and model budget | stage=scope | mode=refine | tags=charter,scope | depends=P001 | accept=Target, exclusions, deliverable, model time/cost per round, verified context window, reserve threshold, and manual handoff rule are explicit and approved
 - [ ] P003 | Decompose the target into claims and dependency edges | stage=scope | mode=refine | tags=claims,dependencies | depends=P002 | accept=Every target claim has an ID, exact falsifier, object-identity and instantiation edges, initialization distinct from preservation, status, and immediate prerequisites
 - [ ] P004 | Build the source and prior-work inventory | stage=sources | mode=refine | tags=sources,literature | depends=P002 | accept=Used sources are preserved or have an explicit acquisition status and locator
 - [ ] P005 | Reproduce foundational results or baselines | stage=sources | mode=advance | tags=baseline,reproduction | depends=P004 | accept=Baseline procedure and observed output are recorded independently

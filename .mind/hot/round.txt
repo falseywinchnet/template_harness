@@ -1,0 +1,6 @@
+FIRST ./h
+OPEN ./h advance TAG... for new work; ./h refine TAG... for audit/integration; never both
+BOUND one question and observable stop; global round lock is authoritative
+NOTE whenever exact next action changes: ./h note "known" --next "smallest continuation"
+RECOVER ./h recover; ./h resume; continue recorded NEXT; never delete lock
+CLOSE factual result; mark done only if acceptance text is satisfied

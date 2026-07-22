@@ -1,0 +1,7 @@
+DESIGN module DAG before growth; shallow explicit imports; definitions below interfaces; isolate expensive proofs
+PROVE domains and nonzero/sign obligations where introduced; avoid hypothesis laundering and stronger helper assumptions
+FALSIFICATION theorem must capture exact negation of public target on same admissible object; implication-only bridge is insufficient
+INTERIOR witness originates independently of target predicate and proves strict/nondegenerate membership
+CONTAINMENT object identity, direct initialization, one-step preservation, reachability are separate declarations
+PERFORMANCE focused build budget <=240s; record timing/import change; refactor before raising heartbeats/recursion
+AUDIT same-tree lake build; #print axioms or maintained audit declarations; compare Lean statement to research/TARGET.md both directions

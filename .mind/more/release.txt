@@ -1,0 +1,7 @@
+PRECONDITION every public claim maps to evidence; fatal/major review findings resolved or release blocked
+REPRO inputs preserved; environment pinned; commands bounded; result-bearing outputs hashed; independent verifier boundary stated
+FORMAL advertised status matches claim registry, theorem tree, axiom audit, target comparison
+PAPER negative-style and artifact-containment gates pass; references checked; metadata complete; no private paths/placeholders
+PDF inspect title block, headings, displays, floats, captions, references, headers/footers, last page at two scales
+ARCHIVE deterministic ordering/timestamps; manifest lists included and excluded material; checksums regenerated after final bytes
+CORRECTION classify strengthened presentation, gap repair, claim change, corrigendum/retraction before public replacement

@@ -1,6 +1,6 @@
 # Harness specification
 
-Version: 1.1
+Version: 1.2
 
 This document is normative for the local command, register, lock, and generated
 reports. Documentation examples may be friendlier; when they disagree with this
@@ -30,6 +30,14 @@ of recoverable scientific attention. Exactly zero or one round may be open.
 Every register mutation appends one JSON object to `.harness/events.jsonl`.
 Events are an audit trail, not canonical state. Canonical current state is
 `.harness/register.json`; round artifacts are canonical narrative evidence.
+
+### 1.4 Manual context handoff
+
+`.harness/context.json` is a bounded operational projection with established
+state, one exact next action, intent, authoritative locations, unresolved risks,
+and verification boundary. It records register, round, revision, and worktree
+fingerprints. A mismatch makes the handoff stale. Freshness establishes only
+that these observable boundaries have not changed since the save.
 
 ## 2. Markdown registration grammar
 
@@ -117,7 +125,21 @@ statuses from `formal/CLAIMS.json`.
 Lifecycle progress excludes dropped items from its denominator and never weights
 items by guessed effort. It is an orientation signal, not a schedule forecast.
 
-## 8. Verification and security
+`context save` requires nonempty `state` and `next`, normalizes each field to one
+line, caps each at 700 characters and the combined fields at 2,200 characters,
+then replaces the handoff atomically. If a round is active it first records the
+same state and next action as a round checkpoint. `context check` succeeds only
+for a fresh schema-version-1 handoff.
+
+## 8. Progressive-disclosure guidance
+
+`.mind/index.json` maps canonical topics and aliases to exactly two text tiers
+and one or more cold document paths. Hot cards are at most 900 bytes; warm cards
+are at most 2,400 bytes. Cards end with one LF, contain no blank line or heading,
+and cold paths must exist. The command accepts `./mind how TOPIC` and one
+optional `more`; no deeper tier exists.
+
+## 9. Verification and security
 
 Configured checks are arrays of arguments and execute without a shell. The
 harness does not execute text parsed from `PLAN.md`. `doctor` validates schemas,
@@ -128,7 +150,7 @@ The register does not establish scientific truth. Evidence and proof status are
 governed by the control files under `research/` and by project-specific replay
 gates.
 
-## 9. Guarded local execution
+## 10. Guarded local execution
 
 `run` accepts one argument-array command and a working directory inside the
 project. It rejects timeouts above 240 seconds, scheduling nice levels below 5,
@@ -147,7 +169,7 @@ Configured checks use the same guarded path. Bare `./h` and `recover` report an
 active/stale compute lock or an unresolved interrupted/timeout launch so a cut
 off model does not need to infer whether computation remains in flight.
 
-## 10. Formal-claim promotion registry
+## 11. Formal-claim promotion registry
 
 `formal/CLAIMS.json` has schema version 1 and a `claims` list. Claim IDs are
 unique `C` identities already present in `research/CLAIM_INDEX.md`; target

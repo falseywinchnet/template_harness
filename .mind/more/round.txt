@@ -1,0 +1,7 @@
+START read recovery card, active ROUND.md/NEXT.md, named target or claim only
+ADVANCE may create analysis, experiments, constructions, proof attempts
+REFINE may audit, cite, verify, reorganize, integrate, edit; new scientific line requires a later advance round
+PRESERVE failures in FAILURES.md; results with evidence boundary in RESULTS.md
+CHECKPOINT state fact, decision, failure, or result; include exact next action; avoid chronology
+INTERRUPTION yielded command may still run; inspect ./h run-status before another compute
+CLOSE updates register, reports, results, then removes lock last

@@ -1,0 +1,7 @@
+START research/TARGET.md then CLAIM_INDEX.md; read only relevant claim branch
+FALSIFIER use exact logical negation on same object/domain; construct raw admissible interior witness independently
+DEPENDENCIES expand until every leaf is supported/trusted/unresolved; record direction and transformation
+SOURCES preserve bytes and provenance; URL is locator; check exact attributed claim
+COMPUTE record arithmetic, coverage, termination, generator/verifier dependence
+FORMAL separate kernel-checked, target-instantiated, statement-faithful, formally-proved
+CONFLICT retain counterevidence and failed routes; never average them into a smooth narrative

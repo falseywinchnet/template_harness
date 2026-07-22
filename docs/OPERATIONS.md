@@ -11,6 +11,9 @@
 | `./h close --summary TEXT --done P...` | Close the round and optionally complete active items |
 | `./h recover` | Print open-round recovery state and next recovery command |
 | `./h resume` | Reconcile and reaffirm an interrupted round |
+| `./h context` | Print the bounded manual handoff and freshness state |
+| `./h context save --state TEXT --next TEXT ...` | Persist intent before compaction or interruption |
+| `./mind how TOPIC [more]` | Read hot guidance, one warm tier, then exact cold paths |
 | `./h report` | Print the macro lifecycle report |
 | `./h report --json` | Print compact structured state for a model or script |
 | `./h run --label NAME -- COMMAND...` | Run one lowered-priority command with the global lock and watchdog |
@@ -27,6 +30,27 @@ The human and JSON reports also include the compact `formal/CLAIMS.json`
 promotion surface, so an agent can see whether a declaration is merely kernel
 checked or has earned statement-faithful/formally-proved status without reading
 the full formalization ledger.
+
+## Guidance and context economy
+
+Use `./mind how TOPIC` before opening broad method documentation. The hot card
+is capped at 900 bytes. One `more` call expands the decision cues and returns a
+`FULL` path list; there is no recursive summary tier. `./mind audit` validates
+card size, whitespace, aliases, and cold-document targets.
+
+At the configured context reserve, before deliberate `/compact`, or before a
+large output, write `./h context save` with state, exact next action, intent,
+authoritative paths, live risks, and the last verification boundary. The save is
+atomic and capped at 2,200 characters. With an active round it also writes the
+ordinary round checkpoint. `./h context check` fails when the handoff is empty
+or stale.
+
+The project Codex configuration supplies an intent-driven compact prompt and
+PreCompact/PostCompact/SessionStart hooks. Review them with `/hooks`. Manual
+compaction is stopped when the handoff is stale; auto compaction continues at a
+hard boundary and recovers afterward. Codex CLI exposes context remaining in
+`/status` and its status line. The documented hook input has no token count, so
+the harness does not infer one from transcript bytes.
 
 Do not hand-edit the JSON register in ordinary work. If manual disaster recovery
 is unavoidable, copy the file first, make the smallest correction, run
@@ -67,6 +91,12 @@ comparison, or page-by-page rendered PDF inspection required at release.
 
 Run `./h recover`, inspect the reported work directory, then `./h resume`. Continue
 from the `NEXT` line. This does not create a new round.
+
+### Context was compacted or a session resumed
+
+Run `./h context` first. If fresh, use its exact `NEXT`, then read only the named
+files. If stale, run `./h`, reconcile the listed changed boundary, and replace
+the handoff. Do not recover from the compacted transcript alone.
 
 ### Start failed after creating a provisional lock
 

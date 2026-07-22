@@ -1,0 +1,5 @@
+TARGET exact object; domain; quantifiers; conclusion; exact negation; objective interior
+CLAIM every public assertion gets ID, status, dependencies, direct evidence boundary
+LEAF preserved source; replayable check; formal theorem; declared trust; visible unresolved item
+TEST object identity; non-vacuity; boundary; strictness; initialization versus preservation
+NEVER promote computation to theorem or manuscript prose to evidence

@@ -1,0 +1,5 @@
+BEFORE code fill computations/COMPUTE_PLAN.md
+ESTIMATE term/cell growth; coefficient bits; time; memory; precision; cache; restart; stop rule
+REDUCE symmetry, forced factors, sparse recurrence, dependency-preserving coordinates before scaling
+RUN one job only through ./h run; nice>=10; threads=1; hard ceiling 240s
+TIMEOUT kill tree; ./h run-status; audit contention; next run must change cost hypothesis

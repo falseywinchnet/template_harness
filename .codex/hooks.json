@@ -1,0 +1,44 @@
+{
+  "description": "Protect manual project handoffs around Codex compaction.",
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/scripts/context_hook.py\"",
+            "timeout": 5,
+            "statusMessage": "Checking manual context handoff"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/scripts/context_hook.py\"",
+            "timeout": 5,
+            "statusMessage": "Restoring manual context handoff"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/scripts/context_hook.py\"",
+            "timeout": 5,
+            "statusMessage": "Loading durable project context"
+          }
+        ]
+      }
+    ]
+  }
+}

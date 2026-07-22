@@ -7,6 +7,7 @@
 - Starting claims/evidence: IDs or exact paths
 - Question: one bounded question
 - Acceptance: observable stopping condition
+- Model boundary: expected time/cost and context reserve from `PROJECT.md`
 
 ## Boundary
 
@@ -24,7 +25,8 @@ Name the smallest sufficient inputs. Do not restate the whole project.
 ## Work log
 
 Use `./h note` for recovery checkpoints. Preserve calculations and attempts in
-this directory.
+this directory. Before the context reserve or deliberate compaction, write the
+bounded manual handoff with `./h context save`.
 
 ## Close
 

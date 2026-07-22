@@ -1,0 +1,9 @@
+# Intent-driven fallback for automatic and manual transcript compaction.
+compact_prompt = """
+Produce a jagged operational handoff, not a narrative summary. If a manual CONTEXT GATE or HANDOFF block appears, preserve its STATE, NEXT, WHY, FILES, RISKS, VERIFY, ROUND, and ITEMS exactly and place it first. Then retain only details that change the next decision: objective and acceptance boundary; established facts with evidence; rejected routes and why; exact identifiers, paths, commands, symbols, and errors still needed; uncommitted edits; last verification; unresolved risks. Put the smallest exact next action before optional background. Preserve conflicts and uncertainty instead of smoothing them. Mark missing information UNKNOWN. Omit greetings, tool chatter, repeated plans, logs already represented by a result, and prose that does not alter behavior. After compaction, instruct the agent to run ./h context before any other work.
+"""
+
+# Codex CLI can display the actual remaining context; no repository hook receives
+# a documented token count. Set model_auto_compact_token_limit per project only
+# after confirming the active model window and desired reserve.
+status_line = ["model-with-reasoning", "context-remaining", "current-dir", "git-branch"]

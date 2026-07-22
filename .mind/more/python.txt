@@ -1,0 +1,6 @@
+START define mathematical acceptance criterion and arithmetic before implementation
+EXACT avoid Rational(float), Float in exact paths, silent domain coercion; assert domains and denominators
+POLY use explicit generators/domains; inspect degree, term count, coefficient bits after each transform
+NUMERIC attach directed interval/error bound to public sign or inequality; sampled high precision does not certify continuum
+PERFORMANCE import only needed modules; cache canonical intermediates; stream coefficients; benchmark before symbolic expansion
+VERIFY independent implementation where feasible; verifier checks object identity, completeness, arithmetic, acceptance; manifest records inputs/outputs/hashes/versions

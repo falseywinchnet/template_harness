@@ -5,6 +5,7 @@ import json
 import sys
 from pathlib import Path
 
+from .context import handoff_status, render_handoff, save_handoff
 from .parser import PlanParseError, parse_plan, parse_plan_text
 from .reports import formal_claims, full_report, recovery_brief, write_reports
 from .runtime import (
@@ -33,6 +34,8 @@ BOOTSTRAP_QUESTIONS = """Bootstrap interview
    and what strictness or nondegeneracy keeps it off the boundary?
 10. If this is a containment or invariant claim, what separately establishes
     object identity, initialization, preservation, and reachability?
+11. What model time/cost per round is acceptable, what context window is
+    verified, and how much context should remain when a manual handoff begins?
 
 After the answers, run `./h bootstrap` with the core fields, tailor PLAN.md, then
 run `./h register PLAN.md`. See docs/BOOTSTRAP.md for Sol's exact procedure.
@@ -59,6 +62,8 @@ def parser() -> argparse.ArgumentParser:
     boot.add_argument("--compute", default="")
     boot.add_argument("--interior", default="")
     boot.add_argument("--containment", default="")
+    boot.add_argument("--model-budget", default="")
+    boot.add_argument("--context-reserve", default="")
 
     register = commands.add_parser("register", help="integrate Markdown task lines into the register")
     register.add_argument("source", nargs="?", help="Markdown file, or '-' for stdin")
@@ -80,6 +85,17 @@ def parser() -> argparse.ArgumentParser:
 
     commands.add_parser("recover", help="print the exact open-round recovery state")
     commands.add_parser("resume", help="repair/reaffirm the open round after interruption")
+
+    context = commands.add_parser("context", help="show or save the compact manual handoff")
+    context_commands = context.add_subparsers(dest="context_command")
+    save_context = context_commands.add_parser("save", help="write a bounded intent handoff")
+    save_context.add_argument("--state", required=True)
+    save_context.add_argument("--next", dest="next_action", required=True)
+    save_context.add_argument("--why", default="")
+    save_context.add_argument("--files", default="")
+    save_context.add_argument("--risks", default="")
+    save_context.add_argument("--verify", default="")
+    context_commands.add_parser("check", help="fail if the manual handoff is missing or stale")
 
     report = commands.add_parser("report", aliases=["status"], help="print project-wide progress")
     report.add_argument("--json", action="store_true", dest="as_json")
@@ -154,6 +170,11 @@ def _project_markdown(fields: dict[str, str]) -> str:
 
 {fields.get('compute') or 'Estimate scale, arithmetic, runtime, memory, and recovery requirements before implementing a material computation.'}
 
+## Model-round economy
+
+- Time and cost: {fields.get('model_budget') or 'Measure round duration and cost; split work when a bounded decision can be reached more cheaply.'}
+- Context reserve: {fields.get('context_reserve') or 'Verify the active model window; default to a manual handoff when 30% remains or before a large phase.'}
+
 ## Evidence locations
 
 - `sources/` — preserved external inputs
@@ -165,6 +186,7 @@ def _project_markdown(fields: dict[str, str]) -> str:
 
 
 def _json_report(store: Store) -> dict[str, object]:
+    context_status, context_reasons = handoff_status(store)
     return {
         "project": store.register.get("project", {}),
         "active_round": store.register.get("active_round"),
@@ -176,6 +198,7 @@ def _json_report(store: Store) -> dict[str, object]:
             for status in ("pending", "active", "blocked", "done", "dropped")
         },
         "register_digest": store.digest(),
+        "context": {"status": context_status, "reasons": context_reasons},
         "formal_claims": formal_claims(store.root),
     }
 
@@ -196,7 +219,16 @@ def _doctor(store: Store) -> list[str]:
         "docs/PAPER_NARRATIVE.md",
         "docs/PDF_HOUSE_STYLE.md",
         "docs/RESOURCE_SAFETY.md",
+        "docs/CONTEXT_ECONOMY.md",
         "harness/runtime.py",
+        "harness/context.py",
+        "harness/mind.py",
+        "mind",
+        ".mind/index.json",
+        ".harness/context.json",
+        ".codex/config.toml",
+        ".codex/hooks.json",
+        "scripts/context_hook.py",
         "work/ROUND_TEMPLATE.md",
         "research/TARGET.md",
         "computations/COMPUTE_PLAN.md",
@@ -251,6 +283,9 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
         store = Store(root or Path.cwd())
         if not args.command:
             print(recovery_brief(store))
+            context_status, context_reasons = handoff_status(store)
+            detail = " · " + "; ".join(context_reasons) if context_reasons else ""
+            print(f"CONTEXT  {context_status}{detail}")
             compute = runtime_brief(store.root)
             if compute:
                 print(compute)
@@ -312,6 +347,9 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
             print(f"CLOSED {record['round_id']} done={' '.join(args.done) or 'none'}")
         elif command == "recover":
             print(recovery_brief(store))
+            context_status, context_reasons = handoff_status(store)
+            detail = " · " + "; ".join(context_reasons) if context_reasons else ""
+            print(f"CONTEXT  {context_status}{detail}")
             compute = runtime_brief(store.root)
             if compute:
                 print(compute)
@@ -324,6 +362,30 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
                 print(f"RECOVERED {record['round_id']} finalized=close lock=released")
             else:
                 print(f"RESUMED {record['round_id']} workdir={record['workdir']}")
+        elif command == "context":
+            if args.context_command == "save":
+                if store.read_lock():
+                    store.note(args.state, args.next_action)
+                    write_reports(store)
+                save_handoff(
+                    store,
+                    {
+                        "state": args.state,
+                        "next": args.next_action,
+                        "why": args.why,
+                        "files": args.files,
+                        "risks": args.risks,
+                        "verify": args.verify,
+                    },
+                )
+                print(render_handoff(store))
+            elif args.context_command == "check":
+                status, reasons = handoff_status(store)
+                print(f"HANDOFF {status}" + (" " + "; ".join(reasons) if reasons else ""))
+                if status != "FRESH":
+                    return 1
+            else:
+                print(render_handoff(store))
         elif command in {"report", "status"}:
             if args.write:
                 paths = write_reports(store)

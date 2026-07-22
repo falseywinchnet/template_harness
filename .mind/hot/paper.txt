@@ -1,0 +1,6 @@
+FIRST freeze public claim spine and PAPER_MAP section burdens
+ORDER reader dependencies; cut discovery chronology and unused routes
+STATE object, assumptions, operation, result, consequence; verbs match evidence class
+DELETE not-X-but-Y performance, disclaimers, rigor/status claims, stage directions, reviewer defense, metaphors
+CONFINE files/tools/commands/hashes/models/replay language to dedicated verification/reproducibility section
+RUN make style-audit

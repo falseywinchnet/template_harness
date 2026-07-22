@@ -31,3 +31,9 @@ To be stated.
 ## Constraints and non-goals
 
 To be stated.
+
+## Model-round economy
+
+- Time and cost: set an acceptable model time and cost per round.
+- Context reserve: verify the active model window and record the manual-handoff
+  threshold; use 30% remaining until measurement supports another value.

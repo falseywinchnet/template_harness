@@ -1,0 +1,6 @@
+FREEZE claims, unresolved limitations, manuscript map, metadata, trusted base
+REPLAY clean environment; distinguish quick audit from full regeneration
+PASS strict manuscript source audit; PDF text/log audit; every-page visual inspection; Lean/compute audits if claimed
+PACKAGE minimal deterministic source+artifacts+checksums+manifest
+MATCH PDF, archive, commit, tag, DOI/archive identity, citation metadata
+POST changes require classified new revision; historical release immutable

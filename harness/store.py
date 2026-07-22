@@ -234,6 +234,7 @@ class Store:
             f"- Started: {record['started_at']}\n"
             f"- Tags: {', '.join(record.get('tags', [])) or 'none'}\n"
             f"- Resume count: {record.get('resume_count', 0)}\n\n"
+            "- Model boundary: use PROJECT.md time/cost budget; save context at its reserve\n\n"
             "## Active project items\n\n"
             + "\n".join(item_lines)
             + "\n\n## Round contract\n\n"

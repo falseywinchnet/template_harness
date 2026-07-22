@@ -1,0 +1,7 @@
+SPINE title, abstract, main result, introduction contribution, conclusion, metadata carry identical object/domain/quantifiers/status
+ABSTRACT object; question; exact result/scope; mechanism; material evidence boundary; nearest limitation only if omission misleads
+INTRO result early; minimum definitions; architecture in dependency order; exact prior-work comparison
+PROOF expose legality, orientation, bridge from computation/formal object, boundary cases, strictness source
+NEGATIVE PASS replace rhetorical negation with direct positive statement; remove old routes, model conversation, declarations of exactness/clarity
+ARTIFACTS theory may name scientific algorithm and acceptance criterion; implementation identity belongs in dedicated section
+AUDIT claim, dependency, negative style, reader, literature, revision, release separately

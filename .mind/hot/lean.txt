@@ -1,0 +1,5 @@
+FIRST read target contract; choose smallest high-risk seam; pin existing toolchain/imports
+BUILD ladder focused declaration -> target module -> full -> axiom audit; one guarded job
+FORBID sorry/admit/custom axiom/unsafe/native bridge/runtime tactic/resource override
+STATUS kernel typecheck is only encoded proposition
+PROMOTE only after object identity, raw interior witness, target instantiation, exact falsifier, statement fidelity; split initialization/preservation

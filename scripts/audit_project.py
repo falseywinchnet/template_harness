@@ -6,9 +6,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import re
-
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from harness.mind import MindError, validate_index  # noqa: E402
 
 
 def lean_without_comments(text: str) -> str:
@@ -91,7 +94,16 @@ def audit_required_controls(root: Path = ROOT) -> list[str]:
         "docs/PAPER_NARRATIVE.md",
         "docs/PDF_HOUSE_STYLE.md",
         "docs/RESOURCE_SAFETY.md",
+        "docs/CONTEXT_ECONOMY.md",
         "harness/runtime.py",
+        "harness/context.py",
+        "harness/mind.py",
+        "mind",
+        ".mind/index.json",
+        ".harness/context.json",
+        ".codex/config.toml",
+        ".codex/hooks.json",
+        "scripts/context_hook.py",
         "scripts/audit_manuscript.py",
         "computations/COMPUTE_PLAN.md",
         "computations/requirements-sympy.txt",
@@ -338,6 +350,91 @@ def audit_runtime_policy() -> list[str]:
     return failures
 
 
+def audit_context_economy(root: Path = ROOT) -> list[str]:
+    try:
+        failures = validate_index(root)
+    except MindError as exc:
+        failures = [f"mind index is unreadable: {exc}"]
+    required_markers = {
+        "docs/CONTEXT_ECONOMY.md": (
+            "## 1. Progressive disclosure contract",
+            "## 3. Manual handoff contract",
+            "## 4. Compaction protocol",
+            "## 5. Codex integration and limits",
+        ),
+        ".codex/config.toml": (
+            "compact_prompt",
+            "context-remaining",
+            "model_auto_compact_token_limit",
+        ),
+        "scripts/context_hook.py": (
+            'event == "PreCompact"',
+            'event in {"PostCompact", "SessionStart"}',
+            '"additionalContext"',
+        ),
+    }
+    for relative, markers in required_markers.items():
+        try:
+            text = (root / relative).read_text(encoding="utf-8")
+        except OSError as exc:
+            failures.append(f"cannot audit context control {relative}: {exc}")
+            continue
+        for marker in markers:
+            if marker not in text:
+                failures.append(f"context control marker missing in {relative}: {marker}")
+    try:
+        hooks = json.loads((root / ".codex/hooks.json").read_text(encoding="utf-8"))
+        configured = hooks.get("hooks", {})
+    except (OSError, json.JSONDecodeError, AttributeError) as exc:
+        failures.append(f"Codex hooks are unreadable: {exc}")
+        configured = {}
+    if not isinstance(configured, dict):
+        failures.append("Codex hooks field must be an object")
+        configured = {}
+    for event in ("PreCompact", "PostCompact", "SessionStart"):
+        if not isinstance(configured.get(event), list) or not configured[event]:
+            failures.append(f"Codex context hook missing: {event}")
+        elif "context_hook.py" not in json.dumps(configured[event]):
+            failures.append(f"Codex context hook does not invoke context_hook.py: {event}")
+    expected_matchers = {
+        "PreCompact": "manual|auto",
+        "PostCompact": "manual|auto",
+        "SessionStart": "resume|compact",
+    }
+    for event, matcher in expected_matchers.items():
+        entries = configured.get(event)
+        if isinstance(entries, list) and entries:
+            first = entries[0]
+            if not isinstance(first, dict) or first.get("matcher") != matcher:
+                failures.append(f"Codex context hook matcher for {event} must be {matcher}")
+    config_path = root / ".codex/config.toml"
+    try:
+        config_text = config_path.read_text(encoding="utf-8")
+    except OSError:
+        config_text = ""
+    if re.search(r"(?m)^\s*model_auto_compact_token_limit\s*=", config_text):
+        failures.append("template must not pin a model-specific auto-compaction token limit")
+    for relative in ("mind", "scripts/context_hook.py"):
+        try:
+            mode = (root / relative).stat().st_mode
+        except OSError as exc:
+            failures.append(f"cannot inspect executable context control {relative}: {exc}")
+        else:
+            if not mode & 0o111:
+                failures.append(f"context control must be executable: {relative}")
+    try:
+        handoff = json.loads((root / ".harness/context.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        failures.append(f"context handoff template is unreadable: {exc}")
+    else:
+        if not isinstance(handoff, dict) or handoff.get("schema_version") != 1:
+            failures.append("context handoff template must have schema_version 1")
+        for field in ("state", "next", "why", "files", "risks", "verify"):
+            if field not in handoff:
+                failures.append(f"context handoff template missing field: {field}")
+    return failures
+
+
 def main() -> None:
     failures = (
         audit_required_controls()
@@ -345,6 +442,7 @@ def main() -> None:
         + audit_paper_controls()
         + audit_claim_registry()
         + audit_runtime_policy()
+        + audit_context_economy()
         + audit_lean()
     )
     if failures:
@@ -356,8 +454,8 @@ def main() -> None:
         1 for path in (ROOT / "formal").rglob("*.lean") if ".lake" not in path.parts
     )
     print(
-        f"POLICY AUDIT passed lean_files={lean_count} controls=19 "
-        "claim_standard=strict paper_narrative=negative-controlled runtime=guarded"
+        f"POLICY AUDIT passed lean_files={lean_count} controls=20 "
+        "claim_standard=strict paper_narrative=negative-controlled runtime=guarded context=bounded"
     )
 
 

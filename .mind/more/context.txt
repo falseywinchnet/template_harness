@@ -1,0 +1,6 @@
+HANDOFF is jagged operational memory, not narrative summary: established facts; decisions with reason; exact next action; authoritative files/symbols/IDs; unresolved risks; last verification
+FRESHNESS captures register digest and active round; changed state marks it stale
+MANUAL /compact should be blocked by trusted PreCompact hook when handoff is stale; auto compaction continues because blocking at the hard boundary is unsafe
+FALLBACK custom compact prompt prioritizes exact state and omissions; Pre/PostCompact hooks surface the handoff; command hooks cannot ask a model to author judgment
+METER Codex CLI /status and context-remaining status line expose remaining capacity; hooks receive no documented token count
+RESERVE choose project threshold from actual provider window and task output risk; 30% is the default action point, not an estimate of tokens
