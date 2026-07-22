@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+tmp/
+
+# The logical round is durable in register.json and work/. This file is the
+# local exclusive-start mutex and must never be copied into a template clone.
+.harness/round.lock
+
+# Generated build products
+paper/build/*
+!paper/build/.gitkeep
+paper/arxiv/main.tex
+paper/release.tar
+formal/.lake/
+formal/lake-manifest.json

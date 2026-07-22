@@ -1,0 +1,415 @@
+{
+  "active_round": null,
+  "items": {
+    "P001": {
+      "acceptance": "Question and refutation condition are precise enough to decide outcomes",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [],
+      "id": "P001",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 7,
+      "stage": "hypothesis",
+      "status": "pending",
+      "tags": [
+        "charter",
+        "hypothesis"
+      ],
+      "title": "State the research question, initial hypothesis, and falsification boundary",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P002": {
+      "acceptance": "Target and exclusions are explicit and approved",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P001"
+      ],
+      "id": "P002",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 8,
+      "stage": "scope",
+      "status": "pending",
+      "tags": [
+        "charter",
+        "scope"
+      ],
+      "title": "Freeze scope, non-goals, deliverable, and audience",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P003": {
+      "acceptance": "Every target claim has an ID, status, and immediate prerequisites",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P002"
+      ],
+      "id": "P003",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 9,
+      "stage": "scope",
+      "status": "pending",
+      "tags": [
+        "claims",
+        "dependencies"
+      ],
+      "title": "Decompose the target into claims and dependency edges",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P004": {
+      "acceptance": "Used sources are preserved or have an explicit acquisition status and locator",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P002"
+      ],
+      "id": "P004",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 10,
+      "stage": "sources",
+      "status": "pending",
+      "tags": [
+        "sources",
+        "literature"
+      ],
+      "title": "Build the source and prior-work inventory",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P005": {
+      "acceptance": "Baseline procedure and observed output are recorded independently",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P004"
+      ],
+      "id": "P005",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 11,
+      "stage": "sources",
+      "status": "pending",
+      "tags": [
+        "baseline",
+        "reproduction"
+      ],
+      "title": "Reproduce foundational results or baselines",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P006": {
+      "acceptance": "Each method has assumptions, failure tests, and a verification boundary",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P003",
+        "P005"
+      ],
+      "id": "P006",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 12,
+      "stage": "design",
+      "status": "pending",
+      "tags": [
+        "methods",
+        "design"
+      ],
+      "title": "Select methods and define acceptance gates",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P007": {
+      "acceptance": "Primary route reaches a supported result or a preserved exact failure boundary",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P006"
+      ],
+      "id": "P007",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 13,
+      "stage": "analysis",
+      "status": "pending",
+      "tags": [
+        "core",
+        "analysis"
+      ],
+      "title": "Execute the primary analysis or proof route",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P008": {
+      "acceptance": "Material alternatives and failures are recorded without selection bias",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P006"
+      ],
+      "id": "P008",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 14,
+      "stage": "analysis",
+      "status": "pending",
+      "tags": [
+        "alternatives",
+        "failures"
+      ],
+      "title": "Explore alternatives and preserve negative results",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P009": {
+      "acceptance": "Every surviving claim maps to a source, replay, formal proof, or unresolved obligation",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P007",
+        "P008"
+      ],
+      "id": "P009",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 15,
+      "stage": "verification",
+      "status": "pending",
+      "tags": [
+        "evidence",
+        "claims"
+      ],
+      "title": "Convert surviving work into explicit evidence obligations",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P010": {
+      "acceptance": "Critical path has no hidden assumption, missing case, or unsupported inference",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P009"
+      ],
+      "id": "P010",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 16,
+      "stage": "verification",
+      "status": "pending",
+      "tags": [
+        "core",
+        "closure"
+      ],
+      "title": "Close the critical argument or empirical analysis",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P011": {
+      "acceptance": "Predeclared counterexample conditions and boundary cases have been tested",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P010"
+      ],
+      "id": "P011",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 17,
+      "stage": "verification",
+      "status": "pending",
+      "tags": [
+        "falsification",
+        "audit"
+      ],
+      "title": "Run independent falsification and adversarial tests",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P012": {
+      "acceptance": "Chosen seam replays in a pinned environment and matches the target statement",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P010"
+      ],
+      "id": "P012",
+      "mode": "either",
+      "source": "PLAN.md",
+      "source_line": 18,
+      "stage": "verification",
+      "status": "pending",
+      "tags": [
+        "formal",
+        "certificate"
+      ],
+      "title": "Formalize or certify the high-risk seam where justified",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P013": {
+      "acceptance": "All reachable leaves are supported, trusted explicitly, or visibly unresolved",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P011",
+        "P012"
+      ],
+      "id": "P013",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 19,
+      "stage": "verification",
+      "status": "pending",
+      "tags": [
+        "evidence",
+        "audit"
+      ],
+      "title": "Audit claim-to-evidence closure and trusted base",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P014": {
+      "acceptance": "Every section has a burden, claim IDs, and evidence boundaries",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P013"
+      ],
+      "id": "P014",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 20,
+      "stage": "writing",
+      "status": "pending",
+      "tags": [
+        "paper",
+        "map"
+      ],
+      "title": "Freeze the manuscript map and proof or analysis narrative",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P015": {
+      "acceptance": "Draft states the target, methods, limitations, results, and verification boundary accurately",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P014"
+      ],
+      "id": "P015",
+      "mode": "advance",
+      "source": "PLAN.md",
+      "source_line": 21,
+      "stage": "writing",
+      "status": "pending",
+      "tags": [
+        "paper",
+        "writing"
+      ],
+      "title": "Write the complete manuscript",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P016": {
+      "acceptance": "A clean environment can regenerate all theorem-bearing or result-bearing artifacts",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P013"
+      ],
+      "id": "P016",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 22,
+      "stage": "reproduction",
+      "status": "pending",
+      "tags": [
+        "reproduction",
+        "release"
+      ],
+      "title": "Build the reproducibility package",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P017": {
+      "acceptance": "Findings ledger covers statement fidelity, evidence, novelty, limitations, and presentation",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P015",
+        "P016"
+      ],
+      "id": "P017",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 23,
+      "stage": "review",
+      "status": "pending",
+      "tags": [
+        "review",
+        "audit"
+      ],
+      "title": "Conduct internal adversarial review",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P018": {
+      "acceptance": "Material findings are resolved or disclosed and claim statuses are frozen",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P017"
+      ],
+      "id": "P018",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 24,
+      "stage": "review",
+      "status": "pending",
+      "tags": [
+        "review",
+        "freeze"
+      ],
+      "title": "Resolve findings and freeze claims",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P019": {
+      "acceptance": "Release package is minimal, deterministic, identified, and independently checked",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P018"
+      ],
+      "id": "P019",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 25,
+      "stage": "publication",
+      "status": "pending",
+      "tags": [
+        "publication",
+        "package"
+      ],
+      "title": "Package manuscript, metadata, checksums, and release manifest",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    },
+    "P020": {
+      "acceptance": "Public artifact, source revision, archival identity, and citation metadata agree",
+      "active_round": null,
+      "created_at": "2026-07-22T19:07:27+00:00",
+      "depends": [
+        "P019"
+      ],
+      "id": "P020",
+      "mode": "refine",
+      "source": "PLAN.md",
+      "source_line": 26,
+      "stage": "publication",
+      "status": "pending",
+      "tags": [
+        "publication",
+        "archive"
+      ],
+      "title": "Publish and archive an immutable release",
+      "updated_at": "2026-07-22T19:07:27+00:00"
+    }
+  },
+  "next_item": 1,
+  "next_round": 1,
+  "project": {
+    "status": "bootstrap",
+    "title": "Untitled scientific project"
+  },
+  "rounds": {},
+  "schema_version": 1
+}

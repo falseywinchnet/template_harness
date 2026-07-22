@@ -1,0 +1,26 @@
+# Project plan
+
+This is the editable source for the project register. Tailor titles, tags,
+dependencies, and acceptance gates after bootstrap, then run
+`./h register PLAN.md`. Keep stable explicit IDs once work begins.
+
+- [ ] P001 | State the research question, initial hypothesis, and falsification boundary | stage=hypothesis | mode=advance | tags=charter,hypothesis | depends=- | accept=Question and refutation condition are precise enough to decide outcomes
+- [ ] P002 | Freeze scope, non-goals, deliverable, and audience | stage=scope | mode=refine | tags=charter,scope | depends=P001 | accept=Target and exclusions are explicit and approved
+- [ ] P003 | Decompose the target into claims and dependency edges | stage=scope | mode=refine | tags=claims,dependencies | depends=P002 | accept=Every target claim has an ID, status, and immediate prerequisites
+- [ ] P004 | Build the source and prior-work inventory | stage=sources | mode=refine | tags=sources,literature | depends=P002 | accept=Used sources are preserved or have an explicit acquisition status and locator
+- [ ] P005 | Reproduce foundational results or baselines | stage=sources | mode=advance | tags=baseline,reproduction | depends=P004 | accept=Baseline procedure and observed output are recorded independently
+- [ ] P006 | Select methods and define acceptance gates | stage=design | mode=refine | tags=methods,design | depends=P003,P005 | accept=Each method has assumptions, failure tests, and a verification boundary
+- [ ] P007 | Execute the primary analysis or proof route | stage=analysis | mode=advance | tags=core,analysis | depends=P006 | accept=Primary route reaches a supported result or a preserved exact failure boundary
+- [ ] P008 | Explore alternatives and preserve negative results | stage=analysis | mode=advance | tags=alternatives,failures | depends=P006 | accept=Material alternatives and failures are recorded without selection bias
+- [ ] P009 | Convert surviving work into explicit evidence obligations | stage=verification | mode=refine | tags=evidence,claims | depends=P007,P008 | accept=Every surviving claim maps to a source, replay, formal proof, or unresolved obligation
+- [ ] P010 | Close the critical argument or empirical analysis | stage=verification | mode=advance | tags=core,closure | depends=P009 | accept=Critical path has no hidden assumption, missing case, or unsupported inference
+- [ ] P011 | Run independent falsification and adversarial tests | stage=verification | mode=refine | tags=falsification,audit | depends=P010 | accept=Predeclared counterexample conditions and boundary cases have been tested
+- [ ] P012 | Formalize or certify the high-risk seam where justified | stage=verification | mode=either | tags=formal,certificate | depends=P010 | accept=Chosen seam replays in a pinned environment and matches the target statement
+- [ ] P013 | Audit claim-to-evidence closure and trusted base | stage=verification | mode=refine | tags=evidence,audit | depends=P011,P012 | accept=All reachable leaves are supported, trusted explicitly, or visibly unresolved
+- [ ] P014 | Freeze the manuscript map and proof or analysis narrative | stage=writing | mode=refine | tags=paper,map | depends=P013 | accept=Every section has a burden, claim IDs, and evidence boundaries
+- [ ] P015 | Write the complete manuscript | stage=writing | mode=advance | tags=paper,writing | depends=P014 | accept=Draft states the target, methods, limitations, results, and verification boundary accurately
+- [ ] P016 | Build the reproducibility package | stage=reproduction | mode=refine | tags=reproduction,release | depends=P013 | accept=A clean environment can regenerate all theorem-bearing or result-bearing artifacts
+- [ ] P017 | Conduct internal adversarial review | stage=review | mode=refine | tags=review,audit | depends=P015,P016 | accept=Findings ledger covers statement fidelity, evidence, novelty, limitations, and presentation
+- [ ] P018 | Resolve findings and freeze claims | stage=review | mode=refine | tags=review,freeze | depends=P017 | accept=Material findings are resolved or disclosed and claim statuses are frozen
+- [ ] P019 | Package manuscript, metadata, checksums, and release manifest | stage=publication | mode=refine | tags=publication,package | depends=P018 | accept=Release package is minimal, deterministic, identified, and independently checked
+- [ ] P020 | Publish and archive an immutable release | stage=publication | mode=refine | tags=publication,archive | depends=P019 | accept=Public artifact, source revision, archival identity, and citation metadata agree

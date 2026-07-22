@@ -1,0 +1,66 @@
+# Operations reference
+
+## High-frequency commands
+
+| Command | Effect |
+|---|---|
+| `./h` | Print the compact recovery card |
+| `./h advance TAG...` | Open one advancement round on ready matching items |
+| `./h refine TAG...` | Open one refinement round on ready matching items |
+| `./h note TEXT --next TEXT` | Persist a checkpoint and exact resume action |
+| `./h close --summary TEXT --done P...` | Close the round and optionally complete active items |
+| `./h recover` | Print open-round recovery state and next recovery command |
+| `./h resume` | Reconcile and reaffirm an interrupted round |
+| `./h report` | Print the macro lifecycle report |
+| `./h report --json` | Print compact structured state for a model or script |
+
+## Planning and state
+
+`./h register PLAN.md` parses all Markdown task lines. `./h register --text
+'- [ ] ...'` integrates a small addition without opening an editor. Use
+`./h block P001 --reason TEXT`, `./h reopen P001`, and `./h done P001` for
+explicit transitions. Use `./h drop P001 --reason TEXT` when an optional or
+superseded item does not apply; its identity remains and dependents may proceed.
+
+Do not hand-edit the JSON register in ordinary work. If manual disaster recovery
+is unavoidable, copy the file first, make the smallest correction, run
+`./h doctor`, regenerate reports, and record the intervention in the current
+round notes.
+
+## Verification
+
+`./h doctor` is structural and fast. `./h check` runs checks marked default in
+`.harness/config.json`. `./h check --all` also runs optional paper and formal
+builds; install their toolchains first. Commands are stored as argument arrays,
+not shell strings.
+
+## Recovery cases
+
+### The model or terminal stopped mid-round
+
+Run `./h recover`, inspect the reported work directory, then `./h resume`. Continue
+from the `NEXT` line. This does not create a new round.
+
+### Start failed after creating a provisional lock
+
+Run `./h resume`. It reconstructs the round from the lock, reconciles selected
+items, and creates any missing round template files.
+
+### Lock and register disagree
+
+Run `./h doctor` and preserve both files. Do not delete either. Use the round ID,
+event tail, and work directory to determine the last completed write. The close
+algorithm removes the lock last, so a lock normally means recovery is safer than
+rollback.
+
+### Generated status is stale
+
+Run `./h report --write`. `STATUS.md` and `NEXT.md` are disposable projections;
+the register and work records are authoritative.
+
+## Git boundary
+
+The harness never commits or pushes. Version-control publication is intentionally
+outside the research-state machine so a user can review scope. Before a commit,
+run `./h doctor`, the relevant checks, and inspect `git diff --check` plus the
+full staged diff. Never commit `.harness/round.lock`.

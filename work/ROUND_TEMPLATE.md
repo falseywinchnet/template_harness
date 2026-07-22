@@ -1,0 +1,27 @@
+# RXXXX — short round name
+
+- Mode: `advance` or `refine`
+- Status: open, closed, or interrupted
+- Started: ISO-8601 UTC
+- Project items: `P...`
+- Starting claims/evidence: IDs or exact paths
+- Question: one bounded question
+- Acceptance: observable stopping condition
+
+## Boundary
+
+State what this round may change and what is explicitly out of scope.
+
+## Starting state
+
+Name the smallest sufficient inputs. Do not restate the whole project.
+
+## Work log
+
+Use `./h note` for recovery checkpoints. Preserve calculations and attempts in
+this directory.
+
+## Close
+
+Record result, evidence boundary, failures, claim-status changes, and the exact
+next item. Completion of the round does not imply completion of every item.

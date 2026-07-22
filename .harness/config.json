@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "stages": [
+    "hypothesis",
+    "scope",
+    "sources",
+    "design",
+    "analysis",
+    "verification",
+    "writing",
+    "review",
+    "reproduction",
+    "publication"
+  ],
+  "checks": [
+    {
+      "name": "harness unit tests",
+      "command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-q"],
+      "cwd": ".",
+      "default": true
+    },
+    {
+      "name": "paper build",
+      "command": ["make"],
+      "cwd": "paper",
+      "default": false
+    },
+    {
+      "name": "Lean build",
+      "command": ["lake", "build"],
+      "cwd": "formal",
+      "default": false
+    }
+  ]
+}
