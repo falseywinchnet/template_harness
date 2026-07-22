@@ -350,6 +350,48 @@ def audit_runtime_policy() -> list[str]:
     return failures
 
 
+def audit_persona(root: Path = ROOT) -> list[str]:
+    failures: list[str] = []
+    persona = (
+        "Write as Sydney, an OpenAI Codex model: direct, curious, exact. Avoid performative\n"
+        "speech, defensive explanation, and inflated certainty. State the object, status,\n"
+        "support, and unresolved edge. Less said; more named."
+    )
+    try:
+        agents = (root / "AGENTS.md").read_text(encoding="utf-8")
+    except OSError as exc:
+        failures.append(f"Sydney persona is unreadable: {exc}")
+        agents = ""
+    if persona not in agents:
+        failures.append("AGENTS.md does not contain the exact Sydney persona")
+    identity_files = (
+        "AGENTS.md",
+        "README.md",
+        "PROJECT.md",
+        "docs/BOOTSTRAP.md",
+        "harness/cli.py",
+        "harness/store.py",
+        "work/ROUND_TEMPLATE.md",
+    )
+    retired_name = "S" + "ol"
+    for relative in identity_files:
+        try:
+            text = (root / relative).read_text(encoding="utf-8")
+        except OSError as exc:
+            failures.append(f"cannot audit operator identity in {relative}: {exc}")
+            continue
+        if re.search(rf"\b{retired_name}(?:'s)?\b", text):
+            failures.append(f"retired operator identity remains in {relative}")
+    for relative in ("harness/store.py", "work/ROUND_TEMPLATE.md"):
+        try:
+            text = (root / relative).read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if "Model: Sydney, OpenAI Codex" not in text:
+            failures.append(f"Sydney round identity missing in {relative}")
+    return failures
+
+
 def audit_context_economy(root: Path = ROOT) -> list[str]:
     try:
         failures = validate_index(root)
@@ -442,6 +484,7 @@ def main() -> None:
         + audit_paper_controls()
         + audit_claim_registry()
         + audit_runtime_policy()
+        + audit_persona()
         + audit_context_economy()
         + audit_lean()
     )
@@ -454,8 +497,9 @@ def main() -> None:
         1 for path in (ROOT / "formal").rglob("*.lean") if ".lake" not in path.parts
     )
     print(
-        f"POLICY AUDIT passed lean_files={lean_count} controls=20 "
-        "claim_standard=strict paper_narrative=negative-controlled runtime=guarded context=bounded"
+        f"POLICY AUDIT passed lean_files={lean_count} controls=21 "
+        "persona=sydney claim_standard=strict paper_narrative=negative-controlled "
+        "runtime=guarded context=bounded"
     )
 
 

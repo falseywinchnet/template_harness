@@ -144,6 +144,9 @@ class HarnessTest(unittest.TestCase):
         self.assertIn("FULL docs/PYTHON_COMPUTATION.md", warm)
         self.assertNotIn("\n\n", hot)
 
+    def test_sydney_persona_is_exact(self):
+        self.assertEqual(POLICY["audit_persona"](REPO_ROOT), [])
+
     def test_context_handoff_detects_register_change(self):
         self.assertEqual(handoff_status(self.store)[0], "EMPTY")
         save_handoff(
@@ -186,6 +189,8 @@ class HarnessTest(unittest.TestCase):
         record = refreshed.rounds[refreshed.register["active_round"]]
         self.assertEqual(record["last_note"]["text"], "two cases remain")
         self.assertEqual(record["last_note"]["next"], "check the endpoint")
+        round_text = (self.root / record["workdir"] / "ROUND.md").read_text(encoding="utf-8")
+        self.assertIn("Model: Sydney, OpenAI Codex", round_text)
         self.assertEqual(handoff_status(refreshed), ("FRESH", []))
 
     def test_context_handoff_detects_worktree_change(self):

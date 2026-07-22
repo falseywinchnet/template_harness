@@ -38,7 +38,7 @@ BOOTSTRAP_QUESTIONS = """Bootstrap interview
     verified, and how much context should remain when a manual handoff begins?
 
 After the answers, run `./h bootstrap` with the core fields, tailor PLAN.md, then
-run `./h register PLAN.md`. See docs/BOOTSTRAP.md for Sol's exact procedure.
+run `./h register PLAN.md`. See docs/BOOTSTRAP.md for Sydney's exact procedure.
 """
 
 

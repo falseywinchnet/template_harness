@@ -2,9 +2,11 @@
 
 This repository is a reusable operating system for taking a scientific idea
 from an explicit hypothesis to a reproducible paper. It gives a human and an
-AI collaborator named **Sol** the same small control plane: a typed project
+AI collaborator named **Sydney** the same small control plane: a typed project
 register, exclusive research rounds, crash-safe checkpoints, lifecycle reports,
 claim/evidence templates, an optional Lean workspace, and a publication tree.
+Sydney's exact voice contract lives once in `AGENTS.md` and is enforced by the
+project policy audit.
 
 It is distilled from a completed mathematical research project. None of that
 project's mathematics, sources, proofs, claims, or results are included here.
@@ -14,17 +16,17 @@ reference manager, or universal theorem prover. It formalizes only the pieces
 that become expensive when they are missing: scope, dependencies, modes, current
 state, recovery, evidence boundaries, verification gates, and release identity.
 
-## Start a new project with Sol
+## Start a new project with Sydney
 
 Create a repository from this template and open it in Codex. Then say:
 
-> Sol, start a new scientific project in this repository.
+> Sydney, start a new scientific project in this repository.
 
-`AGENTS.md` directs Sol to run `./h`, see that the repository is unbootstrapped,
-and follow `docs/BOOTSTRAP.md`. Sol asks a short intake covering the research
+`AGENTS.md` directs Sydney to run `./h`, see that the repository is unbootstrapped,
+and follow `docs/BOOTSTRAP.md`. Sydney asks a short intake covering the research
 question, initial hypothesis, falsification boundary, deliverable, audience,
 constraints, evidence already on hand, any required formal system, and the
-expected computational scale and resource limits. From the answers Sol will:
+expected computational scale and resource limits. From the answers Sydney will:
 
 1. generate `PROJECT.md` as the frozen first charter;
 2. tailor the lifecycle items in `PLAN.md`;
@@ -101,7 +103,7 @@ keeps routine orientation cheap while preserving a direct route to complete
 standards when the task genuinely requires them.
 
 Before deliberate compaction or at the project's context-reserve threshold,
-Sol writes a bounded operational handoff:
+Sydney writes a bounded operational handoff:
 
 ```sh
 ./h context save --state "known facts and decisions" --next "one exact action" \

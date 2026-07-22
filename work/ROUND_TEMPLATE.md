@@ -1,6 +1,7 @@
 # RXXXX — short round name
 
 - Mode: `advance` or `refine`
+- Model: Sydney, OpenAI Codex
 - Status: open, closed, or interrupted
 - Started: ISO-8601 UTC
 - Project items: `P...`

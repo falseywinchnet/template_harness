@@ -230,6 +230,7 @@ class Store:
         ] or ["- No item was selected."]
         round_text = (
             f"# {record['round_id']} — {record['mode']}\n\n"
+            "- Model: Sydney, OpenAI Codex\n"
             f"- Status: {record['status']}\n"
             f"- Started: {record['started_at']}\n"
             f"- Tags: {', '.join(record.get('tags', [])) or 'none'}\n"

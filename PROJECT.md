@@ -1,6 +1,6 @@
 # Untitled scientific project
 
-This placeholder is replaced by `./h bootstrap` after Sol's intake.
+This placeholder is replaced by `./h bootstrap` after Sydney's intake.
 
 ## Research question
 

@@ -1,4 +1,4 @@
-# Bootstrap protocol for Sol
+# Bootstrap protocol for Sydney
 
 The bootstrap converts an underspecified research idea into the smallest honest
 project contract. It is complete when the user can recognize what will be done,
