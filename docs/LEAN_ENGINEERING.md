@@ -22,6 +22,12 @@ Complete `research/FORMALIZATION.md`. Formalize the target skeleton early, even
 while its proof remains open, so later work cannot silently drift to a stronger
 hypothesis, smaller domain, different object, or weaker conclusion.
 
+Read `docs/LEAN_CLAIM_STANDARD.md` before declaring the skeleton complete. The
+skeleton must expose `Admissible`, `Conclusion`, the exact data-bearing
+counterexample, a raw domain witness, and the objective target-interior
+obligation. For containment or invariant claims it must name object identity,
+initialization, preservation, and reachability separately.
+
 ## 2. Pinned environment
 
 Pin all three moving components:
@@ -142,6 +148,14 @@ The theorem-bearing tree must contain no:
 - foreign/runtime result presented as a theorem without a named trust boundary;
 - theorem whose public statement differs from the target contract;
 - imported certificate result without a checked statement bridge.
+- `native_decide`, runtime tactics, foreign/extern implementations, or generated
+  evaluation used as a proof shortcut;
+- local heartbeat, recursion-depth, or memory overrides used to force through a
+  proof that exceeds the maintained resource design;
+- local re-enabling of automatic/relaxed implicit variables in theorem-bearing
+  source;
+- result-bearing definitions whose constructor, subtype, or structure field
+  already assumes the public conclusion.
 
 `scripts/audit_project.py` enforces the syntactic subset of this policy. It is a
 guardrail, not a proof of soundness. Legitimate classical reasoning is allowed;
@@ -161,7 +175,7 @@ a theorem. `formal/AXIOMS.md` must state:
 Diff the axiom output at every epoch gate. An audit covers only the declarations
 it names; a new module is not protected by an old audit file.
 
-## 7. Statement and non-vacuity audit
+## 7. Statement, anchoring, and non-vacuity audit
 
 For each exported theorem record:
 
@@ -174,9 +188,28 @@ For each exported theorem record:
 7. branches, endpoints, degeneracies, signs, and orderings covered;
 8. the source of every strict inequality;
 9. the concrete counterexample condition.
+10. a raw admissible-domain witness constructed without the conclusion;
+11. an objective target-interior theorem for that same raw witness;
+12. the strict margin/nonzero fact excluding equality where strictness matters;
+13. an exact equivalence between the target and exclusion of the recorded
+    counterexample schema;
+14. initialization/direct membership, distinct from preservation or closure;
+15. the remaining semantic naming/normalization boundary, if any.
+
+The objective-interior theorem must not depend transitively on the exported
+target theorem. It is an independent anchoring derivation, not a corollary added
+after the universal theorem is complete.
 
 Lean can correctly check a vacuous implication. It does not know that a fresh
 positive parameter was supposed to be a value derived from the public object.
+
+A target-facing theorem is not closed while it accepts a helper structure that
+stores the desired sign, membership, normalization, or correspondence. Construct
+the public object first, then discharge every field in a named instantiation
+theorem. Likewise, `B x → R x y → B y` is preservation, not proof that the
+source algorithm ever enters `B`. Require `A x → B (encode x)` before publishing
+containment. The executable vocabulary in `Formal/ClaimContract.lean` makes
+these shapes explicit but supplies none of the project-specific mathematics.
 
 ## 8. Tactic and elaboration discipline
 
@@ -261,4 +294,8 @@ Label these as formalization failures unless they refute the mathematics.
 - `formal/AXIOMS.md` and project status match printed output;
 - no placeholders, hidden axioms, unsafe bridges, or warning debt;
 - non-vacuity and statement fidelity are recorded;
+- the objective target-interior, exact falsifier, object identity, and all
+  initialization/instantiation declarations are audited;
+- independent adversarial review reconstructs the target map and finds no
+  closure-only, stored-conclusion, or definition-laundering path;
 - performance remains within the declared release budget.

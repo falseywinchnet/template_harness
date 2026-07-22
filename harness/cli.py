@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from .parser import PlanParseError, parse_plan, parse_plan_text
-from .reports import full_report, recovery_brief, write_reports
+from .reports import formal_claims, full_report, recovery_brief, write_reports
 from .runtime import (
     DEFAULT_NICE,
     DEFAULT_SECONDS,
@@ -29,6 +29,10 @@ BOOTSTRAP_QUESTIONS = """Bootstrap interview
 7. What evidence already exists locally, and where is it?
 8. What data or parameter scale, compute budget, runtime limit, and interruption
    recovery requirements should shape the method?
+9. What raw, independently constructible instance lies inside the target domain,
+   and what strictness or nondegeneracy keeps it off the boundary?
+10. If this is a containment or invariant claim, what separately establishes
+    object identity, initialization, preservation, and reachability?
 
 After the answers, run `./h bootstrap` with the core fields, tailor PLAN.md, then
 run `./h register PLAN.md`. See docs/BOOTSTRAP.md for Sol's exact procedure.
@@ -53,6 +57,8 @@ def parser() -> argparse.ArgumentParser:
     boot.add_argument("--constraints", default="")
     boot.add_argument("--formalization", default="")
     boot.add_argument("--compute", default="")
+    boot.add_argument("--interior", default="")
+    boot.add_argument("--containment", default="")
 
     register = commands.add_parser("register", help="integrate Markdown task lines into the register")
     register.add_argument("source", nargs="?", help="Markdown file, or '-' for stdin")
@@ -119,6 +125,14 @@ def _project_markdown(fields: dict[str, str]) -> str:
 
 {fields['falsifier']}
 
+## Objective target interior
+
+{fields.get('interior') or 'Construct a raw admissible instance and prove its result and nondegeneracy independently.'}
+
+## Containment and invariant boundary
+
+{fields.get('containment') or 'Not applicable unless the claim involves membership, invariance, or generated-state containment.'}
+
 ## Deliverable
 
 {fields['deliverable']}
@@ -162,6 +176,7 @@ def _json_report(store: Store) -> dict[str, object]:
             for status in ("pending", "active", "blocked", "done", "dropped")
         },
         "register_digest": store.digest(),
+        "formal_claims": formal_claims(store.root),
     }
 
 
@@ -175,6 +190,7 @@ def _doctor(store: Store) -> list[str]:
         "docs/BOOTSTRAP.md",
         "docs/SPECIFICATION.md",
         "docs/LEAN_ENGINEERING.md",
+        "docs/LEAN_CLAIM_STANDARD.md",
         "docs/COMPUTE_DESIGN.md",
         "docs/PYTHON_COMPUTATION.md",
         "docs/PDF_HOUSE_STYLE.md",
@@ -185,6 +201,8 @@ def _doctor(store: Store) -> list[str]:
         "computations/COMPUTE_PLAN.md",
         "computations/requirements-sympy.txt",
         "formal/AXIOMS.md",
+        "formal/CLAIMS.json",
+        "formal/Formal/ClaimContract.lean",
         "paper/RELEASE_MANIFEST.md",
     ]
     for relative in required:

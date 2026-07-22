@@ -2,7 +2,7 @@
   "active_round": null,
   "items": {
     "P001": {
-      "acceptance": "Question and refutation condition are precise enough to decide outcomes",
+      "acceptance": "Question, admissible data, exact negated conclusion, and objective target-interior witness are precise enough to decide outcomes",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [],
@@ -17,7 +17,7 @@
         "hypothesis"
       ],
       "title": "State the research question, initial hypothesis, and falsification boundary",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T20:54:47+00:00"
     },
     "P002": {
       "acceptance": "Target and exclusions are explicit and approved",
@@ -40,7 +40,7 @@
       "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P003": {
-      "acceptance": "Every target claim has an ID, status, and immediate prerequisites",
+      "acceptance": "Every target claim has an ID, exact falsifier, object-identity and instantiation edges, initialization distinct from preservation, status, and immediate prerequisites",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -57,7 +57,7 @@
         "dependencies"
       ],
       "title": "Decompose the target into claims and dependency edges",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T20:54:47+00:00"
     },
     "P004": {
       "acceptance": "Used sources are preserved or have an explicit acquisition status and locator",
@@ -223,7 +223,7 @@
       "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P012": {
-      "acceptance": "Chosen seam matches the target statement, exposes its trusted base, replays in a pinned environment, and stays inside its recorded build budget",
+      "acceptance": "Chosen seam has a clean pinned build and axiom audit, matches the target bidirectionally, proves object identity, objective interior, actual-target instantiation, exact falsifier equivalence, and any initialization separately from preservation, and stays inside its build budget",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -241,7 +241,7 @@
         "performance"
       ],
       "title": "Formalize or certify the high-risk seam where justified",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T20:54:47+00:00"
     },
     "P013": {
       "acceptance": "All reachable leaves are supported, trusted explicitly, or visibly unresolved",
@@ -326,7 +326,7 @@
       "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P017": {
-      "acceptance": "Findings ledger covers statement fidelity, evidence, novelty, limitations, and presentation",
+      "acceptance": "An independent derivation review covers statement fidelity, definition laundering, objective interior, initialization versus closure, exact falsifier, evidence, novelty, limitations, and presentation",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -344,7 +344,7 @@
         "audit"
       ],
       "title": "Conduct internal adversarial review",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T20:54:47+00:00"
     },
     "P018": {
       "acceptance": "Material findings are resolved or disclosed and claim statuses are frozen",

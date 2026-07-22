@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import json
 import os
+import runpy
 import sys
 import tempfile
 import unittest
@@ -10,9 +11,13 @@ from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest import mock
 
-from harness.cli import _project_markdown, parser as cli_parser
+from harness.cli import (
+    _json_report,
+    _project_markdown,
+    parser as cli_parser,
+)
 from harness.parser import PlanParseError, parse_plan_text
-from harness.reports import recovery_brief
+from harness.reports import full_report, recovery_brief
 from harness.runtime import (
     RuntimeBusy,
     RuntimeControlError,
@@ -21,6 +26,9 @@ from harness.runtime import (
     runtime_snapshot,
 )
 from harness.store import HarnessError, Store, atomic_json
+
+
+POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_project.py"))
 
 
 class HarnessTest(unittest.TestCase):
@@ -88,12 +96,19 @@ class HarnessTest(unittest.TestCase):
             "constraints": "",
             "formalization": "",
             "compute": "Exact rationals; 2 GB; resumable.",
+            "interior": "A raw admissible witness with strict margin.",
+            "containment": "Initialization and preservation are separate.",
         }
         project = _project_markdown(fields)
         self.assertIn("## Computational scale and resources", project)
         self.assertIn(fields["compute"], project)
-        args = cli_parser().parse_args(["bootstrap", "--compute", "small"])
+        self.assertIn(fields["interior"], project)
+        self.assertIn(fields["containment"], project)
+        args = cli_parser().parse_args(
+            ["bootstrap", "--compute", "small", "--interior", "witness"]
+        )
         self.assertEqual(args.compute, "small")
+        self.assertEqual(args.interior, "witness")
 
     def test_registration_allocates_and_preserves_runtime_status(self):
         self.register("- [ ] First | stage=hypothesis | mode=advance")
@@ -332,6 +347,121 @@ class HarnessTest(unittest.TestCase):
             run_guarded(self.root, [sys.executable, "-c", "pass"], timeout_seconds=241)
         with self.assertRaises(RuntimeControlError):
             run_guarded(self.root, ["nohup", sys.executable, "-c", "pass"])
+
+    def test_lean_policy_rejects_trust_and_runtime_shortcuts(self):
+        formal = self.root / "formal"
+        formal.mkdir()
+        (formal / "Bad.lean").write_text(
+            """
+axiom wish : False
+unsafe def hidden : Nat := 0
+example : True := by native_decide
+example : True := by exact Lean.ofReduceBool (Eq.refl true)
+run_tac pure ()
+#eval 1
+partial def loop : Nat := loop
+extern \"foreign_value\" foreignValue : Nat
+@[implemented_by foreignValue] def claimedValue : Nat := 0
+@[extern \"foreign_prop\"] opaque foreignProp : True
+set_option maxHeartbeats 0 in
+example : True := by trivial
+set_option autoImplicit true in
+example : True := by trivial
+""",
+            encoding="utf-8",
+        )
+        failures = POLICY["audit_lean"](self.root)
+        joined = "\n".join(failures)
+        for label in (
+            "custom axiom/constant",
+            "unsafe declaration",
+            "native-evaluation proof shortcut",
+            "native reduction trust bridge",
+            "runtime tactic",
+            "evaluation command",
+            "partial declaration",
+            "foreign declaration",
+            "external implementation bridge",
+            "foreign declaration attribute",
+            "local resource-limit override",
+            "implicit-variable policy override",
+        ):
+            self.assertIn(label, joined)
+
+    def test_lean_policy_ignores_forbidden_words_in_comments(self):
+        formal = self.root / "formal"
+        formal.mkdir()
+        (formal / "Safe.lean").write_text(
+            "/- sorry native_decide set_option maxHeartbeats 0 -/\n"
+            "-- axiom fake : False\n"
+            "example : True := by trivial\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(POLICY["audit_lean"](self.root), [])
+
+    def test_formal_claim_registry_rejects_status_leap(self):
+        formal = self.root / "formal"
+        formal.mkdir()
+        (formal / "CLAIMS.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "claims": [
+                        {
+                            "claim_id": "C001",
+                            "kind": "containment",
+                            "target_version": "TARGET-v1",
+                            "declaration": "Formal.claim",
+                            "status": "FORMALLY_PROVED",
+                            "axiom_audit": [],
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        failures = "\n".join(POLICY["audit_claim_registry"](self.root))
+        self.assertIn("requires objective_interior", failures)
+        self.assertIn("requires interior_dependency_audit", failures)
+        self.assertIn("requires initialization", failures)
+        self.assertIn("requires initialization_dependency_audit", failures)
+        self.assertIn("requires release_gate", failures)
+
+    def test_formal_claim_registry_accepts_kernel_checked_entry(self):
+        formal = self.root / "formal"
+        formal.mkdir()
+        formal_source = formal / "Formal"
+        formal_source.mkdir()
+        (formal_source / "Audit.lean").write_text(
+            "#print axioms Formal.claim\n", encoding="utf-8"
+        )
+        research = self.root / "research"
+        research.mkdir()
+        (research / "TARGET.md").write_text("Target version: TARGET-v1\n", encoding="utf-8")
+        (research / "CLAIM_INDEX.md").write_text("| C001 |\n", encoding="utf-8")
+        (formal / "CLAIMS.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "claims": [
+                        {
+                            "claim_id": "C001",
+                            "kind": "universal",
+                            "target_version": "TARGET-v1",
+                            "declaration": "Formal.claim",
+                            "status": "KERNEL_CHECKED",
+                            "axiom_audit": [],
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        self.assertEqual(POLICY["audit_claim_registry"](self.root), [])
+        report = full_report(self.store)
+        self.assertIn("C001", report)
+        self.assertIn("KERNEL_CHECKED", report)
+        self.assertEqual(_json_report(self.store)["formal_claims"][0]["claim_id"], "C001")
 
 
 if __name__ == "__main__":

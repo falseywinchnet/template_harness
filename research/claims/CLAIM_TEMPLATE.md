@@ -20,15 +20,33 @@ State quantifiers, domain, assumptions, object identity, units, and conclusion.
 
 Construct or identify an actual instance satisfying the premises.
 
+## Objective target interior
+
+- raw object constructed without the conclusion:
+- admissibility proof:
+- result proof for the same object:
+- strictness/nondegeneracy source:
+
+## Object identity and instantiation
+
+- public object / formal object equality:
+- helper assumptions discharged for the actual object:
+- initialization/direct membership:
+- preservation and reachability, if applicable:
+
 ## Counterexample condition
 
-Name an observation or construction that refutes the claim.
+Define `Admissible(x) ∧ ¬ Conclusion(x)` and name the concrete data it carries.
+Record the theorem connecting this exact falsifier to the exported target.
 
 ## Coverage audit
 
 - branches and endpoints:
 - degeneracies and missing data:
 - strictness or effect source:
+- initialization distinct from preservation/closure:
+- definition/subtype conclusion laundering:
+- both target-fidelity directions:
 - sensitivity and implementation choices:
 
 ## Unresolved edges

@@ -24,9 +24,15 @@ documents in `research/` and `paper/` are intentionally human-readable and
 reviewed. Round directories are created from `work/ROUND_TEMPLATE.md` but are
 never bulk-rewritten after the fact.
 
+Within `formal/`, `CLAIMS.json` is the machine-audited promotion index and
+`Formal/ClaimContract.lean` supplies generic falsification and reachability
+vocabulary. Neither is project evidence without the declaration chain in
+`research/FORMALIZATION.md`.
+
 The engineering guides in `docs/` are operational controls, not background
 reading: `LEAN_ENGINEERING.md`, `COMPUTE_DESIGN.md`,
-`PYTHON_COMPUTATION.md`, `RESOURCE_SAFETY.md`, and `PDF_HOUSE_STYLE.md`. Select the relevant parts at
+`LEAN_CLAIM_STANDARD.md`, `PYTHON_COMPUTATION.md`, `RESOURCE_SAFETY.md`, and
+`PDF_HOUSE_STYLE.md`. Select the relevant parts at
 bootstrap, link them from the project plan, and preserve any justified deviation
 in the current round record.
 

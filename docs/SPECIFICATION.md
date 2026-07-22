@@ -110,7 +110,9 @@ items, and completes only explicit `--done` items.
 Bare `./h` is the recovery card: project state, macro progress, active round,
 items, last checkpoint, exact next action, work directory, and blockers.
 `report` is the human macro view. `report --json` is the low-token model API.
-`report --write` regenerates `STATUS.md` and `NEXT.md`.
+`report --write` regenerates `STATUS.md` and `NEXT.md`. Human, generated, and
+JSON status views include the public formal-claim IDs, declarations, and earned
+statuses from `formal/CLAIMS.json`.
 
 Lifecycle progress excludes dropped items from its denominator and never weights
 items by guessed effort. It is an orientation signal, not a schedule forecast.
@@ -144,3 +146,23 @@ interruption, and launch failure are atomically recorded in
 Configured checks use the same guarded path. Bare `./h` and `recover` report an
 active/stale compute lock or an unresolved interrupted/timeout launch so a cut
 off model does not need to infer whether computation remains in flight.
+
+## 10. Formal-claim promotion registry
+
+`formal/CLAIMS.json` has schema version 1 and a `claims` list. Claim IDs are
+unique `C` identities already present in `research/CLAIM_INDEX.md`; target
+versions must occur in `research/TARGET.md`; every registered declaration must
+have a literal `#print axioms` entry in `Formal/Audit.lean`.
+
+Statuses are monotonically stronger metadata assertions:
+
+```text
+KERNEL_CHECKED < TARGET_INSTANTIATED < STATEMENT_FAITHFUL < FORMALLY_PROVED
+```
+
+The required declaration links and claim-kind-specific initialization,
+reachability, exterior-witness, and dependency-audit fields are normative in
+`docs/LEAN_CLAIM_STANDARD.md` and enforced structurally by the project audit.
+Registry acceptance does not establish that a named declaration proves what the
+field claims; clean Lean compilation and independent semantic review remain
+separate gates.

@@ -14,6 +14,16 @@ No directional hypothesis has been adopted.
 
 To be stated before advancement begins.
 
+## Objective target interior
+
+Identify a raw admissible instance and the expected strict or nondegenerate
+result without storing that result in the instance's type.
+
+## Containment and invariant boundary
+
+If applicable, separate object identity, initialization/direct membership,
+preservation, and reachability.
+
 ## Deliverable
 
 To be stated.

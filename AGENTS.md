@@ -74,12 +74,22 @@ summary; pass `--done P...` only when each item's acceptance text is satisfied.
 ## Verification and publication
 
 Use the lightest verification method that actually supports the claim. If Lean
-is used, read `docs/LEAN_ENGINEERING.md` and `formal/README.md`. Design the
+is used, read `docs/LEAN_ENGINEERING.md`, `docs/LEAN_CLAIM_STANDARD.md`, and
+`formal/README.md`. Design the
 module DAG before it grows, pin versions, serialize builds, keep a performance
 ledger, and use the focused/target/full/audit build ladder. Never claim
 kernel-checking without a same-tree `lake build` and axiom audit. A successful
 typecheck proves only the elaborated statement; compare it to
 `research/TARGET.md` in both directions.
+
+Never promote a conditional helper merely because Lean accepts it. Before
+`FORMALLY_PROVED`, require a raw admissible-domain witness, objective
+target-interior theorem, target-object identity, actual-target instantiation,
+and exact counterexample-normal-form equivalence. For containment or dynamics,
+initialization/direct membership and preservation are different obligations;
+closure or “no escape seam” cannot establish that the public object is inside.
+Use the staged statuses in `docs/LEAN_CLAIM_STANDARD.md` and preserve the
+remaining interpretation boundary instead of compressing it into a theorem name.
 
 Before a material computation, complete `computations/COMPUTE_PLAN.md` and read
 `docs/COMPUTE_DESIGN.md`. Estimate term/cell growth, coefficient bit size, time,

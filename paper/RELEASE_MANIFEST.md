@@ -17,9 +17,10 @@
 | Tier | Command | Environment | Expected result | Output digest | Status |
 |---|---|---|---|---|---|
 | Harness | `make test` | Python 3.11+ | all checks pass | | pending |
-| Paper | `make -C paper` | Tectonic version | PDF created | | pending |
-| Archive | `make -C paper archive` | Python 3.11+ | deterministic tar | | pending |
-| Formal (optional) | `cd formal && lake build` | pinned files | clean build | | not selected |
+| Paper | `./h run --cwd paper --label paper-build -- make` | Tectonic version | PDF created | | pending |
+| Archive | `./h run --cwd paper --label paper-archive -- make archive` | Python 3.11+ | deterministic tar | | pending |
+| Formal (optional) | `./h run --cwd formal --label lean-build -- lake build` | pinned files | clean build | | not selected |
+| Formal audit (optional) | `./h run --cwd formal --label lean-audit -- lake env lean Formal/Audit.lean` | pinned files | declaration axiom surface printed | | not selected |
 
 ## Replay classes and resources
 
@@ -48,6 +49,10 @@ table source that affects a published claim. Record a stable path and SHA-256.
 ## Freeze gate
 
 - claim index frozen and matches manuscript;
+- every formal claim has the status it actually earned: kernel checked, target
+  instantiated, statement faithful, or formally proved;
+- objective target-interior, object identity, exact falsifier equivalence, and
+  initialization/preservation audit are included for formal claims;
 - target-reachable dependencies closed or disclosed;
 - independent reproduction complete;
 - clean checkout builds required tiers;

@@ -1,10 +1,35 @@
 from __future__ import annotations
 
 from collections import Counter
+import json
 from pathlib import Path
 from typing import Any
 
 from .store import Store, atomic_text
+
+
+def formal_claims(root: Path) -> list[dict[str, object]]:
+    try:
+        value = json.loads((root / "formal/CLAIMS.json").read_text(encoding="utf-8"))
+    except (FileNotFoundError, OSError, json.JSONDecodeError):
+        return []
+    claims = value.get("claims", []) if isinstance(value, dict) else []
+    return [claim for claim in claims if isinstance(claim, dict)] if isinstance(claims, list) else []
+
+
+def formal_claim_lines(root: Path) -> list[str]:
+    claims = formal_claims(root)
+    lines = ["", "## Formal claims", ""]
+    if not claims:
+        lines.append("No public formal claim is registered.")
+    else:
+        for claim in claims:
+            lines.append(
+                f"- `{claim.get('claim_id', 'invalid')}` — "
+                f"`{claim.get('status', 'invalid')}` — "
+                f"`{claim.get('declaration', 'missing declaration')}`"
+            )
+    return lines
 
 
 def _progress(store: Store) -> tuple[int, int, int]:
@@ -104,6 +129,7 @@ def full_report(store: Store) -> str:
             lines.append(f"- `{ident}` [{item['mode']}] — {item['title']} (`{item['stage']}`)")
     else:
         lines.append("No dependency-ready items.")
+    lines.extend(formal_claim_lines(store.root))
     lines.extend(["", "## Recent events", ""])
     events = store.event_tail(6)
     if events:

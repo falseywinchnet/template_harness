@@ -17,6 +17,11 @@ C001 primary claim
 - `C002 supported-by E001`.
 - `C003 checked-by E002`.
 - `O001 blocks C002`.
+- `C001 instantiated-by T001` (actual target satisfies helper hypotheses).
+- `T001 identifies O001` (formal object equals the public object).
+- `C001 anchored-by W001` (raw admissible objective-interior witness).
+- `T001 initialized-by I001` (source object enters the claimed region).
+- `C001 excludes-counterexample X001` (exact falsification interface).
 
 ## Expansion rule
 
@@ -31,6 +36,10 @@ Expand every inferential edge until each reachable leaf is one of:
 
 Cycles remain visible as named components. Contextual citations that are not
 used inferentially do not enter the critical dependency closure.
+
+Closure/preservation edges cannot discharge initialization or containment
+edges. Object identity, actual-target instantiation, objective interior, and
+counterexample exclusion are target-reachable dependencies, not prose metadata.
 
 ## Current unresolved target leaves
 

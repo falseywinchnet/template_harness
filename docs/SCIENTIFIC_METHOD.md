@@ -9,7 +9,14 @@ and mathematical projects.
 - `PROPOSED`: precise enough to test, not yet supported.
 - `OBSERVED`: reproduced in recorded data or computation under stated conditions.
 - `SUPPORTED`: survives declared tests and has a direct evidence boundary.
-- `FORMALLY_PROVED`: a statement-faithful formal theorem passes the pinned audit.
+- `KERNEL_CHECKED`: a pinned formal system accepts the exact declaration and its
+  axiom surface is recorded; target instantiation may still be open.
+- `TARGET_INSTANTIATED`: helper assumptions are discharged for the actual public
+  object and domain.
+- `STATEMENT_FAITHFUL`: target equivalence, object identity, objective interior,
+  and exact falsification interface have passed independent audit.
+- `FORMALLY_PROVED`: a statement-faithful theorem passes all preceding gates,
+  clean replay, and independent adversarial review.
 - `REFUTED`: a preserved counterexample or valid test contradicts it.
 - `SUPERSEDED`: retained historically but replaced by a named claim.
 - `UNRESOLVED`: material gap remains visible.
@@ -42,6 +49,10 @@ For each critical claim, test:
 - predeclared counterexample and falsification conditions;
 - sensitivity to data, implementation, and environment choices;
 - statement fidelity in both directions against the public target.
+- objective target interior from raw data, not a result-bearing subtype;
+- initialization/direct membership independently of preservation or closure;
+- equivalence to exclusion of the exact data-bearing counterexample schema;
+- target-object identity through every representation and naming convention.
 
 ## Promotion rule
 

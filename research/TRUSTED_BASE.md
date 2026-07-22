@@ -23,6 +23,16 @@ list; do not hide assumptions in prose.
 - Inclusion/exclusion decisions, labels, adjudication, transformations, and
   interpretation choices.
 
+## Semantic naming boundary
+
+- Equality between the independently defined formal object and the object named
+  in the publication, including units, signs, normalization, and conventions.
+- Any remaining interpretation that is argued in prose rather than proved as a
+  target-reachable Lean declaration.
+
+Do not hide this boundary behind a familiar theorem or namespace name. Reduce it
+with an object-identity theorem or disclose it as an unresolved limitation.
+
 ## Reduction plan
 
 For every high-risk trusted component, state whether it will be independently

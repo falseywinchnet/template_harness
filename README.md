@@ -47,6 +47,8 @@ To record a completed intake directly:
   --hypothesis "The initial, revisable hypothesis" \
   --falsifier "What result would refute or materially weaken it" \
   --deliverable "A reproducible paper and supporting artifacts" \
+  --interior "A raw admissible instance and its strict/nondegenerate result" \
+  --containment "Object identity, initialization, preservation, and reachability, if applicable" \
   --compute "Expected scale, runtime/memory budget, and restart needs"
 ```
 
@@ -146,6 +148,9 @@ large project becomes expensive:
   expression-swell control, generator/verifier separation, and manifests.
 - `docs/LEAN_ENGINEERING.md` — module-DAG design, build ladder, import and tactic
   discipline, axiom auditing, statement fidelity, and performance budgets.
+- `docs/LEAN_CLAIM_STANDARD.md` — the publication-grade boundary between kernel
+  checking and proof: exact falsifiers, objective target interior, object
+  identity, initialization versus preservation, and adversarial derivation audit.
 - `docs/PDF_HOUSE_STYLE.md` — manuscript architecture, mathematical typography,
   metadata, accessibility, build/log gates, visual QA, and release packaging.
 - `docs/RESOURCE_SAFETY.md` — exclusive lowered-priority execution, numerical
@@ -198,6 +203,9 @@ settled and remains visible in history.
 - `sources/` — lossless local evidence and provenance records.
 - `paper/` — modular manuscript and release controls.
 - `formal/` — optional reproducible Lean environment.
+  Its generic claim-contract vocabulary makes containment and falsification
+  obligations explicit without pretending to prove a project instance;
+  `CLAIMS.json` prevents unsupported formal-status promotion.
 - `docs/` — bootstrap, operations, method, layout, and formal specification.
 
 The normative behavior of the command and data model is specified in

@@ -34,6 +34,10 @@ Ask for:
    ordinary statistical verification is required.
 9. expected data/parameter scale, available compute, runtime constraints, and
    whether long computations must resume after interruption.
+10. one independently constructible target-domain instance, the result expected
+    there, and what prevents it from being only a boundary/equality case;
+11. for containment/invariance claims, the source object, target region, and
+    whether initialization, preservation, and reachability are each intended.
 
 Do not require the user to know workflow vocabulary. Translate their answer
 into the fields. Ask a follow-up only when ambiguity changes the target,
@@ -61,6 +65,11 @@ Then edit the research control files:
 - `research/TRUSTED_BASE.md`: tools, datasets, axioms, and external assumptions;
 - `research/CLAIM_INDEX.md`: initial claims and status;
 - `sources/README.md`: known source inventory and acquisition state.
+
+If Lean is selected, complete the falsification-normal-form, objective-interior,
+and initialization sections of `research/TARGET.md` before theorem engineering.
+Read `docs/LEAN_CLAIM_STANDARD.md`; do not let a generic conditional helper
+become the de facto target.
 
 ## 4. Tailor and register work
 
@@ -92,6 +101,10 @@ exact next action if it is not obvious from the acceptance gate.
 ## Bootstrap acceptance gate
 
 - the question and falsifier are concrete;
+- the falsifier contains actual admissible data and the target domain has an
+  independent objective-interior witness or a named open obligation;
+- containment projects distinguish object identity, initialization,
+  preservation, and reachability;
 - scope and non-goals prevent an inflated conclusion;
 - deliverable, audience, and constraints are explicit;
 - existing inputs are inventoried without being upgraded to evidence;

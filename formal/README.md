@@ -5,7 +5,8 @@ known-good configuration from the source project at template creation. The
 project may repin deliberately, but must record exact resolved revisions in its
 release manifest.
 
-The complete working rules are in `docs/LEAN_ENGINEERING.md`. Keep
+The complete working rules are in `docs/LEAN_ENGINEERING.md` and the stricter
+publication boundary in `docs/LEAN_CLAIM_STANDARD.md`. Keep
 `AXIOMS.md`, `PERFORMANCE.md`, and `research/FORMALIZATION.md` synchronized with
 the theorem-bearing source.
 
@@ -28,10 +29,38 @@ Before adding proof work, complete `research/FORMALIZATION.md`. The public targe
 must be frozen independently of Lean. A checked theorem is accepted only when:
 
 - its fully elaborated statement matches the public claim in both directions;
+- its raw public object, objective target-interior witness, initialization, and
+  exact counterexample interface are separate audited declarations;
 - its assumptions are derived or named in the trusted base;
 - no `sorry`, `admit`, undeclared axiom, or unsafe theorem bridge is present;
 - `#print axioms` output is recorded for exported results;
 - the build succeeds from a clean pinned environment.
+
+`Formal/ClaimContract.lean` provides generic logical vocabulary only. Proving a
+generic no-counterexample equivalence or reachability theorem does not establish
+the project instance. The project-specific declaration chain belongs in
+`research/FORMALIZATION.md` and `Formal/Audit.lean`.
+
+Register each public formal claim and its earned status in `CLAIMS.json`. Empty
+or inflated promotion metadata fails the project policy audit; the registry does
+not replace compilation or semantic review.
+
+Minimal first registration:
+
+```json
+{
+  "claim_id": "C001",
+  "kind": "universal",
+  "target_version": "TARGET-v1",
+  "declaration": "Formal.publicTheorem",
+  "status": "KERNEL_CHECKED",
+  "axiom_audit": ["propext", "Classical.choice", "Quot.sound"]
+}
+```
+
+Use an empty `axiom_audit` list only when `#print axioms` actually reports none.
+The additional fields required for promotion are specified in
+`docs/LEAN_CLAIM_STANDARD.md`.
 
 Prefer exact combinators and small named lemmas to large normalization tactics.
 Do not hide a structural performance problem by raising heartbeats first. Record

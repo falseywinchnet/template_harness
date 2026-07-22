@@ -12,6 +12,11 @@
 
 State what this round may change and what is explicitly out of scope.
 
+For a formal-proof round, name the exact declaration-chain link being worked:
+object identity, domain/interior witness, instantiation, initialization,
+preservation, target, counterexample equivalence, or audit. Do not use “prove
+the theorem” as a round boundary when several of these remain open.
+
 ## Starting state
 
 Name the smallest sufficient inputs. Do not restate the whole project.

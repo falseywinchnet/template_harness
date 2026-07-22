@@ -15,3 +15,8 @@ These files keep the public scientific target separate from exploratory work.
 IDs are project-local and stable. A recommended convention is `C001` for claims,
 `E001` for evidence boundaries, and `O001` for unresolved obligations. Do not
 reuse an ID after a claim is dropped or superseded.
+
+Lean projects follow `docs/LEAN_CLAIM_STANDARD.md`. `KERNEL_CHECKED` records a
+tool fact; only the complete target-object, objective-interior, instantiation,
+falsification, and independent statement-fidelity chain earns
+`FORMALLY_PROVED`.

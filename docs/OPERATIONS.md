@@ -23,6 +23,10 @@
 `./h block P001 --reason TEXT`, `./h reopen P001`, and `./h done P001` for
 explicit transitions. Use `./h drop P001 --reason TEXT` when an optional or
 superseded item does not apply; its identity remains and dependents may proceed.
+The human and JSON reports also include the compact `formal/CLAIMS.json`
+promotion surface, so an agent can see whether a declaration is merely kernel
+checked or has earned statement-faithful/formally-proved status without reading
+the full formalization ledger.
 
 Do not hand-edit the JSON register in ordinary work. If manual disaster recovery
 is unavoidable, copy the file first, make the smallest correction, run
