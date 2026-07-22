@@ -104,15 +104,21 @@ separate error proof exists. SymPy symbol assumptions are not facts about the
 target object. Quick audits, full replays, and release verifiers must be named
 truthfully.
 
-For paper work, follow `docs/PDF_HOUSE_STYLE.md`. Keep metadata in
-`paper/manuscript/metadata.tex`, build through the maintained Makefile, inspect
-the log, render every page, and check the deterministic archive. A successful
-TeX process is not visual approval.
+For paper work, follow `docs/PAPER_NARRATIVE.md` and
+`docs/PDF_HOUSE_STYLE.md`. Freeze the public claim spine and section burdens in
+`paper/PAPER_MAP.md` before broad drafting. Write in reader dependency order,
+not discovery chronology; remove non-load-bearing routes rather than explaining
+that they are unused. Keep implementation and provenance in verification unless
+they are themselves the scientific method. Complete `paper/EDITORIAL_AUDIT.md`,
+keep metadata in `paper/manuscript/metadata.tex`, build through the maintained
+Makefile, inspect the log, render every page, and check the deterministic
+archive. A successful TeX process is not visual approval.
 
 Before publication, complete the claim/evidence audit, independent reproduction,
 manuscript map, release manifest, metadata, and revision history. Generated
 artifacts must be reproducible from documented commands. Historical releases
-are immutable; correct them with a new revision record.
+are immutable; classify post-submission edits before changing the current
+manuscript and correct public artifacts with a new revision record.
 
 Do not commit or push unless the user asks. Before any commit, run `./h doctor`
 and the relevant configured checks.

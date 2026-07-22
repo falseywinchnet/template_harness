@@ -29,6 +29,7 @@ from harness.store import HarnessError, Store, atomic_json
 
 
 POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_project.py"))
+PDF_POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_pdf.py"))
 
 
 class HarnessTest(unittest.TestCase):
@@ -398,6 +399,43 @@ example : True := by trivial
             encoding="utf-8",
         )
         self.assertEqual(POLICY["audit_lean"](self.root), [])
+
+    def test_pdf_release_text_policy_rejects_placeholder_and_private_path(self):
+        failures = PDF_POLICY["audit_extracted_text"](
+            "Scientific Project Title Replace with results /Users/alice/private/data.csv",
+            "Scientific Project Title",
+            {"Title": "Scientific Project Title"},
+            release=True,
+        )
+        joined = "\n".join(failures)
+        self.assertIn("private local path", joined)
+        self.assertIn("placeholder text", joined)
+
+    def test_pdf_text_policy_checks_release_title(self):
+        failures = PDF_POLICY["audit_extracted_text"](
+            "A complete scientific manuscript with enough extracted text " * 5,
+            "A different visible title",
+            {"Title": "Expected title"},
+            release=True,
+        )
+        self.assertIn("metadata title does not appear", "\n".join(failures))
+
+    def test_paper_policy_rejects_missing_narrative_marker(self):
+        docs = self.root / "docs"
+        paper = self.root / "paper"
+        docs.mkdir()
+        paper.mkdir()
+        (docs / "PAPER_NARRATIVE.md").write_text(
+            "## 1. Freeze the public claim spine\n",
+            encoding="utf-8",
+        )
+        (paper / "PAPER_MAP.md").write_text("", encoding="utf-8")
+        (paper / "EDITORIAL_AUDIT.md").write_text("", encoding="utf-8")
+        (paper / "REVISION_HISTORY.md").write_text("", encoding="utf-8")
+        failures = "\n".join(POLICY["audit_paper_controls"](self.root))
+        self.assertIn("Build reader order from dependency order", failures)
+        self.assertIn("Public claim spine", failures)
+        self.assertIn("Change classification", failures)
 
     def test_formal_claim_registry_rejects_status_leap(self):
         formal = self.root / "formal"

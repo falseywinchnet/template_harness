@@ -32,7 +32,7 @@ vocabulary. Neither is project evidence without the declaration chain in
 The engineering guides in `docs/` are operational controls, not background
 reading: `LEAN_ENGINEERING.md`, `COMPUTE_DESIGN.md`,
 `LEAN_CLAIM_STANDARD.md`, `PYTHON_COMPUTATION.md`, `RESOURCE_SAFETY.md`, and
-`PDF_HOUSE_STYLE.md`. Select the relevant parts at
+`PAPER_NARRATIVE.md`, and `PDF_HOUSE_STYLE.md`. Select the relevant parts at
 bootstrap, link them from the project plan, and preserve any justified deviation
 in the current round record.
 

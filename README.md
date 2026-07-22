@@ -99,6 +99,8 @@ group after at most four minutes. A timeout triggers a small process audit and
 requires a wait-or-refactor decision; it must not be answered by starting another
 copy or raising the local limit. Tool output containing a session or cell ID
 means the original command is still active. See `docs/RESOURCE_SAFETY.md`.
+`./h check`, `make test`, `make paper`, and `make formal` already enter the
+guard; invoke them directly rather than nesting them inside `./h run`.
 
 ## Register project work by writing Markdown
 
@@ -153,6 +155,9 @@ large project becomes expensive:
   identity, initialization versus preservation, and adversarial derivation audit.
 - `docs/PDF_HOUSE_STYLE.md` — manuscript architecture, mathematical typography,
   metadata, accessibility, build/log gates, visual QA, and release packaging.
+- `docs/PAPER_NARRATIVE.md` — public claim spine, dependency-led exposition,
+  calibrated verbs, abstracts and introductions, figures/captions, literature
+  rhetoric, model editing, and revision classification.
 - `docs/RESOURCE_SAFETY.md` — exclusive lowered-priority execution, numerical
   thread limits, four-minute watchdog cleanup, and timeout recovery.
 
@@ -184,8 +189,10 @@ hypothesis → scope → sources → design → analysis → verification
 `STATUS.md` reports this whole arc, not just the active technical task.
 `research/` carries the target contract, dependency graph, claim index, trusted
 base, non-vacuity audit, and evidence ledger. `paper/` carries the manuscript
-map, release manifest, revision history, metadata, and deterministic archive
-builder. `formal/` is an optional pinned Lean 4/mathlib starter; it is dormant
+map, editorial audit, release manifest, revision history, metadata, and
+deterministic archive builder. The paper map fixes one public claim spine from
+title through conclusion and gives every section a reader question, burden, and
+exit state. `formal/` is an optional pinned Lean 4/mathlib starter; it is dormant
 unless the project's verification plan actually calls for formalization. Drop
 optional items explicitly when they do not apply; a dropped dependency is
 settled and remains visible in history.
@@ -202,6 +209,9 @@ settled and remains visible in history.
   It also contains an optional known-good SymPy baseline pin.
 - `sources/` — lossless local evidence and provenance records.
 - `paper/` — modular manuscript and release controls.
+  Its editorial audit separates claim, dependency, reader, literature, revision,
+  and visual-release passes so a model cannot substitute one polished reread for
+  all of them.
 - `formal/` — optional reproducible Lean environment.
   Its generic claim-contract vocabulary makes containment and falsification
   obligations explicit without pretending to prove a project instance;

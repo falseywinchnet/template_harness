@@ -2,7 +2,7 @@
 
 - Project state: `bootstrap`
 - Progress: **0/20 (0%)**
-- Register digest: `5ca0f318623392a1`
+- Register digest: `19bb7bd0ce3eafc0`
 
 ## Lifecycle
 
@@ -37,6 +37,7 @@ No public formal claim is registered.
 
 ## Recent events
 
+- 2026-07-22T21:13:26+00:00 — `register`
 - 2026-07-22T20:54:47+00:00 — `register`
 - 2026-07-22T20:29:58+00:00 — `register`
 - 2026-07-22T19:41:07+00:00 — `register`

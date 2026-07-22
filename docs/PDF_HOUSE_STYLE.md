@@ -3,6 +3,8 @@
 This house style targets mathematical and computational scientific papers. It
 is intentionally conservative: readable typography, stable structure, explicit
 evidence boundaries, and a submission package that can be rebuilt and audited.
+It governs the rendered document; `PAPER_NARRATIVE.md` governs argument order,
+claim-calibrated rhetoric, and revision judgment.
 
 ## 1. Page and typography
 
@@ -17,6 +19,10 @@ evidence boundaries, and a submission package that can be rebuilt and audited.
 - Avoid manual negative spacing, forced line breaks, and page geometry hacks.
 - Keep paragraph measure comfortable; move wide derivations to aligned displays,
   a landscape supplement, or a factored notation rather than shrinking type.
+- Use a table of contents only when the paper is long or structurally complex
+  enough that it improves navigation. Most short articles do not need one.
+- Keep heading depth shallow. A run of one-paragraph subsections usually signals
+  that the argument map, not the type scale, needs revision.
 
 The template uses `letterpaper`, 11 pt, and one-inch margins. Change paper size
 once, explicitly, when the venue requires it.
@@ -35,9 +41,12 @@ The first page contains a calibrated abstract followed by keywords and, for
 mathematics, classification codes when applicable. Do not infer authorship,
 affiliation, funding, or venue metadata.
 
-The abstract states the object, exact primary result, main method, evidence or
-verification boundary, and most important limitation. It does not contain local
-paths, internal task IDs, or claims stronger than the frozen index.
+The title, abstract, principal result, introduction contribution statement,
+conclusion, and release metadata form one public claim spine. They name the same
+object, scope, strength, evidence status, and version. The abstract states the
+object, exact primary result, main mechanism, material evidence boundary, and
+most important limitation. It does not contain local paths, internal task IDs,
+or claims stronger than the frozen index.
 
 ## 3. Source architecture
 
@@ -50,6 +59,12 @@ paths, internal task IDs, or claims stronger than the frozen index.
   operators, sets, differentials, and references.
 - Keep proof/evidence prose in the relevant section; keep implementation and
   release mechanics in reproducibility/availability sections.
+- Let the dependency path determine section order. Discovery chronology,
+  superseded proof routes, and optional branches stay outside the manuscript
+  unless they have independent scientific value.
+- Remove a non-load-bearing branch instead of adding prose that announces it is
+  unused. A section must carry one reader question and one scientific burden in
+  `paper/PAPER_MAP.md`.
 
 The flattened submission must contain one document class, one document start,
 one document end, and no unresolved local `\input` directives.
@@ -62,6 +77,8 @@ one document end, and no unresolved local `\input` directives.
 - Refer with `\eqref`, `\secref`, or an equivalent semantic macro.
 - Number theorem-like environments by section and share one counter.
 - State every theorem with domains, assumptions, and strict/weak orientation.
+- Give long proofs a one- or two-sentence strategy before local calculations;
+  end with the exact consequence consumed later.
 - Define symbols before use and keep glyphs visually distinct.
 - Break long calculations at mathematically meaningful equalities; never let a
   display run beyond the text block.
@@ -69,6 +86,10 @@ one document end, and no unresolved local `\input` directives.
   text in formulas.
 - Put large certificate tables or routine expansions in appendices/supplements,
   while retaining the load-bearing statement and bridge in the main text.
+- Introduce each display and state its consequence. A long correct calculation
+  without its logical role is not finished exposition.
+- Use notation to expose dependency and sign structure, not to compress several
+  different objects into visually similar symbols.
 
 ## 5. Tables, figures, and algorithms
 
@@ -82,12 +103,18 @@ one document end, and no unresolved local `\input` directives.
   or direct labels.
 - State data transformation, uncertainty, and sample size in the caption or a
   direct methods reference.
+- State whether a visual is proof/evidence, a diagnostic, or an illustration.
+  A plot cannot establish an unsampled sign and a table cannot turn an unchecked
+  computation into a theorem.
 - Typeset pseudocode only when it clarifies the scientific method; the executable
   replay remains the authority for implementation.
 
 ## 6. Prose and evidence boundary
 
-The paper is a scientific argument, not a build log.
+The paper is a scientific argument, not a build log. Theory sections describe
+objects, hypotheses, mechanisms, and deductions. Names of languages, proof
+assistants, scripts, hashes, and development history belong in verification or
+availability unless the implementation is itself the scientific method.
 
 - Mathematical/results sections contain definitions, methods, deductions, and
   interpretation.
@@ -101,6 +128,11 @@ The paper is a scientific argument, not a build log.
   it accordingly.
 - Do not call sampled diagnostics, wrapper audits, or selected cells the full
   proof-producing computation.
+- Use claim-calibrated verbs from `PAPER_NARRATIVE.md`: exact replay can
+  `reproduce`, a directed enclosure can `certify`, and a diagnostic may only
+  `indicate` or `suggest`.
+- Do not advertise absent methods or discarded routes. State the route used and
+  omit the rest.
 
 ## 7. Accessibility
 
@@ -160,6 +192,20 @@ A successful TeX exit is not visual QA.
   submission metadata.
 - Preserve each public revision as an immutable tag/release; corrections create
   a new revision history entry.
+- Classify material edits before revision as editorial, strengthened
+  presentation, evidence upgrade, scope correction, gap repair, claim change,
+  or corrigendum/retraction. Preserve and identify the earlier artifact.
+
+The normal build performs structural PDF checks. Before release, run the
+release-mode text gate as well:
+
+```sh
+./h run --cwd paper --label paper-release-audit -- make release-audit
+```
+
+It rejects placeholder language and private local paths in extracted PDF text.
+It cannot judge scientific truth or rhetoric; complete `paper/EDITORIAL_AUDIT.md`
+for those boundaries.
 
 ## 11. Final PDF checklist
 
@@ -171,6 +217,7 @@ A successful TeX exit is not visual QA.
 - readable grayscale/color output;
 - figures/tables cited and accessible;
 - exact claims match `research/CLAIM_INDEX.md`;
+- public claim spine and section burdens pass `paper/EDITORIAL_AUDIT.md`;
 - reproducibility and availability sections are truthful;
 - every page visually inspected;
 - deterministic archive and release manifest agree.

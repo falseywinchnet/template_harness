@@ -265,7 +265,7 @@
       "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P014": {
-      "acceptance": "Every section has a burden, claim IDs, and evidence boundaries",
+      "acceptance": "Public claim spine is identical in scope from title through release metadata; every section has a reader question, entry dependencies, one burden, an exit state, claim IDs, and evidence class; optional branches are cut or assigned deliberately",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -282,10 +282,10 @@
         "map"
       ],
       "title": "Freeze the manuscript map and proof or analysis narrative",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T21:13:26+00:00"
     },
     "P015": {
-      "acceptance": "Draft states the target, methods, limitations, results, and verification boundary accurately",
+      "acceptance": "Draft follows reader dependency order, states the target and load-bearing transitions accurately, uses claim-calibrated rhetoric, separates theory from verification mechanics, and discloses concrete limitations",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -302,7 +302,7 @@
         "writing"
       ],
       "title": "Write the complete manuscript",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T21:13:26+00:00"
     },
     "P016": {
       "acceptance": "A clean environment can run the truthful quick audit and regenerate every theorem-bearing or result-bearing artifact through named bounded stages with recorded resources",
@@ -326,7 +326,7 @@
       "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P017": {
-      "acceptance": "An independent derivation review covers statement fidelity, definition laundering, objective interior, initialization versus closure, exact falsifier, evidence, novelty, limitations, and presentation",
+      "acceptance": "Separate claim, dependency, reader, literature, revision, and release passes cover statement fidelity, definition laundering, objective interior, initialization versus closure, exact falsifier, evidence language, novelty, limitations, captions, and public-spine consistency",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -344,10 +344,10 @@
         "audit"
       ],
       "title": "Conduct internal adversarial review",
-      "updated_at": "2026-07-22T20:54:47+00:00"
+      "updated_at": "2026-07-22T21:13:26+00:00"
     },
     "P018": {
-      "acceptance": "Material findings are resolved or disclosed and claim statuses are frozen",
+      "acceptance": "Fatal and major findings are resolved or explicitly block release; remaining limitations are disclosed; claim statuses, manuscript map, and change classifications are frozen",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -364,10 +364,10 @@
         "freeze"
       ],
       "title": "Resolve findings and freeze claims",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T21:13:26+00:00"
     },
     "P019": {
-      "acceptance": "Release package is minimal, deterministic, identified, independently checked, and passes log plus page-by-page PDF inspection",
+      "acceptance": "Release package is minimal, deterministic, identified, independently checked, passes normal and release-mode text audits plus page-by-page PDF inspection, and agrees with the public claim spine and revision identity",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -385,7 +385,7 @@
         "pdf"
       ],
       "title": "Package manuscript, metadata, checksums, and release manifest",
-      "updated_at": "2026-07-22T20:29:58+00:00"
+      "updated_at": "2026-07-22T21:13:26+00:00"
     },
     "P020": {
       "acceptance": "Public artifact, source revision, archival identity, and citation metadata agree",

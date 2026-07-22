@@ -49,6 +49,13 @@ table source that affects a published claim. Record a stable path and SHA-256.
 ## Freeze gate
 
 - claim index frozen and matches manuscript;
+- public claim spine agrees across title, abstract, principal result,
+  introduction, conclusion, and release metadata;
+- every section has a reader question, entry dependencies, one burden, and an
+  exit state in `PAPER_MAP.md`; non-load-bearing branches are cut or explicitly
+  assigned to a supplement;
+- `EDITORIAL_AUDIT.md` has separate claim, dependency, reader, literature,
+  revision, and release passes with no unresolved fatal or major finding;
 - every formal claim has the status it actually earned: kernel checked, target
   instantiated, statement faithful, or formally proved;
 - objective target-interior, object identity, exact falsifier equivalence, and
@@ -58,4 +65,6 @@ table source that affects a published claim. Record a stable path and SHA-256.
 - clean checkout builds required tiers;
 - full replay records runtime, peak memory, arithmetic/precision, and platform;
 - PDF log audit and page-by-page rendered visual inspection pass;
+- release-mode extracted-text audit contains no placeholders or private local
+  paths;
 - PDF, archive, metadata, commit, tag, and archival identity agree.

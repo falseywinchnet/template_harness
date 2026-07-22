@@ -45,6 +45,11 @@ This lock is independent of `.harness/round.lock`: the latter preserves the one
 active `ADVANCE`/`REFINE` research round across sessions, while the compute lock
 prevents simultaneous material processes inside that round.
 
+Commands such as `./h check`, `./h check --all`, `make test`, `make paper`, and
+`make formal` already enter the guard for their material subprocesses. Invoke
+them directly; do not wrap them in `./h run`, because nested guards correctly
+refuse to bypass the one-process lock.
+
 The runner forces these common hidden pools to one thread:
 `OMP_NUM_THREADS`, `OPENBLAS_NUM_THREADS`, `MKL_NUM_THREADS`,
 `NUMEXPR_NUM_THREADS`, `VECLIB_MAXIMUM_THREADS`, and `BLIS_NUM_THREADS`.

@@ -193,6 +193,7 @@ def _doctor(store: Store) -> list[str]:
         "docs/LEAN_CLAIM_STANDARD.md",
         "docs/COMPUTE_DESIGN.md",
         "docs/PYTHON_COMPUTATION.md",
+        "docs/PAPER_NARRATIVE.md",
         "docs/PDF_HOUSE_STYLE.md",
         "docs/RESOURCE_SAFETY.md",
         "harness/runtime.py",
@@ -204,6 +205,7 @@ def _doctor(store: Store) -> list[str]:
         "formal/CLAIMS.json",
         "formal/Formal/ClaimContract.lean",
         "paper/RELEASE_MANIFEST.md",
+        "paper/EDITORIAL_AUDIT.md",
     ]
     for relative in required:
         if not (store.root / relative).is_file():

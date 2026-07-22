@@ -88,6 +88,7 @@ def audit_required_controls(root: Path = ROOT) -> list[str]:
         "docs/LEAN_CLAIM_STANDARD.md",
         "docs/COMPUTE_DESIGN.md",
         "docs/PYTHON_COMPUTATION.md",
+        "docs/PAPER_NARRATIVE.md",
         "docs/PDF_HOUSE_STYLE.md",
         "docs/RESOURCE_SAFETY.md",
         "harness/runtime.py",
@@ -98,6 +99,8 @@ def audit_required_controls(root: Path = ROOT) -> list[str]:
         "formal/Formal/ClaimContract.lean",
         "formal/PERFORMANCE.md",
         "paper/manuscript/metadata.tex",
+        "paper/EDITORIAL_AUDIT.md",
+        "paper/PAPER_MAP.md",
     )
     return [f"missing required control: {path}" for path in required if not (root / path).is_file()]
 
@@ -136,6 +139,48 @@ def audit_claim_controls(root: Path = ROOT) -> list[str]:
         for marker in markers:
             if marker not in text:
                 failures.append(f"claim control marker missing in {relative}: {marker}")
+    return failures
+
+
+def audit_paper_controls(root: Path = ROOT) -> list[str]:
+    required_markers = {
+        "docs/PAPER_NARRATIVE.md": (
+            "## 1. Freeze the public claim spine",
+            "## 2. Build reader order from dependency order",
+            "## 11. Revision identity and change classes",
+            "## 12. Model editing protocol",
+        ),
+        "paper/PAPER_MAP.md": (
+            "## Public claim spine",
+            "Reader question",
+            "Entry dependencies",
+            "Exit state",
+            "## Excluded and supplemental branches",
+        ),
+        "paper/EDITORIAL_AUDIT.md": (
+            "## Public claim spine",
+            "## Section burden audit",
+            "## Revision decision",
+            "## Adversarial summary",
+        ),
+        "paper/REVISION_HISTORY.md": (
+            "## Change classification",
+            "strengthened presentation",
+            "gap repair",
+            "corrigendum/retraction",
+        ),
+    }
+    failures: list[str] = []
+    for relative, markers in required_markers.items():
+        path = root / relative
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError as exc:
+            failures.append(f"cannot audit paper control {relative}: {exc}")
+            continue
+        for marker in markers:
+            if marker not in text:
+                failures.append(f"paper control marker missing in {relative}: {marker}")
     return failures
 
 
@@ -293,6 +338,7 @@ def main() -> None:
     failures = (
         audit_required_controls()
         + audit_claim_controls()
+        + audit_paper_controls()
         + audit_claim_registry()
         + audit_runtime_policy()
         + audit_lean()
@@ -305,7 +351,10 @@ def main() -> None:
     lean_count = sum(
         1 for path in (ROOT / "formal").rglob("*.lean") if ".lake" not in path.parts
     )
-    print(f"POLICY AUDIT passed lean_files={lean_count} controls=14 claim_standard=strict runtime=guarded")
+    print(
+        f"POLICY AUDIT passed lean_files={lean_count} controls=18 "
+        "claim_standard=strict paper_narrative=audited runtime=guarded"
+    )
 
 
 if __name__ == "__main__":

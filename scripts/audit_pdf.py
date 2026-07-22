@@ -25,6 +25,19 @@ FONT_ROW = re.compile(
     re.IGNORECASE,
 )
 
+PRIVATE_PATH_PATTERNS = (
+    re.compile(r"/(?:Users|home)/[^\s]+"),
+    re.compile(r"[A-Za-z]:\\Users\\[^\s]+", re.IGNORECASE),
+)
+
+RELEASE_PLACEHOLDER_PATTERNS = (
+    re.compile(r"\b(?:TODO|TBD|FIXME|XXX)\b", re.IGNORECASE),
+    re.compile(r"\bReplace with\b", re.IGNORECASE),
+    re.compile(r"\bto be approved\b", re.IGNORECASE),
+    re.compile(r"\bScientific Project Title\b", re.IGNORECASE),
+    re.compile(r"\bkeyword one\b", re.IGNORECASE),
+)
+
 
 def command_output(command: list[str]) -> str:
     completed = subprocess.run(command, text=True, capture_output=True)
@@ -43,10 +56,39 @@ def audit_log(path: Path) -> tuple[list[str], int]:
     return failures, underfull
 
 
-def audit_pdf(path: Path) -> tuple[list[str], dict[str, str]]:
+def normalized_text(text: str) -> str:
+    return " ".join(text.split()).casefold()
+
+
+def audit_extracted_text(
+    text: str,
+    first_page: str,
+    metadata: dict[str, str],
+    *,
+    release: bool,
+) -> list[str]:
+    failures: list[str] = []
+    if len("".join(text.split())) < 100:
+        failures.append("PDF extracted text is empty or implausibly short")
+    for pattern in PRIVATE_PATH_PATTERNS:
+        match = pattern.search(text)
+        if match:
+            failures.append(f"PDF exposes a private local path: {match.group(0)!r}")
+    if release:
+        for pattern in RELEASE_PLACEHOLDER_PATTERNS:
+            match = pattern.search(text)
+            if match:
+                failures.append(f"release PDF contains placeholder text: {match.group(0)!r}")
+        title = metadata.get("Title", "").strip()
+        if title and normalized_text(title) not in normalized_text(first_page):
+            failures.append("PDF metadata title does not appear on the first page")
+    return failures
+
+
+def audit_pdf(path: Path, *, release: bool = False) -> tuple[list[str], dict[str, str], bool]:
     failures: list[str] = []
     if not path.is_file() or path.stat().st_size < 1024:
-        return [f"{path}: missing or implausibly small PDF"], {}
+        return [f"{path}: missing or implausibly small PDF"], {}, False
     if not path.read_bytes().startswith(b"%PDF-"):
         failures.append(f"{path}: missing PDF signature")
     metadata: dict[str, str] = {}
@@ -68,16 +110,33 @@ def audit_pdf(path: Path) -> tuple[list[str], dict[str, str]]:
                 failures.append(f"{path}: font is not embedded: {match.group('name')}")
     else:
         print("PDF AUDIT warning: pdffonts unavailable; embedding not checked")
-    return failures, metadata
+    text_checked = False
+    if shutil.which("pdftotext"):
+        text = command_output(["pdftotext", str(path), "-"])
+        first_page = command_output(
+            ["pdftotext", "-f", "1", "-l", "1", str(path), "-"]
+        )
+        failures.extend(audit_extracted_text(text, first_page, metadata, release=release))
+        text_checked = True
+    elif release:
+        failures.append(f"{path}: pdftotext is required for release audit")
+    else:
+        print("PDF AUDIT warning: pdftotext unavailable; extracted text not checked")
+    return failures, metadata, text_checked
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pdf", type=Path, required=True)
     parser.add_argument("--log", type=Path, required=True)
+    parser.add_argument(
+        "--release",
+        action="store_true",
+        help="also reject release placeholders and require title/front-matter agreement",
+    )
     args = parser.parse_args()
     failures, underfull = audit_log(args.log)
-    pdf_failures, metadata = audit_pdf(args.pdf)
+    pdf_failures, metadata, text_checked = audit_pdf(args.pdf, release=args.release)
     failures.extend(pdf_failures)
     if failures:
         print("PDF AUDIT failed")
@@ -89,7 +148,8 @@ def main() -> None:
     print(
         "PDF AUDIT passed "
         f"pages={metadata.get('Pages', 'unchecked')} "
-        f"title={metadata.get('Title', 'unchecked')!r} underfull_boxes={underfull}"
+        f"title={metadata.get('Title', 'unchecked')!r} underfull_boxes={underfull} "
+        f"text_checked={str(text_checked).lower()} release={str(args.release).lower()}"
     )
 
 
