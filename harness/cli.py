@@ -2,12 +2,19 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import sys
 from pathlib import Path
 
 from .parser import PlanParseError, parse_plan, parse_plan_text
 from .reports import full_report, recovery_brief, write_reports
+from .runtime import (
+    DEFAULT_NICE,
+    DEFAULT_SECONDS,
+    RuntimeControlError,
+    run_guarded,
+    runtime_brief,
+    runtime_snapshot,
+)
 from .store import HarnessError, Store, atomic_text
 
 
@@ -86,6 +93,14 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("doctor", help="validate state, dependencies, lock, and required files")
     check = commands.add_parser("check", help="run configured shell-free verification commands")
     check.add_argument("--all", action="store_true", dest="run_all")
+    run = commands.add_parser("run", help="run one nice, exclusive, watchdog-bounded command")
+    run.add_argument("--timeout", type=int, default=DEFAULT_SECONDS)
+    run.add_argument("--nice", type=int, default=DEFAULT_NICE, dest="nice_level")
+    run.add_argument("--label", default="ad-hoc")
+    run.add_argument("--cwd", default=".")
+    run.add_argument("argv", nargs=argparse.REMAINDER)
+    run_status = commands.add_parser("run-status", help="show the compute lock and last guarded run")
+    run_status.add_argument("--json", action="store_true", dest="as_json")
     return result
 
 
@@ -163,9 +178,12 @@ def _doctor(store: Store) -> list[str]:
         "docs/COMPUTE_DESIGN.md",
         "docs/PYTHON_COMPUTATION.md",
         "docs/PDF_HOUSE_STYLE.md",
+        "docs/RESOURCE_SAFETY.md",
+        "harness/runtime.py",
         "work/ROUND_TEMPLATE.md",
         "research/TARGET.md",
         "computations/COMPUTE_PLAN.md",
+        "computations/requirements-sympy.txt",
         "formal/AXIOMS.md",
         "paper/RELEASE_MANIFEST.md",
     ]
@@ -193,11 +211,13 @@ def _run_checks(store: Store, run_all: bool) -> None:
             raise HarnessError(f"invalid shell-free check definition: {check!r}")
         cwd = store.root / check.get("cwd", ".")
         print(f"CHECK {check.get('name', command[0])}")
-        try:
-            completed = subprocess.run(command, cwd=cwd)
-        except OSError as exc:
-            raise HarnessError(f"cannot run check {check.get('name', command[0])}: {exc}") from exc
-        if completed.returncode:
+        return_code = run_guarded(
+            store.root,
+            command,
+            cwd=cwd,
+            label=f"check:{check.get('name', command[0])}",
+        )
+        if return_code:
             raise HarnessError(f"check failed: {check.get('name', command[0])}")
 
 
@@ -210,6 +230,9 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
         store = Store(root or Path.cwd())
         if not args.command:
             print(recovery_brief(store))
+            compute = runtime_brief(store.root)
+            if compute:
+                print(compute)
             return 0
         command = args.command.casefold()
         if command == "bootstrap":
@@ -268,6 +291,9 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
             print(f"CLOSED {record['round_id']} done={' '.join(args.done) or 'none'}")
         elif command == "recover":
             print(recovery_brief(store))
+            compute = runtime_brief(store.root)
+            if compute:
+                print(compute)
             if store.read_lock():
                 print("ACTION   Run ./h resume, then continue from NEXT in the round directory.")
         elif command == "resume":
@@ -312,8 +338,27 @@ def main(argv: list[str] | None = None, root: Path | None = None) -> int:
         elif command == "check":
             _run_checks(store, args.run_all)
             print("CHECKS passed")
+        elif command == "run":
+            argv = list(args.argv)
+            if argv and argv[0] == "--":
+                argv.pop(0)
+            return run_guarded(
+                store.root,
+                argv,
+                cwd=store.root / args.cwd,
+                label=args.label,
+                timeout_seconds=args.timeout,
+                nice_level=args.nice_level,
+            )
+        elif command == "run-status":
+            snapshot = runtime_snapshot(store.root)
+            if args.as_json:
+                print(json.dumps(snapshot, indent=2, sort_keys=True))
+            else:
+                brief = runtime_brief(store.root)
+                print(brief or "COMPUTE idle; no unresolved guarded run")
         return 0
-    except (HarnessError, PlanParseError) as exc:
+    except (HarnessError, PlanParseError, RuntimeControlError) as exc:
         print(f"h: {exc}", file=sys.stderr)
         return 2
 

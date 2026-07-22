@@ -5,6 +5,12 @@ template. The harness itself remains standard-library only. Scientific projects
 may add pinned dependencies, but must declare which library is discovery support,
 which is a generator, and which lies in the trusted verification boundary.
 
+The recovered known-good symbolic baseline is SymPy `1.14.0` with
+`SYMPY_GROUND_TYPES=python`; `computations/requirements-sympy.txt` pins it without
+making it a harness dependency. The source project used python-flint `0.9.0`
+only in paths where FLINT was an intentional backend. Pin it separately if a new
+project adopts that boundary; do not install it merely because it is faster.
+
 ## 1. Arithmetic classes
 
 Use the narrowest class that supports the claim:
@@ -34,6 +40,20 @@ When reproducibility requires SymPy's pure-Python rational domain, set
 `SYMPY_GROUND_TYPES=python` before importing SymPy and test that forbidden
 accelerator imports do not occur. If FLINT is part of the trusted boundary,
 pin and record it instead; do not let backend selection change silently.
+
+Invoke result-bearing Python through the project guard, setting the SymPy ground
+type before import:
+
+```sh
+./h run --label sympy-exact -- env SYMPY_GROUND_TYPES=python python3 computations/check.py
+```
+
+The guard forces common BLAS/OpenMP/NumExpr pools to one thread, lowers process
+priority, serializes material commands, and kills the process group at 240
+seconds. Do not add `multiprocessing`, `ThreadPoolExecutor`, background jobs, or
+library-level fan-out to evade that boundary. Split/checkpoint the algorithm or
+test a better representation. Use FLINT only as an intentional pinned backend;
+for a small verifier, `Fraction` or SymPy's exact `QQ` domain may be simpler.
 
 ## 2. Symbol assumptions are not proofs
 
@@ -93,6 +113,10 @@ not introduce excluded denominator cases.
   for a proof of the transformed identity.
 - Prefer exact recurrences to repeated symbolic differentiation.
 - Split regimes when a single expansion center or coordinate is ill-conditioned.
+
+In particular, prefer an exact `Poly(..., domain=QQ)` recurrence and construct a
+common denominator structurally. Expanding a large rational expression first
+and asking a broad simplifier to recover structure is a known blow-up pattern.
 
 Before adopting a custom integer/sparse kernel, compare it end-to-end against
 the direct SymPy expression on fixed-seed random rational inputs and exact edge

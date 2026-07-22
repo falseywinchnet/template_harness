@@ -15,6 +15,15 @@ round's `ROUND.md`/`NEXT.md`, and the relevant target or claim entry over broad
 repository scans. Use `./h report --json` when structured state costs fewer
 tokens than prose.
 
+Before any material local computation, read `docs/RESOURCE_SAFETY.md` and use
+`./h run`. Never launch overlapping or background Lean, Lake, SymPy, Python,
+generator, verifier, PDF, or full-suite jobs. A yielded execution cell/session
+is still running: poll it or use `./h run-status`; do not start a replacement.
+Keep each local subtask within the enforced 240-second ceiling. On timeout,
+audit competing processes and then wait or refactor—the next run must embody a
+changed cost hypothesis. Do not raise the ceiling or rely on a requested memory
+budget as the safety boundary.
+
 ## When asked to start a project
 
 If `.harness/register.json` says project status `bootstrap`, or the user asks to

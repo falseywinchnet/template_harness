@@ -1,0 +1,2 @@
+# Optional known-good exact symbolic baseline. The harness itself has no dependency.
+sympy==1.14.0

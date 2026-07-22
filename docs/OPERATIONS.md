@@ -13,6 +13,8 @@
 | `./h resume` | Reconcile and reaffirm an interrupted round |
 | `./h report` | Print the macro lifecycle report |
 | `./h report --json` | Print compact structured state for a model or script |
+| `./h run --label NAME -- COMMAND...` | Run one lowered-priority command with the global lock and watchdog |
+| `./h run-status` | Show the active/stale compute lock or unresolved last run |
 
 ## Planning and state
 
@@ -32,7 +34,22 @@ round notes.
 `./h doctor` is structural and fast. `./h check` runs checks marked default in
 `.harness/config.json`. `./h check --all` also runs optional paper and formal
 builds; install their toolchains first. Commands are stored as argument arrays,
-not shell strings.
+not shell strings. Every configured check is itself run through the resource
+guard.
+
+## Local computation
+
+Follow `docs/RESOURCE_SAFETY.md`. Material commands must use `./h run`; the
+default and maximum timeout is 240 seconds and default nice level is 10. The
+runner also limits common hidden numerical thread pools to one and refuses a
+second run while its global compute lock is live. Do not put secrets in command
+arguments because the recovery record preserves them.
+
+On timeout, the runner terminates the complete process group, records a brief
+system process audit, and exits 124. Run `./h run-status`. If another process was
+the likely source of contention, wait or coordinate. Otherwise change the
+representation, scale, import surface, or checkpoint boundary before retrying.
+Do not raise the ceiling.
 
 The default project policy audit checks that the Lean and release control files
 exist and rejects placeholders, custom axioms/constants, and unsafe Lean
@@ -63,6 +80,14 @@ rollback.
 
 Run `./h report --write`. `STATUS.md` and `NEXT.md` are disposable projections;
 the register and work records are authoritative.
+
+### A computation was cut off
+
+Run `./h run-status`. If the compute lock is active, do not start a replacement;
+the recorded controller or child is alive. A stale lock is recoverable by the
+next guarded invocation only after both recorded PIDs are dead. A timeout or
+interruption remains visible in the bare `./h` recovery card until a later
+guarded run completes.
 
 ## Git boundary
 

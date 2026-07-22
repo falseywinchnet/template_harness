@@ -71,7 +71,10 @@ def audit_required_controls() -> list[str]:
         "docs/COMPUTE_DESIGN.md",
         "docs/PYTHON_COMPUTATION.md",
         "docs/PDF_HOUSE_STYLE.md",
+        "docs/RESOURCE_SAFETY.md",
+        "harness/runtime.py",
         "computations/COMPUTE_PLAN.md",
+        "computations/requirements-sympy.txt",
         "formal/AXIOMS.md",
         "formal/PERFORMANCE.md",
         "paper/manuscript/metadata.tex",
@@ -79,8 +82,38 @@ def audit_required_controls() -> list[str]:
     return [f"missing required control: {path}" for path in required if not (ROOT / path).is_file()]
 
 
+def audit_runtime_policy() -> list[str]:
+    failures: list[str] = []
+    runtime = (ROOT / "harness/runtime.py").read_text(encoding="utf-8")
+    lake = (ROOT / "formal/lakefile.toml").read_text(encoding="utf-8")
+    sympy = (ROOT / "computations/requirements-sympy.txt").read_text(encoding="utf-8")
+    required_runtime = (
+        "MAX_SECONDS = 240",
+        "DEFAULT_NICE = 10",
+        "start_new_session=True",
+        "signal.SIGKILL",
+        '"OMP_NUM_THREADS": "1"',
+    )
+    required_lake = (
+        "pp.unicode.fun = true",
+        "relaxedAutoImplicit = false",
+        "weak.linter.mathlibStandardSet = true",
+        "maxSynthPendingDepth = 3",
+        'rev = "v4.32.0"',
+    )
+    for marker in required_runtime:
+        if marker not in runtime:
+            failures.append(f"runtime safety marker missing: {marker}")
+    for marker in required_lake:
+        if marker not in lake:
+            failures.append(f"Lean configuration marker missing: {marker}")
+    if "sympy==1.14.0" not in sympy:
+        failures.append("known-good SymPy pin missing: sympy==1.14.0")
+    return failures
+
+
 def main() -> None:
-    failures = audit_required_controls() + audit_lean()
+    failures = audit_required_controls() + audit_runtime_policy() + audit_lean()
     if failures:
         print("POLICY AUDIT failed")
         for failure in failures:
@@ -89,7 +122,7 @@ def main() -> None:
     lean_count = sum(
         1 for path in (ROOT / "formal").rglob("*.lean") if ".lake" not in path.parts
     )
-    print(f"POLICY AUDIT passed lean_files={lean_count} controls=8")
+    print(f"POLICY AUDIT passed lean_files={lean_count} controls=11 runtime=guarded")
 
 
 if __name__ == "__main__":

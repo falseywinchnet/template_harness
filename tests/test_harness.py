@@ -1,13 +1,25 @@
 from __future__ import annotations
 
+import io
 import json
+import os
+import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 from harness.cli import _project_markdown, parser as cli_parser
 from harness.parser import PlanParseError, parse_plan_text
 from harness.reports import recovery_brief
+from harness.runtime import (
+    RuntimeBusy,
+    RuntimeControlError,
+    paths,
+    run_guarded,
+    runtime_snapshot,
+)
 from harness.store import HarnessError, Store, atomic_json
 
 
@@ -45,6 +57,10 @@ class HarnessTest(unittest.TestCase):
 
     def register(self, text: str) -> None:
         self.store.register_items(parse_plan_text(text), "test plan")
+
+    def run_quietly(self, *args, **kwargs):
+        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            return run_guarded(*args, **kwargs)
 
     def test_parser_accepts_compact_task(self):
         item = parse_plan_text(
@@ -89,6 +105,17 @@ class HarnessTest(unittest.TestCase):
         )
         self.assertEqual(self.store.items["P001"]["title"], "Better title")
         self.assertEqual(self.store.items["P001"]["status"], "done")
+
+    def test_unchanged_registration_is_a_noop(self):
+        text = "- [ ] P001 | First | stage=hypothesis | mode=advance"
+        parsed = parse_plan_text(text)
+        self.store.register_items(parsed, "stable source")
+        register_before = (self.root / ".harness" / "register.json").read_bytes()
+        events_before = (self.root / ".harness" / "events.jsonl").read_bytes()
+        created, updated = self.store.register_items(parsed, "stable source")
+        self.assertEqual((created, updated), ([], []))
+        self.assertEqual((self.root / ".harness" / "register.json").read_bytes(), register_before)
+        self.assertEqual((self.root / ".harness" / "events.jsonl").read_bytes(), events_before)
 
     def test_missing_dependency_is_rejected_without_replacing_file(self):
         before = (self.root / ".harness" / "register.json").read_text(encoding="utf-8")
@@ -211,6 +238,100 @@ class HarnessTest(unittest.TestCase):
         first = self.store.digest()
         second = Store(self.root).digest()
         self.assertEqual(first, second)
+
+    def test_guarded_run_records_limits_and_success(self):
+        code = (
+            "import os; "
+            "assert os.environ['OMP_NUM_THREADS'] == '1'; "
+            "assert os.environ['OPENBLAS_NUM_THREADS'] == '1'; "
+            "assert os.getpriority(os.PRIO_PROCESS, 0) >= 10"
+        )
+        result = self.run_quietly(
+            self.root,
+            [sys.executable, "-c", code],
+            label="unit-success",
+            timeout_seconds=2,
+        )
+        self.assertEqual(result, 0)
+        snapshot = runtime_snapshot(self.root)
+        self.assertEqual(snapshot["lock_state"], "none")
+        self.assertEqual(snapshot["last_run"]["status"], "passed")
+        self.assertEqual(snapshot["last_run"]["thread_limits"]["MKL_NUM_THREADS"], "1")
+
+    def test_guarded_timeout_kills_group_and_records_audit(self):
+        result = self.run_quietly(
+            self.root,
+            [sys.executable, "-c", "import time; time.sleep(5)"],
+            label="unit-timeout",
+            timeout_seconds=0.1,
+        )
+        self.assertEqual(result, 124)
+        snapshot = runtime_snapshot(self.root)
+        self.assertEqual(snapshot["lock_state"], "none")
+        self.assertEqual(snapshot["last_run"]["status"], "timeout")
+        self.assertIn(snapshot["last_run"]["termination"], {"terminated", "killed"})
+        self.assertIsInstance(snapshot["last_run"]["process_audit"], list)
+
+    def test_guarded_timeout_forcibly_kills_term_resistant_group(self):
+        code = (
+            "import signal, time; "
+            "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+            "time.sleep(5)"
+        )
+        with mock.patch("harness.runtime.TERM_GRACE_SECONDS", 0.05):
+            result = self.run_quietly(
+                self.root,
+                [sys.executable, "-c", code],
+                label="unit-force-kill",
+                timeout_seconds=0.1,
+            )
+        self.assertEqual(result, 124)
+        self.assertEqual(runtime_snapshot(self.root)["last_run"]["termination"], "killed")
+
+    def test_active_compute_lock_blocks_replacement(self):
+        lock = {
+            "schema_version": 1,
+            "token": "occupied",
+            "status": "running",
+            "label": "first-run",
+            "started_at": "2026-01-01T00:00:00+00:00",
+            "parent_pid": os.getpid(),
+            "child_pid": None,
+        }
+        atomic_json(paths(self.root).lock, lock)
+        with self.assertRaises(RuntimeBusy):
+            run_guarded(
+                self.root,
+                [sys.executable, "-c", "pass"],
+                label="replacement",
+                timeout_seconds=1,
+            )
+
+    def test_stale_compute_lock_is_recovered(self):
+        lock = {
+            "schema_version": 1,
+            "token": "stale",
+            "status": "running",
+            "label": "lost-run",
+            "started_at": "2026-01-01T00:00:00+00:00",
+            "parent_pid": 999_999_998,
+            "child_pid": 999_999_999,
+        }
+        atomic_json(paths(self.root).lock, lock)
+        result = self.run_quietly(
+            self.root,
+            [sys.executable, "-c", "pass"],
+            label="recovered-run",
+            timeout_seconds=1,
+        )
+        self.assertEqual(result, 0)
+        self.assertEqual(runtime_snapshot(self.root)["lock_state"], "none")
+
+    def test_guard_rejects_limit_evasion(self):
+        with self.assertRaises(RuntimeControlError):
+            run_guarded(self.root, [sys.executable, "-c", "pass"], timeout_seconds=241)
+        with self.assertRaises(RuntimeControlError):
+            run_guarded(self.root, ["nohup", sys.executable, "-c", "pass"])
 
 
 if __name__ == "__main__":

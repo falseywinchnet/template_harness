@@ -7,6 +7,8 @@ tmp/
 # The logical round is durable in register.json and work/. This file is the
 # local exclusive-start mutex and must never be copied into a template clone.
 .harness/round.lock
+.harness/compute.lock
+.harness/runtime/
 
 # Generated build products
 paper/build/*

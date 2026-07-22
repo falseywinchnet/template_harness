@@ -120,7 +120,7 @@ The paper is a scientific argument, not a build log.
 The maintained build is:
 
 ```sh
-make -C paper
+./h run --cwd paper --label paper-build -- make
 ```
 
 It must fail on compilation errors, unresolved references/citations, overfull

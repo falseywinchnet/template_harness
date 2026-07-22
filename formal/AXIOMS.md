@@ -3,7 +3,7 @@
 - Lean toolchain: see `lean-toolchain`
 - Lake version:
 - mathlib tag and resolved commit: see `lakefile.toml` and release manifest
-- Audit command: `lake env lean Formal/Audit.lean`
+- Audit command: `./h run --cwd formal --label lean-audit -- lake env lean Formal/Audit.lean`
 - Audit scope: selected target-facing surface / exhaustive exported surface
 - Last clean result: not yet established for a project theorem
 

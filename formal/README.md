@@ -12,10 +12,9 @@ the theorem-bearing source.
 Install `elan`, then run:
 
 ```sh
-cd formal
-lake update
-lake build
-lake env lean Formal/Audit.lean
+./h run --cwd formal --label lean-update -- lake update
+./h run --cwd formal --label lean-build -- lake build
+./h run --cwd formal --label lean-audit -- lake env lean Formal/Audit.lean
 ```
 
 During development, check the edited source, build its named Lake target, then
@@ -37,4 +36,6 @@ must be frozen independently of Lean. A checked theorem is accepted only when:
 Prefer exact combinators and small named lemmas to large normalization tactics.
 Do not hide a structural performance problem by raising heartbeats first. Record
 per-module timings and any intentional limit change in `PERFORMANCE.md`. Do not
-run concurrent Lean builds in a constrained workspace.
+run concurrent Lean builds. Every local Lean/Lake invocation uses the global
+guard and must finish within four minutes; split modules or move a bounded clean
+replay to an isolated runner rather than weakening the local ceiling.

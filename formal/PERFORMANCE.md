@@ -20,7 +20,10 @@ machine, cache state, and touched module.
 - Targeted iteration budget:
 - Incremental full-build budget:
 - Clean release-build budget:
-- Serialized-build policy:
+- Local stage ceiling: 240 seconds (fixed)
+- Local priority: `nice` 10 or lower scheduling priority
+- Serialized-build policy: one guarded Lean/Lake process, no background workers
+- Timeout pivot: contention finding or changed module/import/proof design
 
 When a module exceeds budget, inspect import depth, duplicated normalization,
 generated term size, and mixed responsibilities before increasing resource

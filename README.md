@@ -80,6 +80,24 @@ The recovery card points to the round directory and its last exact next action.
 The lock is removed only after a successful `close`; every earlier failure leaves
 the recovery handle intact.
 
+## Safe local computation
+
+Material local commands go through the same small guard, whether they invoke
+Lean, SymPy, Python, a PDF build, or a replay:
+
+```sh
+./h run --label exact-check -- env SYMPY_GROUND_TYPES=python python3 computations/check.py
+./h run --cwd formal --label lean-target -- lake build Formal.Foo
+./h run-status
+```
+
+The runner admits only one command at a time, lowers its scheduling priority,
+limits common numerical backends to one thread, and kills the entire process
+group after at most four minutes. A timeout triggers a small process audit and
+requires a wait-or-refactor decision; it must not be answered by starting another
+copy or raising the local limit. Tool output containing a session or cell ID
+means the original command is still active. See `docs/RESOURCE_SAFETY.md`.
+
 ## Register project work by writing Markdown
 
 `PLAN.md` is readable source text. Each task is one checkbox line:
@@ -97,7 +115,8 @@ Then integrate it:
 IDs may be omitted for new items; the parser assigns the next `P` identity.
 Existing explicit IDs are updated without erasing their runtime status. The
 register rejects unknown stages, missing dependencies, self-dependencies, and
-cycles. `advance TAG...` and `refine TAG...` activate only dependency-ready
+cycles. Re-registering unchanged text performs no state write or event append.
+`advance TAG...` and `refine TAG...` activate only dependency-ready
 items whose declared mode is compatible. With no tag, the earliest ready stage
 is selected.
 
@@ -129,6 +148,8 @@ large project becomes expensive:
   discipline, axiom auditing, statement fidelity, and performance budgets.
 - `docs/PDF_HOUSE_STYLE.md` — manuscript architecture, mathematical typography,
   metadata, accessibility, build/log gates, visual QA, and release packaging.
+- `docs/RESOURCE_SAFETY.md` — exclusive lowered-priority execution, numerical
+  thread limits, four-minute watchdog cleanup, and timeout recovery.
 
 Start computational work by completing `computations/COMPUTE_PLAN.md`. This
 forces the algorithm's scale, arithmetic, completeness, resource envelope, and
@@ -173,6 +194,7 @@ settled and remains visible in history.
 - `work/` — one durable directory per advancement or refinement round.
 - `research/` — target, claims, dependencies, sources, and audit contracts.
 - `computations/` — compute plans, benchmarks, and a canonical manifest example.
+  It also contains an optional known-good SymPy baseline pin.
 - `sources/` — lossless local evidence and provenance records.
 - `paper/` — modular manuscript and release controls.
 - `formal/` — optional reproducible Lean environment.
@@ -183,9 +205,11 @@ The normative behavior of the command and data model is specified in
 
 ## Requirements
 
-The harness itself uses only Python 3.11+ and the standard library. `tectonic`
-is optional for PDF builds. Lean work requires `elan`/`lake`; the toolchain and
-mathlib revision are pinned inside `formal/`.
+The harness itself uses only Python 3.11+ and the standard library. Guarded
+local execution requires a POSIX environment with `nice`, process groups,
+signals, and `ps` (macOS and Linux). `tectonic` is optional for PDF builds. Lean
+work requires `elan`/`lake`; the toolchain and mathlib revision are pinned inside
+`formal/`.
 
 Run the baseline gates with:
 

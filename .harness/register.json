@@ -17,7 +17,7 @@
         "hypothesis"
       ],
       "title": "State the research question, initial hypothesis, and falsification boundary",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P002": {
       "acceptance": "Target and exclusions are explicit and approved",
@@ -37,7 +37,7 @@
         "scope"
       ],
       "title": "Freeze scope, non-goals, deliverable, and audience",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P003": {
       "acceptance": "Every target claim has an ID, status, and immediate prerequisites",
@@ -57,7 +57,7 @@
         "dependencies"
       ],
       "title": "Decompose the target into claims and dependency edges",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P004": {
       "acceptance": "Used sources are preserved or have an explicit acquisition status and locator",
@@ -77,7 +77,7 @@
         "literature"
       ],
       "title": "Build the source and prior-work inventory",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P005": {
       "acceptance": "Baseline procedure and observed output are recorded independently",
@@ -97,10 +97,10 @@
         "reproduction"
       ],
       "title": "Reproduce foundational results or baselines",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P006": {
-      "acceptance": "Each method records assumptions, failure tests, verification boundary, arithmetic model, scale, time and memory budget, and a pivot condition",
+      "acceptance": "Each method records assumptions, failure tests, verification boundary, arithmetic model, scale, bounded stages of at most four local minutes, checkpointing, and a timeout pivot condition",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -119,7 +119,7 @@
         "performance"
       ],
       "title": "Select methods, representations, and compute budgets",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P007": {
       "acceptance": "Primary route reaches a supported result or a preserved exact failure boundary",
@@ -139,7 +139,7 @@
         "analysis"
       ],
       "title": "Execute the primary analysis or proof route",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P008": {
       "acceptance": "Material alternatives and failures are recorded without selection bias",
@@ -159,7 +159,7 @@
         "failures"
       ],
       "title": "Explore alternatives and preserve negative results",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P009": {
       "acceptance": "Every surviving claim maps to a source, replay, formal proof, or unresolved obligation",
@@ -180,7 +180,7 @@
         "claims"
       ],
       "title": "Convert surviving work into explicit evidence obligations",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P010": {
       "acceptance": "Critical path has no hidden assumption, missing case, or unsupported inference",
@@ -200,7 +200,7 @@
         "closure"
       ],
       "title": "Close the critical argument or empirical analysis",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P011": {
       "acceptance": "Predeclared counterexample conditions and boundary cases have been tested",
@@ -220,7 +220,7 @@
         "audit"
       ],
       "title": "Run independent falsification and adversarial tests",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P012": {
       "acceptance": "Chosen seam matches the target statement, exposes its trusted base, replays in a pinned environment, and stays inside its recorded build budget",
@@ -241,7 +241,7 @@
         "performance"
       ],
       "title": "Formalize or certify the high-risk seam where justified",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P013": {
       "acceptance": "All reachable leaves are supported, trusted explicitly, or visibly unresolved",
@@ -262,7 +262,7 @@
         "audit"
       ],
       "title": "Audit claim-to-evidence closure and trusted base",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P014": {
       "acceptance": "Every section has a burden, claim IDs, and evidence boundaries",
@@ -282,7 +282,7 @@
         "map"
       ],
       "title": "Freeze the manuscript map and proof or analysis narrative",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P015": {
       "acceptance": "Draft states the target, methods, limitations, results, and verification boundary accurately",
@@ -302,10 +302,10 @@
         "writing"
       ],
       "title": "Write the complete manuscript",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P016": {
-      "acceptance": "A clean environment can run the truthful quick audit and regenerate every theorem-bearing or result-bearing artifact with recorded resources",
+      "acceptance": "A clean environment can run the truthful quick audit and regenerate every theorem-bearing or result-bearing artifact through named bounded stages with recorded resources",
       "active_round": null,
       "created_at": "2026-07-22T19:07:27+00:00",
       "depends": [
@@ -323,7 +323,7 @@
         "compute"
       ],
       "title": "Build the reproducibility package",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P017": {
       "acceptance": "Findings ledger covers statement fidelity, evidence, novelty, limitations, and presentation",
@@ -344,7 +344,7 @@
         "audit"
       ],
       "title": "Conduct internal adversarial review",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P018": {
       "acceptance": "Material findings are resolved or disclosed and claim statuses are frozen",
@@ -364,7 +364,7 @@
         "freeze"
       ],
       "title": "Resolve findings and freeze claims",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P019": {
       "acceptance": "Release package is minimal, deterministic, identified, independently checked, and passes log plus page-by-page PDF inspection",
@@ -385,7 +385,7 @@
         "pdf"
       ],
       "title": "Package manuscript, metadata, checksums, and release manifest",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     },
     "P020": {
       "acceptance": "Public artifact, source revision, archival identity, and citation metadata agree",
@@ -405,7 +405,7 @@
         "archive"
       ],
       "title": "Publish and archive an immutable release",
-      "updated_at": "2026-07-22T19:41:07+00:00"
+      "updated_at": "2026-07-22T20:29:58+00:00"
     }
   },
   "next_item": 1,

@@ -17,10 +17,10 @@ report:
 	./h report --write
 
 paper:
-	$(MAKE) -C paper
+	./h run --cwd paper --label paper-build -- $(MAKE)
 
 formal:
-	cd formal && lake build
+	./h run --cwd formal --label lean-build -- lake build
 
 clean:
 	$(MAKE) -C paper clean

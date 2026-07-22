@@ -49,6 +49,10 @@ four required fields exist.
 Use `--compute` for the initial scale/resource answer. It is a planning bound,
 not a promise that the first algorithm will meet it; material methods replace it
 with measured entries in `computations/COMPUTE_PLAN.md` and `BENCHMARKS.md`.
+Local material work is always decomposed into stages of at most 240 seconds and
+run through `./h run`; read `docs/RESOURCE_SAFETY.md`. Available memory remains
+a design input, not a promise that a process-level memory request will protect
+the machine.
 
 Then edit the research control files:
 
@@ -93,5 +97,6 @@ exact next action if it is not obvious from the acceptance gate.
 - existing inputs are inventoried without being upgraded to evidence;
 - every initial `P` item has a mode, stage, dependencies, tags, and acceptance;
 - material computations have an initial scale/resource estimate and verification
-  class rather than an implicit promise to optimize later;
+  class, bounded stages, and timeout pivot rather than an implicit promise to
+  optimize later;
 - `./h doctor` passes and the macro report reflects the charter.

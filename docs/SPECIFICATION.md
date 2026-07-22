@@ -1,6 +1,6 @@
 # Harness specification
 
-Version: 1.0
+Version: 1.1
 
 This document is normative for the local command, register, lock, and generated
 reports. Documentation examples may be friendlier; when they disagree with this
@@ -51,6 +51,8 @@ An existing explicit ID updates declarative fields but preserves runtime status,
 block reason, completion time, and active-round membership. Registration is
 rejected atomically when it would create an invalid stage, missing dependency,
 self-edge, duplicate input ID, or dependency cycle.
+If all declarative fields and provenance are unchanged, registration is a no-op:
+it does not rewrite the register, change timestamps, or append an event.
 
 ## 3. Selection
 
@@ -123,3 +125,22 @@ and required template files.
 The register does not establish scientific truth. Evidence and proof status are
 governed by the control files under `research/` and by project-specific replay
 gates.
+
+## 9. Guarded local execution
+
+`run` accepts one argument-array command and a working directory inside the
+project. It rejects timeouts above 240 seconds, scheduling nice levels below 5,
+and explicit background launch tokens. Before launch it exclusively creates
+`.harness/compute.lock`; another run is rejected while the recorded controller
+or child PID is alive. A stale lock is removed only after neither PID exists.
+
+The child receives a scheduling nice level of at least 10 by default, common
+numerical thread environment variables fixed at one, and a new process group.
+On timeout the controller sends `SIGTERM` to that group, waits three seconds,
+then sends `SIGKILL` if needed. Exit status is 124. Success, failure, timeout,
+interruption, and launch failure are atomically recorded in
+`.harness/runtime/last-run.json` and appended to a local runtime event log.
+
+Configured checks use the same guarded path. Bare `./h` and `recover` report an
+active/stale compute lock or an unresolved interrupted/timeout launch so a cut
+off model does not need to infer whether computation remains in flight.

@@ -33,9 +33,8 @@ Pin all three moving components:
 After changing Lean or mathlib, obtain the matching binary cache before building:
 
 ```sh
-cd formal
-lake update
-lake exe cache get
+./h run --cwd formal --label lean-update -- lake update
+./h run --cwd formal --label lean-cache -- lake exe cache get
 ```
 
 Do not rebuild mathlib from source accidentally. Record the Lean, Lake, mathlib,
@@ -73,8 +72,7 @@ with a release gate.
 ### Fast source check
 
 ```sh
-cd formal
-lake env lean Formal/Foo.lean
+./h run --cwd formal --label lean-source -- lake env lean Formal/Foo.lean
 ```
 
 This checks one source file and is good for tight iteration. It does **not**
@@ -83,7 +81,7 @@ create an importable `Foo.olean`.
 ### Importable target build
 
 ```sh
-lake build Formal.Foo
+./h run --cwd formal --label lean-target -- lake build Formal.Foo
 ```
 
 Use this before another new module imports `Formal.Foo`.
@@ -91,7 +89,7 @@ Use this before another new module imports `Formal.Foo`.
 ### Staleness probe
 
 ```sh
-lake build --no-build
+./h run --cwd formal --label lean-staleness -- lake build --no-build
 ```
 
 Use this as a cheap check that the build graph agrees with the source tree. It
@@ -100,8 +98,8 @@ is not a compilation.
 ### Epoch gate
 
 ```sh
-lake build
-lake env lean Formal/Audit.lean
+./h run --cwd formal --label lean-epoch -- lake build
+./h run --cwd formal --label lean-audit -- lake env lean Formal/Audit.lean
 ```
 
 Every commit that claims a maintained Lean result must have both commands pass
@@ -118,6 +116,21 @@ helper module.
 Run one Lean/Lake process at a time unless the project has measured and
 documented safe isolation. Multiple memory-heavy elaborators commonly make all
 of them slower or cause nondeterministic resource failure.
+
+All local Lean/Lake commands use `./h run`: one global compute lock, scheduling
+priority at least `nice` 10, and a 240-second process-group watchdog. A tool yield
+is not completion. Never respond by launching another compilation, and never
+wrap files in `ThreadPoolExecutor`, `Promise.all`, shell background jobs, or
+similar fan-out. If a focused target exceeds four minutes, inspect contention;
+otherwise narrow imports, split the module, or change the proof/definition. Move
+a deliberately longer clean replay to an isolated provisioned runner, expressed
+as bounded stages, rather than weakening the desktop guard.
+
+The template pins Lean and mathlib to `v4.32.0` and retains the recovered Lake
+options: Unicode function pretty-printing, `relaxedAutoImplicit = false`, the
+mathlib standard-set linter, and `maxSynthPendingDepth = 3`. Change these only as
+an explicit toolchain migration with cache retrieval, full verification, and a
+performance record.
 
 ## 5. Mandatory source policy
 
@@ -205,8 +218,8 @@ Create `formal/PERFORMANCE.md` before the project is large. Record:
 - known peak memory and serialized-build requirement;
 - the top invalidation edges in the module DAG.
 
-Use `time lake build Formal.Foo`, a controlled touched-file rebuild, or local
-`set_option profiler true` to identify regressions. Treat adjacent timings as
+Use `./h run --cwd formal --label lean-profile -- lake build Formal.Foo`, a
+controlled touched-file rebuild, or local `set_option profiler true` to identify regressions. Treat adjacent timings as
 observations, not universal benchmarks. Optimize the slowest repeated path, not
 the most visible isolated tactic.
 

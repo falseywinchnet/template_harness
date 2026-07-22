@@ -11,7 +11,7 @@ macros in `manuscript/preamble.tex`, and the normative layout/release rules in
 Build the PDF with:
 
 ```sh
-make -C paper
+./h run --cwd paper --label paper-build -- make
 ```
 
 This requires `tectonic`. The build also audits unresolved references, overfull
@@ -20,7 +20,7 @@ It does not replace visual inspection. Build the flattened, deterministic source
 archive with:
 
 ```sh
-make -C paper archive
+./h run --cwd paper --label paper-archive -- make archive
 ```
 
 The archive builder expands local `\input` directives, strips comments, checks a

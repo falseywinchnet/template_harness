@@ -37,6 +37,12 @@ If these are unknown, begin with an instrumented scale test, not the full run.
 Log term counts, degrees, bit lengths, cells accepted/undecided, time per stage,
 and peak memory. Stop when observed growth invalidates the design budget.
 
+Every local scale test and material run uses `./h run` and must finish as a
+bounded subtask within 240 seconds. The runner serializes material work, applies
+lower scheduling priority and common numerical single-thread limits, and kills
+the whole process group on timeout. See `docs/RESOURCE_SAFETY.md`. Memory-budget
+requests are useful measurements but are not a dependable enforcement boundary.
+
 ## 3. Representation before optimization
 
 The largest gains usually come from changing the mathematical representation.
@@ -137,6 +143,13 @@ order-independent or use a canonical order.
 Do not parallelize Lean builds by default. Do not launch multiple memory-bound
 symbolic expansions simply because cores are idle. Measure total throughput and
 peak memory first.
+
+Local template operation is serial by default. Worker pools and background jobs
+are prohibited for material work because invisible or surviving descendants can
+overlap a later run. Evaluate parallel implementations only in a separately
+isolated environment after measuring the serial baseline and total—not per
+worker—memory. A returned execution session/cell identifier is an active job,
+not permission to start another.
 
 ## 9. Generator/verifier split
 

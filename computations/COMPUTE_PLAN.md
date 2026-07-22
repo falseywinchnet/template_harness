@@ -32,6 +32,9 @@
 - Estimated term/cell count and coefficient bit growth:
 - Expected asymptotic time and memory:
 - Wall-time and peak-memory budget:
+- Guarded command and label:
+- Bounded stages (each local stage at most 240 seconds):
+- Scheduling priority and numerical thread count:
 - Checkpoint interval and resumability:
 - Cache keys and invalidation rule:
 - Small scale test and stop threshold:
@@ -61,3 +64,6 @@
 ## Pivot conditions
 
 State when to stop rather than spend more precision, memory, or subdivisions.
+A watchdog timeout requires a process audit and a changed cost hypothesis before
+the next run; repeating the same command or raising the local ceiling is not a
+pivot.

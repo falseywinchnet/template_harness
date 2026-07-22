@@ -133,18 +133,13 @@ class Store:
                 "acceptance": candidate.acceptance,
                 "source": source,
                 "source_line": candidate.line,
-                "updated_at": stamp,
             }
             if ident in self.items:
                 previous = self.items[ident]
-                runtime = {
-                    key: previous.get(key)
-                    for key in ("status", "blocked_reason", "completed_at", "active_round")
-                    if key in previous
-                }
-                previous.update(fields)
-                previous.update(runtime)
-                updated.append(ident)
+                if any(previous.get(key) != value for key, value in fields.items()):
+                    previous.update(fields)
+                    previous["updated_at"] = stamp
+                    updated.append(ident)
             else:
                 if candidate.status in {"blocked", "dropped"} and not candidate.reason:
                     raise HarnessError(
@@ -154,6 +149,7 @@ class Store:
                     **fields,
                     "status": candidate.status,
                     "created_at": stamp,
+                    "updated_at": stamp,
                     "active_round": None,
                 }
                 if candidate.status == "blocked":
@@ -162,8 +158,9 @@ class Store:
                     created_item["dropped_reason"] = candidate.reason
                 self.items[ident] = created_item
                 created.append(ident)
-        self.save()
-        self.append_event("register", source=source, created=created, updated=updated)
+        if created or updated:
+            self.save()
+            self.append_event("register", source=source, created=created, updated=updated)
         return created, updated
 
     def ready(self, mode: str | None = None, tags: set[str] | None = None) -> list[str]:
