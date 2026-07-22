@@ -147,7 +147,70 @@ claims. Avoid promotional adverbs, stacked nominalizations, and repetitive “we
 show / we prove” openings. Rhetorical polish must make the logic easier to see,
 not make the result sound larger.
 
-## 6. Expose the load-bearing transitions
+## 6. Negative controls: remove prose slop
+
+Positive requirements are insufficient because fluent filler can satisfy them
+while weakening the paper. A release candidate must also pass a deletion pass.
+The target is ordinary scientific prose: object, hypothesis, operation, result,
+and consequence. The following forms are presumptively removed.
+
+| Slop form | Typical symptom | Required correction |
+|---|---|---|
+| Contrastive performance | “is not X; rather/but Y,” “not merely” | State Y directly. State a mathematical negation separately only when it is itself a result. |
+| Disclaimer | “we do not claim,” “has no implication,” “outside the scope” | Put the exact domain and conclusion in the theorem or result. Omit irrelevant adjacent claims. |
+| Status declaration | “the remainder is exact,” “fully rigorous,” “all load-bearing steps” | Name the proposition, bound, domain, or dependency that earns the status. |
+| Authorial stage direction | “we emphasize,” “it is worth noting,” “for clarity,” “the reader can see” | Delete the direction and write the fact. |
+| Performative intensifier | “clearly,” “obviously,” “crucially,” “remarkably” | Supply the short reason or remove the adverb. |
+| Figure of speech | “opens the door,” “closes the gap,” “at the heart,” “proof machinery” | Name the precise implication or role. |
+| Defensive reviewer speech | “for a skeptical reader,” “human-checkable,” “one may object” | State the evidence and limitation without staging a debate. |
+| Research-process narration | “the old route,” “superseded,” “discovered by,” “we later replaced” | Move it to revision history or omit it. |
+
+Logical negation is not slop. A theorem may prove that an object does not have a
+property, and a proof may derive `x != 0`. The prohibited form is rhetorical
+negation used to dramatize, defend, or reframe a positive statement. For example:
+
+- Replace “The computation does not merely sample the interval; rather, it is a
+  rigorous global certificate” with “Proposition 4 proves (F(x)>0) for every
+  (x\in D).”
+- Replace “This result has no implication for problem Q” by stating the exact
+  object and conclusion. Discuss Q only when a direct mathematical relation is
+  needed, and state that relation positively.
+- Replace “Crucially, the denominator cannot vanish” with the lemma proving
+  (d(x)>0) on the relevant domain.
+
+### Computational-artifact containment
+
+Files, commands, internal IDs, hashes, repository paths, package names, proof
+assistant names, model names, version numbers, verifier/generator terminology,
+and development history occur only in a dedicated verification,
+reproducibility, availability, data, or software section. They do not appear in
+the title, abstract, introduction, theory, results, captions, conclusion, or
+mathematical appendices.
+
+Scientific methods remain visible. A theory section may state that a sign is
+proved by rational Bernstein coefficients or that an estimator uses a specified
+algorithm. It cites a theorem, appendix, or methods subsection, not a filename or
+command. The dedicated section records which implementation ran, what it checks,
+and how to reproduce it.
+
+For automated containment, give each dedicated file a descriptive name that
+contains `reproducibility`, `verification`, `availability`, `declarations`,
+`artifact`, `provenance`, `software`, `code`, `data`, or `references`. This
+keeps the exception explicit and prevents an ordinary theory file from becoming
+an accidental dumping ground for implementation detail.
+
+Run the source audit during drafting:
+
+```sh
+./h run --cwd paper --label manuscript-style -- make style-audit
+```
+
+Its findings are deliberately narrow. Artifact leakage and recurrent slop forms
+fail the release gate. The editorial audit remains responsible for metaphor,
+defensive framing, empty declarations, and novel variants that no regular
+expression can recognize.
+
+## 7. Expose the inferential transitions
 
 Definitions precede use. The first public statement of a result includes its
 domain, assumptions, quantifiers, and strict/weak orientation. A proof section
@@ -170,7 +233,7 @@ Put a strictness source, counterexample, or boundary case near the result it
 qualifies. Do not postpone a condition that changes the theorem to a limitations
 section.
 
-## 7. Separate theory, computation, and verification
+## 8. Separate theory, computation, and verification
 
 Mathematical sections present objects, assumptions, lemmas, mechanisms, and
 deductions. They do not narrate which model, language, proof assistant, or
@@ -193,7 +256,7 @@ shared-implementation audit. A formal theorem is not advertised as proving the
 intended scientific claim until object identity, statement fidelity, and the
 trusted base are disclosed.
 
-## 8. Figures, tables, equations, and captions
+## 9. Figures, tables, equations, and captions
 
 Every visual must perform argumentative work: define an object, expose a
 comparison, show a diagnostic, or report a result. Decorative visuals and
@@ -212,7 +275,7 @@ into a theorem, and a diagram does not replace a dependency argument. Equations
 are numbered only when later prose depends on them. After a display, state its
 logical consequence instead of making the reader infer why it appeared.
 
-## 9. Related work, novelty, and attribution
+## 10. Related work, novelty, and attribution
 
 Related work is an argument about position, not a bibliography dump. For each
 nearby source record:
@@ -228,7 +291,7 @@ venue prestige or indexing alone. If priority matters, record independently
 verifiable dates and use neutral chronology. “To our knowledge” still requires
 a search record and should be used sparingly.
 
-## 10. Limitations and conclusion
+## 11. Limitations and conclusion
 
 Limitations identify the nearest ways the result could be misapplied or fail to
 generalize: unproved bridges, restricted domains, model dependence, data access,
@@ -240,7 +303,7 @@ without a stronger adjective, interpretation, or domain. Then it names the
 nearest honest open boundary. It does not add new evidence, novelty claims, or
 speculation that would have required analysis earlier.
 
-## 11. Revision identity and change classes
+## 12. Revision identity and change classes
 
 A submitted or released artifact is immutable. Later work may justify a new
 version, never a silent rewrite. Before editing, classify each proposed change:
@@ -262,7 +325,7 @@ prior PDF, source, commit, tag, date, and digest. Never describe a real gap as
 mere polish, and never imply that a cleaner proof invalidated a sound earlier
 argument.
 
-## 12. Model editing protocol
+## 13. Model editing protocol
 
 An AI collaborator edits the paper only after reading the claim index,
 `PAPER_MAP.md`, current artifact state, and relevant evidence boundary. It then:
@@ -272,8 +335,10 @@ An AI collaborator edits the paper only after reading the claim index,
 3. edits the smallest connected set of sections;
 4. checks title, abstract, main result, limitations, conclusion, metadata, and
    release records for collateral drift;
-5. preserves author voice, approved authorship, and factual attribution;
-6. rebuilds and visually inspects the complete paper.
+5. performs the negative pass and moves every computational artifact to its
+   dedicated section;
+6. preserves author voice, approved authorship, and factual attribution;
+7. rebuilds and visually inspects the complete paper.
 
 The model does not perform a broad “polish” rewrite, fabricate citations or
 venue requirements, turn its own derivation into historical fact, or insert a
@@ -281,24 +346,33 @@ new result into the abstract or conclusion before it enters the claim index.
 When asked for rhetoric, it improves logical visibility and calibration before
 sentence ornament.
 
-## 13. Required editorial passes
+## 14. Required editorial passes
 
 Use `paper/EDITORIAL_AUDIT.md` for four separate passes:
 
 1. **Claim pass:** public spine, definitions, quantifiers, verbs, limitations.
 2. **Dependency pass:** section burdens, order, bridges, removable branches.
-3. **Reader pass:** motivation, signposting, captions, notation, prose rhythm.
-4. **Release pass:** revision identity, metadata, availability, rendered pages.
+3. **Negative pass:** slop deletion and computational-artifact containment.
+4. **Reader pass:** motivation, signposting, captions, notation, prose rhythm.
+5. **Release pass:** revision identity, metadata, availability, rendered pages.
 
 Do not combine these into one impressionistic reread. Record concrete findings,
 locations, dispositions, and the final adversarial summary.
 
-## 14. Decision heuristics recovered from practice
+## 15. Decision heuristics recovered from practice
 
 These are small rules with unusually high leverage:
 
 - Audit literal behavior, not labels. If a command called `full`, `directed`, or
   `independent` does less, rename it before rewriting prose around it.
+- Delete a superseded or unused branch from the manuscript graph. A paragraph
+  explaining that a route is “not a premise” preserves the distraction and adds
+  a disclaimer.
+- Do not announce a human/computational distinction in theory prose. Enforce it
+  structurally: mathematics in the argument, artifact identity in verification.
+- Replace editorial judgment about related work with the exact identity,
+  hypothesis difference, or theorem comparison. The mathematics carries the
+  criticism without adversarial choreography.
 - Prefer a robust exact witness or margin to a cancellation-sensitive decimal
   example, even when the latter discovered the phenomenon first.
 - Prove claims on the actual domain or coordinate image needed. Do not buy a

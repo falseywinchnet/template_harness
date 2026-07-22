@@ -72,6 +72,30 @@ Branches not required by the principal result or a necessary interpretation:
 - [ ] Limitations prevent concrete misreadings and do not hide assumptions.
 - [ ] The conclusion restates rather than strengthens the result.
 
+## Negative style pass
+
+Run `make style-audit`, inspect every finding in context, and then read once for
+forms the checker cannot recognize.
+
+- [ ] No rhetorical “not X but/rather Y” construction remains; mathematical
+      negations state an actual result or proof condition.
+- [ ] No “we do not claim,” “has no implication,” “outside scope,” or equivalent
+      disclaimer substitutes for an exact domain and conclusion.
+- [ ] No sentence declares the work rigorous, exact, complete, self-contained,
+      clear, important, or independently verified without naming the fact that
+      establishes that status.
+- [ ] No `clearly`, `obviously`, `crucially`, `remarkably`, “we emphasize,” “for
+      clarity,” reader address, staged objection, or performative metaphor
+      remains.
+- [ ] No old route, superseded method, discovery chronology, audit conversation,
+      model decision, or revision history leaks into the scientific narrative.
+- [ ] Filenames, paths, commands, internal IDs, hashes, repositories, package and
+      proof-assistant names, model names, and verifier/replay language occur only
+      in a dedicated verification, reproducibility, availability, data, or
+      software section.
+- [ ] Theory sections name mathematical or scientific methods and propositions,
+      not the artifacts that happened to implement them.
+
 ## Literature and attribution pass
 
 - [ ] Every citation was checked against the source for the attributed claim.
@@ -103,6 +127,7 @@ gap repair, claim change, or corrigendum/retraction.
 
 - [ ] Log audit passes with no unresolved references or overfull boxes.
 - [ ] Release-mode text audit contains no placeholders or private local paths.
+- [ ] Strict manuscript-style audit reports zero findings.
 - [ ] Every rendered page was inspected at reading and thumbnail scale.
 - [ ] Title block, headings, displays, floats, captions, references, headers,
       footers, and final page are visually sound.

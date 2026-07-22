@@ -4,14 +4,18 @@ MANUSCRIPT := manuscript/main.tex
 BUILD_DIR := build
 OUTPUT := $(BUILD_DIR)/manuscript.pdf
 
-.PHONY: all audit release-audit archive clean
+.PHONY: all audit style-audit release-audit archive clean
 
-all: $(OUTPUT) audit
+all: $(OUTPUT) audit style-audit
 
 audit: $(OUTPUT)
 	cd .. && python3 scripts/audit_pdf.py --pdf paper/$(OUTPUT) --log paper/$(BUILD_DIR)/main.log
 
+style-audit:
+	cd .. && python3 scripts/audit_manuscript.py --root paper/manuscript
+
 release-audit: $(OUTPUT)
+	cd .. && python3 scripts/audit_manuscript.py --release --root paper/manuscript
 	cd .. && python3 scripts/audit_pdf.py --release --pdf paper/$(OUTPUT) --log paper/$(BUILD_DIR)/main.log
 
 archive:

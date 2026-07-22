@@ -109,7 +109,13 @@ For paper work, follow `docs/PAPER_NARRATIVE.md` and
 `paper/PAPER_MAP.md` before broad drafting. Write in reader dependency order,
 not discovery chronology; remove non-load-bearing routes rather than explaining
 that they are unused. Keep implementation and provenance in verification unless
-they are themselves the scientific method. Complete `paper/EDITORIAL_AUDIT.md`,
+they are themselves the scientific method. Delete performative contrasts,
+disclaimers, declarations of rigor or completeness, stage directions,
+reviewer-facing defenses, and figures of speech. Keep filenames, commands,
+internal IDs, hashes, repositories, tools, models, and replay language inside a
+dedicated verification, reproducibility, availability, data, or software
+section. Run `make style-audit` during drafting and require the strict version
+inside `make release-audit`. Complete `paper/EDITORIAL_AUDIT.md`,
 keep metadata in `paper/manuscript/metadata.tex`, build through the maintained
 Makefile, inspect the log, render every page, and check the deterministic
 archive. A successful TeX process is not visual approval.

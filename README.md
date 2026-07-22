@@ -157,7 +157,8 @@ large project becomes expensive:
   metadata, accessibility, build/log gates, visual QA, and release packaging.
 - `docs/PAPER_NARRATIVE.md` — public claim spine, dependency-led exposition,
   calibrated verbs, abstracts and introductions, figures/captions, literature
-  rhetoric, model editing, and revision classification.
+  rhetoric, explicit slop prohibitions, computational-artifact containment,
+  model editing, and revision classification.
 - `docs/RESOURCE_SAFETY.md` — exclusive lowered-priority execution, numerical
   thread limits, four-minute watchdog cleanup, and timeout recovery.
 

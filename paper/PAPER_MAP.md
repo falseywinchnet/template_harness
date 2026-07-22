@@ -64,3 +64,8 @@ unused. Record the disposition so a later model does not reintroduce them.
     requires them.
 11. `paper/EDITORIAL_AUDIT.md` records separate claim, dependency, reader, and
     release passes before publication.
+12. Negative-style review removes performative contrasts, disclaimers, status
+    declarations, stage directions, and figures of speech. Mathematical
+    negations remain when they are themselves claims or proof conditions.
+13. Computational artifacts and development provenance occur only in dedicated
+    verification, reproducibility, availability, data, or software sections.

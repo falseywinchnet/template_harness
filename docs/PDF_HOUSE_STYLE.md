@@ -111,10 +111,13 @@ one document end, and no unresolved local `\input` directives.
 
 ## 6. Prose and evidence boundary
 
-The paper is a scientific argument, not a build log. Theory sections describe
-objects, hypotheses, mechanisms, and deductions. Names of languages, proof
-assistants, scripts, hashes, and development history belong in verification or
-availability unless the implementation is itself the scientific method.
+Theory sections describe objects, hypotheses, mechanisms, and deductions.
+Names of languages, proof assistants, scripts, hashes, repositories, commands,
+internal IDs, model names, and development history are confined to dedicated
+verification, reproducibility, availability, data, or software sections. When
+implementation is itself the scientific method, the theory describes the
+algorithm and acceptance criterion; the dedicated section identifies the
+artifact.
 
 - Mathematical/results sections contain definitions, methods, deductions, and
   interpretation.
@@ -133,6 +136,9 @@ availability unless the implementation is itself the scientific method.
   `indicate` or `suggest`.
 - Do not advertise absent methods or discarded routes. State the route used and
   omit the rest.
+- Delete performative contrasts, disclaimers, status declarations, authorial
+  stage directions, reviewer-facing defenses, and figures of speech under the
+  negative controls in `PAPER_NARRATIVE.md`.
 
 ## 7. Accessibility
 
@@ -203,9 +209,9 @@ release-mode text gate as well:
 ./h run --cwd paper --label paper-release-audit -- make release-audit
 ```
 
-It rejects placeholder language and private local paths in extracted PDF text.
-It cannot judge scientific truth or rhetoric; complete `paper/EDITORIAL_AUDIT.md`
-for those boundaries.
+It runs the strict source-style audit, then rejects placeholder language and
+private local paths in extracted PDF text. It cannot judge scientific truth or
+novel slop forms; complete `paper/EDITORIAL_AUDIT.md` for those boundaries.
 
 ## 11. Final PDF checklist
 
@@ -218,6 +224,8 @@ for those boundaries.
 - figures/tables cited and accessible;
 - exact claims match `research/CLAIM_INDEX.md`;
 - public claim spine and section burdens pass `paper/EDITORIAL_AUDIT.md`;
+- negative source-style audit passes with computational artifacts confined to
+  dedicated sections;
 - reproducibility and availability sections are truthful;
 - every page visually inspected;
 - deterministic archive and release manifest agree.

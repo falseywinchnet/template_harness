@@ -30,6 +30,9 @@ from harness.store import HarnessError, Store, atomic_json
 
 POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_project.py"))
 PDF_POLICY = runpy.run_path(str(Path(__file__).resolve().parents[1] / "scripts/audit_pdf.py"))
+MANUSCRIPT_POLICY = runpy.run_path(
+    str(Path(__file__).resolve().parents[1] / "scripts/audit_manuscript.py")
+)
 
 
 class HarnessTest(unittest.TestCase):
@@ -436,6 +439,38 @@ example : True := by trivial
         self.assertIn("Build reader order from dependency order", failures)
         self.assertIn("Public claim spine", failures)
         self.assertIn("Change classification", failures)
+
+    def test_manuscript_policy_finds_slop_and_artifact_leakage(self):
+        manuscript = self.root / "manuscript"
+        manuscript.mkdir()
+        (manuscript / "S02-theory.tex").write_text(
+            "Clearly, this is not merely sampled but exact. "
+            "The Python script verifier lives in scripts/check.py.\n",
+            encoding="utf-8",
+        )
+        findings = "\n".join(MANUSCRIPT_POLICY["audit_manuscript"](manuscript))
+        self.assertIn("performative intensifier", findings)
+        self.assertIn("contrastive negation", findings)
+        self.assertIn("misplaced tool or model name", findings)
+        self.assertIn("misplaced internal path", findings)
+
+    def test_manuscript_policy_allows_artifacts_only_in_dedicated_section(self):
+        manuscript = self.root / "manuscript"
+        manuscript.mkdir()
+        (manuscript / "S05-verification.tex").write_text(
+            "Python runs the verifier script from scripts/check.py.\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(MANUSCRIPT_POLICY["audit_manuscript"](manuscript), [])
+
+    def test_manuscript_policy_preserves_mathematical_negation(self):
+        manuscript = self.root / "manuscript"
+        manuscript.mkdir()
+        (manuscript / "S03-results.tex").write_text(
+            "Theorem 3 proves that f is not continuous on D.\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(MANUSCRIPT_POLICY["audit_manuscript"](manuscript), [])
 
     def test_formal_claim_registry_rejects_status_leap(self):
         formal = self.root / "formal"

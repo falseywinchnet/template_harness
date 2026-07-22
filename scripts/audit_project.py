@@ -92,6 +92,7 @@ def audit_required_controls(root: Path = ROOT) -> list[str]:
         "docs/PDF_HOUSE_STYLE.md",
         "docs/RESOURCE_SAFETY.md",
         "harness/runtime.py",
+        "scripts/audit_manuscript.py",
         "computations/COMPUTE_PLAN.md",
         "computations/requirements-sympy.txt",
         "formal/AXIOMS.md",
@@ -147,8 +148,10 @@ def audit_paper_controls(root: Path = ROOT) -> list[str]:
         "docs/PAPER_NARRATIVE.md": (
             "## 1. Freeze the public claim spine",
             "## 2. Build reader order from dependency order",
-            "## 11. Revision identity and change classes",
-            "## 12. Model editing protocol",
+            "## 6. Negative controls: remove prose slop",
+            "## 12. Revision identity and change classes",
+            "## 13. Model editing protocol",
+            "### Computational-artifact containment",
         ),
         "paper/PAPER_MAP.md": (
             "## Public claim spine",
@@ -160,6 +163,7 @@ def audit_paper_controls(root: Path = ROOT) -> list[str]:
         "paper/EDITORIAL_AUDIT.md": (
             "## Public claim spine",
             "## Section burden audit",
+            "## Negative style pass",
             "## Revision decision",
             "## Adversarial summary",
         ),
@@ -352,8 +356,8 @@ def main() -> None:
         1 for path in (ROOT / "formal").rglob("*.lean") if ".lake" not in path.parts
     )
     print(
-        f"POLICY AUDIT passed lean_files={lean_count} controls=18 "
-        "claim_standard=strict paper_narrative=audited runtime=guarded"
+        f"POLICY AUDIT passed lean_files={lean_count} controls=19 "
+        "claim_standard=strict paper_narrative=negative-controlled runtime=guarded"
     )
 
 

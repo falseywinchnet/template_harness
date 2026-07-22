@@ -44,5 +44,12 @@ candidate must also pass the stricter extracted-text gate:
 ./h run --cwd paper --label paper-release-audit -- make release-audit
 ```
 
-This catches placeholders and private local paths. It does not replace the
-semantic editorial audit or rendered page inspection.
+The release target first audits source prose for recurrent slop and misplaced
+computational artifacts, then checks extracted PDF text for placeholders and
+private local paths. During drafting, run the non-blocking report alone:
+
+```sh
+./h run --cwd paper --label manuscript-style -- make style-audit
+```
+
+It does not replace the semantic editorial audit or rendered page inspection.

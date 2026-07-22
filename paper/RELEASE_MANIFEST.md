@@ -55,7 +55,8 @@ table source that affects a published claim. Record a stable path and SHA-256.
   exit state in `PAPER_MAP.md`; non-load-bearing branches are cut or explicitly
   assigned to a supplement;
 - `EDITORIAL_AUDIT.md` has separate claim, dependency, reader, literature,
-  revision, and release passes with no unresolved fatal or major finding;
+  negative-style, revision, and release passes with no unresolved fatal or major
+  finding;
 - every formal claim has the status it actually earned: kernel checked, target
   instantiated, statement faithful, or formally proved;
 - objective target-interior, object identity, exact falsifier equivalence, and
@@ -67,4 +68,6 @@ table source that affects a published claim. Record a stable path and SHA-256.
 - PDF log audit and page-by-page rendered visual inspection pass;
 - release-mode extracted-text audit contains no placeholders or private local
   paths;
+- strict source audit reports no prose slop or computational artifact outside a
+  dedicated section;
 - PDF, archive, metadata, commit, tag, and archival identity agree.

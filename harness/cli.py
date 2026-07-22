@@ -206,6 +206,7 @@ def _doctor(store: Store) -> list[str]:
         "formal/Formal/ClaimContract.lean",
         "paper/RELEASE_MANIFEST.md",
         "paper/EDITORIAL_AUDIT.md",
+        "scripts/audit_manuscript.py",
     ]
     for relative in required:
         if not (store.root / relative).is_file():
