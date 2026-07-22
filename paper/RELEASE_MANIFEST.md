@@ -21,6 +21,18 @@
 | Archive | `make -C paper archive` | Python 3.11+ | deterministic tar | | pending |
 | Formal (optional) | `cd formal && lake build` | pinned files | clean build | | not selected |
 
+## Replay classes and resources
+
+| Class | Purpose | Command | Expected time | Peak memory | Precision / arithmetic | Parallelism |
+|---|---|---|---|---|---|---|
+| Quick audit | Check structure and a small exact witness | | | | | |
+| Full replay | Regenerate every result-bearing artifact | | | | | |
+| Independent verification | Verify certificates without the generator | | | | | |
+
+If a full computation is intentionally expensive, say so before release. A
+quick audit must never be described as regenerating results it only samples or
+verifies.
+
 ## Result-bearing artifacts
 
 List every dataset, script, model, proof file, certificate, figure source, and
@@ -39,4 +51,6 @@ table source that affects a published claim. Record a stable path and SHA-256.
 - target-reachable dependencies closed or disclosed;
 - independent reproduction complete;
 - clean checkout builds required tiers;
+- full replay records runtime, peak memory, arithmetic/precision, and platform;
+- PDF log audit and page-by-page rendered visual inspection pass;
 - PDF, archive, metadata, commit, tag, and archival identity agree.

@@ -7,7 +7,7 @@ help:
 	@echo "make formal  - build the optional Lean project"
 
 test:
-	python3 -m unittest discover -s tests -q
+	./h check
 	./h doctor
 
 doctor:

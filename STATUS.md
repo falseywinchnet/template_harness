@@ -2,7 +2,7 @@
 
 - Project state: `bootstrap`
 - Progress: **0/20 (0%)**
-- Register digest: `7500e477f80c6887`
+- Register digest: `eb6c7ee1a4143828`
 
 ## Lifecycle
 
@@ -33,5 +33,6 @@ None.
 
 ## Recent events
 
+- 2026-07-22T19:41:07+00:00 — `register`
 - 2026-07-22T19:07:27+00:00 — `register`
 - 2026-07-22T19:07:27+00:00 — `template_initialized`

@@ -65,10 +65,30 @@ summary; pass `--done P...` only when each item's acceptance text is satisfied.
 ## Verification and publication
 
 Use the lightest verification method that actually supports the claim. If Lean
-is used, read `formal/README.md`, pin versions, avoid `sorry`/`admit`, audit
-exported axioms, and serialize expensive builds. A successful typecheck proves
-only the elaborated statement; compare it to `research/TARGET.md` in both
-directions.
+is used, read `docs/LEAN_ENGINEERING.md` and `formal/README.md`. Design the
+module DAG before it grows, pin versions, serialize builds, keep a performance
+ledger, and use the focused/target/full/audit build ladder. Never claim
+kernel-checking without a same-tree `lake build` and axiom audit. A successful
+typecheck proves only the elaborated statement; compare it to
+`research/TARGET.md` in both directions.
+
+Before a material computation, complete `computations/COMPUTE_PLAN.md` and read
+`docs/COMPUTE_DESIGN.md`. Estimate term/cell growth, coefficient bit size, time,
+memory, precision, cache keys, and adaptive termination before scaling. Prefer
+symmetry, forced factors, sparse recurrences, dependency-preserving coordinates,
+and generator/verifier separation over dense expansion or blind subdivision.
+Stop when observed growth invalidates the declared budget.
+
+For Python/SymPy work, follow `docs/PYTHON_COMPUTATION.md`. Exact claims use
+exact construction; binary floats and mpmath are discovery/diagnostic unless a
+separate error proof exists. SymPy symbol assumptions are not facts about the
+target object. Quick audits, full replays, and release verifiers must be named
+truthfully.
+
+For paper work, follow `docs/PDF_HOUSE_STYLE.md`. Keep metadata in
+`paper/manuscript/metadata.tex`, build through the maintained Makefile, inspect
+the log, render every page, and check the deterministic archive. A successful
+TeX process is not visual approval.
 
 Before publication, complete the claim/evidence audit, independent reproduction,
 manuscript map, release manifest, metadata, and revision history. Generated

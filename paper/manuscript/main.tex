@@ -1,13 +1,18 @@
 \documentclass[11pt]{article}
+\input{metadata}
 \input{preamble}
 
-\title{Scientific Project Title}
-\author{Author information to be approved}
-\date{\today}
+\title{\ProjectTitle}
+\author{\ProjectAuthor}
+\date{\ProjectDate}
 
 \begin{document}
 \maketitle
 \input{sections/S00-abstract}
+\noindent\textbf{Keywords.} \ProjectKeywords
+
+\medskip
+\noindent\textbf{Classification.} \ProjectClassification
 \tableofcontents
 
 \input{sections/S01-introduction}

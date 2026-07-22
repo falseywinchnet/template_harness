@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from harness.cli import _project_markdown, parser as cli_parser
 from harness.parser import PlanParseError, parse_plan_text
 from harness.reports import recovery_brief
 from harness.store import HarnessError, Store, atomic_json
@@ -58,6 +59,25 @@ class HarnessTest(unittest.TestCase):
     def test_parser_rejects_non_task_text(self):
         with self.assertRaises(PlanParseError):
             parse_plan_text("A natural-language paragraph.")
+
+    def test_bootstrap_preserves_compute_contract(self):
+        fields = {
+            "title": "Test",
+            "question": "Question",
+            "hypothesis": "",
+            "falsifier": "Counterexample",
+            "deliverable": "Paper",
+            "field": "",
+            "audience": "",
+            "constraints": "",
+            "formalization": "",
+            "compute": "Exact rationals; 2 GB; resumable.",
+        }
+        project = _project_markdown(fields)
+        self.assertIn("## Computational scale and resources", project)
+        self.assertIn(fields["compute"], project)
+        args = cli_parser().parse_args(["bootstrap", "--compute", "small"])
+        self.assertEqual(args.compute, "small")
 
     def test_registration_allocates_and_preserves_runtime_status(self):
         self.register("- [ ] First | stage=hypothesis | mode=advance")

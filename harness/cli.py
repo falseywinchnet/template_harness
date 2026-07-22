@@ -20,6 +20,8 @@ BOOTSTRAP_QUESTIONS = """Bootstrap interview
 5. What is the intended deliverable and audience (paper, note, dataset, proof, software)?
 6. What constraints, non-goals, deadline, and required methods or formal systems apply?
 7. What evidence already exists locally, and where is it?
+8. What data or parameter scale, compute budget, runtime limit, and interruption
+   recovery requirements should shape the method?
 
 After the answers, run `./h bootstrap` with the core fields, tailor PLAN.md, then
 run `./h register PLAN.md`. See docs/BOOTSTRAP.md for Sol's exact procedure.
@@ -43,6 +45,7 @@ def parser() -> argparse.ArgumentParser:
     boot.add_argument("--audience", default="")
     boot.add_argument("--constraints", default="")
     boot.add_argument("--formalization", default="")
+    boot.add_argument("--compute", default="")
 
     register = commands.add_parser("register", help="integrate Markdown task lines into the register")
     register.add_argument("source", nargs="?", help="Markdown file, or '-' for stdin")
@@ -118,10 +121,15 @@ def _project_markdown(fields: dict[str, str]) -> str:
 
 {fields.get('formalization') or 'Use the lightest verification boundary that supports the claims.'}
 
+## Computational scale and resources
+
+{fields.get('compute') or 'Estimate scale, arithmetic, runtime, memory, and recovery requirements before implementing a material computation.'}
+
 ## Evidence locations
 
 - `sources/` — preserved external inputs
 - `research/` — target, dependencies, claims, and evidence map
+- `computations/` — algorithm contract, benchmarks, and replay manifests
 - `work/` — immutable round records and experiments
 - `paper/` — maintained manuscript and release package
 """
@@ -151,8 +159,14 @@ def _doctor(store: Store) -> list[str]:
         "PLAN.md",
         "docs/BOOTSTRAP.md",
         "docs/SPECIFICATION.md",
+        "docs/LEAN_ENGINEERING.md",
+        "docs/COMPUTE_DESIGN.md",
+        "docs/PYTHON_COMPUTATION.md",
+        "docs/PDF_HOUSE_STYLE.md",
         "work/ROUND_TEMPLATE.md",
         "research/TARGET.md",
+        "computations/COMPUTE_PLAN.md",
+        "formal/AXIOMS.md",
         "paper/RELEASE_MANIFEST.md",
     ]
     for relative in required:

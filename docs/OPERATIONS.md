@@ -34,6 +34,12 @@ round notes.
 builds; install their toolchains first. Commands are stored as argument arrays,
 not shell strings.
 
+The default project policy audit checks that the Lean and release control files
+exist and rejects placeholders, custom axioms/constants, and unsafe Lean
+declarations. The paper build separately checks its TeX log, metadata, and font
+embedding. Neither automated check replaces the full replay, theorem-statement
+comparison, or page-by-page rendered PDF inspection required at release.
+
 ## Recovery cases
 
 ### The model or terminal stopped mid-round

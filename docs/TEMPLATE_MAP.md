@@ -11,6 +11,7 @@
 ├── harness/                  standard-library implementation
 ├── work/                     immutable per-round records
 ├── research/                 target, dependencies, claims, evidence audits
+├── computations/             algorithm contract, benchmarks, replay manifest
 ├── sources/                  preserved inputs and provenance
 ├── paper/                    modular manuscript and release package
 ├── formal/                   optional pinned Lean starter
@@ -22,6 +23,12 @@ Files in `.harness/`, `STATUS.md`, and `NEXT.md` are managed by `./h`. Control
 documents in `research/` and `paper/` are intentionally human-readable and
 reviewed. Round directories are created from `work/ROUND_TEMPLATE.md` but are
 never bulk-rewritten after the fact.
+
+The four engineering guides in `docs/` are operational controls, not background
+reading: `LEAN_ENGINEERING.md`, `COMPUTE_DESIGN.md`,
+`PYTHON_COMPUTATION.md`, and `PDF_HOUSE_STYLE.md`. Select the relevant parts at
+bootstrap, link them from the project plan, and preserve any justified deviation
+in the current round record.
 
 Remove optional subsystems only before work depends on them. If the project will
 not use Lean, delete `formal/` and its optional check. If it will not produce a

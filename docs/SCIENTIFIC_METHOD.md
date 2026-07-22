@@ -49,6 +49,11 @@ Advancement produces raw work. A later refinement round may promote a result
 only after recording its precise claim, dependencies, evidence boundary,
 limitations, and failed alternatives. The original round remains unchanged.
 
+Computational promotion additionally requires the completed compute contract,
+truthful classification as discovery/quick audit/full replay, resource and
+environment records, canonical certificate or output, and an independent
+verification interface. See `COMPUTE_DESIGN.md` and `PYTHON_COMPUTATION.md`.
+
 ## Publication rule
 
 The paper contains no stronger claim than the audited index. The release manifest

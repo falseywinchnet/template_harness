@@ -4,13 +4,20 @@
 to claim and evidence burdens. `RELEASE_MANIFEST.md`, `REVISION_HISTORY.md`, and
 `ARXIV_METADATA.md` control publication identity.
 
+Project metadata lives in `manuscript/metadata.tex`, packages and semantic
+macros in `manuscript/preamble.tex`, and the normative layout/release rules in
+`../docs/PDF_HOUSE_STYLE.md`.
+
 Build the PDF with:
 
 ```sh
 make -C paper
 ```
 
-This requires `tectonic`. Build the flattened, deterministic source archive with:
+This requires `tectonic`. The build also audits unresolved references, overfull
+boxes, embedded metadata, and font embedding when Poppler tools are available.
+It does not replace visual inspection. Build the flattened, deterministic source
+archive with:
 
 ```sh
 make -C paper archive

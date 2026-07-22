@@ -24,3 +24,10 @@ Replace with the exact primary claim from `research/TARGET.md`.
 3. Verification details are sufficient to reproduce but do not replace the
    scientific argument.
 4. Optional or adjacent results cannot support the main chain backward.
+5. `manuscript/metadata.tex` is the single source for PDF and release metadata.
+6. Notation is semantic and stable; important equations and results are
+   referenceable, while display math is not numbered decoratively.
+7. Tables and figures state units, sample size, uncertainty, and provenance in
+   their captions and remain legible without color.
+8. The release PDF passes `scripts/audit_pdf.py` and a page-by-page rendered
+   image inspection under `docs/PDF_HOUSE_STYLE.md`.

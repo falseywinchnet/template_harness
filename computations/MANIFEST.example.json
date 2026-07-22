@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "computation_id": "E001",
+    "claim_ids": ["C001"],
+    "mode": "full-replay",
+    "statement": "Replace with the exact finite proposition checked"
+  },
+  "source": {
+    "commit": "REPLACE",
+    "generator_path": "computations/generators/replace.py",
+    "generator_sha256": "REPLACE",
+    "verifier_path": "computations/verifiers/replace.py",
+    "verifier_sha256": "REPLACE"
+  },
+  "inputs": [
+    {
+      "path": "sources/replace",
+      "sha256": "REPLACE"
+    }
+  ],
+  "environment": {
+    "python": "REPLACE",
+    "platform": "REPLACE",
+    "dependencies": {},
+    "arithmetic_backend": "REPLACE",
+    "precision_bits": null,
+    "environment_image_digest": "unavailable"
+  },
+  "complexity": {
+    "expected_cases": 0,
+    "accepted_cases": 0,
+    "undecided_cases": 0,
+    "wall_seconds": null,
+    "peak_rss_bytes": null
+  },
+  "replay": {
+    "working_directory": ".",
+    "generator_command": ["python3", "computations/generators/replace.py"],
+    "verifier_command": ["python3", "computations/verifiers/replace.py"],
+    "expected_exit_code": 0,
+    "expected_final_status": "status=replace",
+    "output_sha256": "REPLACE"
+  },
+  "coverage": {
+    "domain": "REPLACE",
+    "complete": false,
+    "unbounded_reduction": "REPLACE",
+    "failure_behavior": "Any undecided case returns nonzero"
+  },
+  "trusted_base": ["REPLACE"]
+}

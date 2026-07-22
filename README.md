@@ -23,8 +23,8 @@ Create a repository from this template and open it in Codex. Then say:
 `AGENTS.md` directs Sol to run `./h`, see that the repository is unbootstrapped,
 and follow `docs/BOOTSTRAP.md`. Sol asks a short intake covering the research
 question, initial hypothesis, falsification boundary, deliverable, audience,
-constraints, evidence already on hand, and any required formal system. From the
-answers Sol will:
+constraints, evidence already on hand, any required formal system, and the
+expected computational scale and resource limits. From the answers Sol will:
 
 1. generate `PROJECT.md` as the frozen first charter;
 2. tailor the lifecycle items in `PLAN.md`;
@@ -46,7 +46,8 @@ To record a completed intake directly:
   --question "The exact research question" \
   --hypothesis "The initial, revisable hypothesis" \
   --falsifier "What result would refute or materially weaken it" \
-  --deliverable "A reproducible paper and supporting artifacts"
+  --deliverable "A reproducible paper and supporting artifacts" \
+  --compute "Expected scale, runtime/memory budget, and restart needs"
 ```
 
 ## The everyday loop
@@ -115,6 +116,25 @@ Useful state commands:
 ./h check --all            # includes optional paper and Lean builds
 ```
 
+## Engineering guides
+
+The template includes the operational detail normally learned only after a
+large project becomes expensive:
+
+- `docs/COMPUTE_DESIGN.md` — representation-first algorithm design, complexity
+  budgets, sparse arithmetic, interval covers, caching, and pivot conditions.
+- `docs/PYTHON_COMPUTATION.md` — exact Python/SymPy practice, directed numerics,
+  expression-swell control, generator/verifier separation, and manifests.
+- `docs/LEAN_ENGINEERING.md` — module-DAG design, build ladder, import and tactic
+  discipline, axiom auditing, statement fidelity, and performance budgets.
+- `docs/PDF_HOUSE_STYLE.md` — manuscript architecture, mathematical typography,
+  metadata, accessibility, build/log gates, visual QA, and release packaging.
+
+Start computational work by completing `computations/COMPUTE_PLAN.md`. This
+forces the algorithm's scale, arithmetic, completeness, resource envelope, and
+verification interface to be designed before an expensive implementation makes
+those choices accidentally.
+
 ## Two modes, one boundary
 
 - **Advance** creates new analysis, experiments, constructions, or proof work.
@@ -152,6 +172,7 @@ settled and remains visible in history.
 - `.harness/` — canonical JSON register, configuration, and append-only events.
 - `work/` — one durable directory per advancement or refinement round.
 - `research/` — target, claims, dependencies, sources, and audit contracts.
+- `computations/` — compute plans, benchmarks, and a canonical manifest example.
 - `sources/` — lossless local evidence and provenance records.
 - `paper/` — modular manuscript and release controls.
 - `formal/` — optional reproducible Lean environment.

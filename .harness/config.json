@@ -20,6 +20,12 @@
       "default": true
     },
     {
+      "name": "project policy audit",
+      "command": ["python3", "scripts/audit_project.py"],
+      "cwd": ".",
+      "default": true
+    },
+    {
       "name": "paper build",
       "command": ["make"],
       "cwd": "paper",

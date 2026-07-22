@@ -32,6 +32,8 @@ Ask for:
 7. existing datasets, sources, code, proofs, or drafts and their locations;
 8. whether formal proof, certified computation, independent reproduction, or
    ordinary statistical verification is required.
+9. expected data/parameter scale, available compute, runtime constraints, and
+   whether long computations must resume after interruption.
 
 Do not require the user to know workflow vocabulary. Translate their answer
 into the fields. Ask a follow-up only when ambiguity changes the target,
@@ -43,6 +45,10 @@ Record the core answers with `./h bootstrap --title ... --question ...
 --falsifier ... --deliverable ...` and the optional fields. This generates
 `PROJECT.md` and changes the project from `bootstrap` to `active` only when all
 four required fields exist.
+
+Use `--compute` for the initial scale/resource answer. It is a planning bound,
+not a promise that the first algorithm will meet it; material methods replace it
+with measured entries in `computations/COMPUTE_PLAN.md` and `BENCHMARKS.md`.
 
 Then edit the research control files:
 
@@ -86,4 +92,6 @@ exact next action if it is not obvious from the acceptance gate.
 - deliverable, audience, and constraints are explicit;
 - existing inputs are inventoried without being upgraded to evidence;
 - every initial `P` item has a mode, stage, dependencies, tags, and acceptance;
+- material computations have an initial scale/resource estimate and verification
+  class rather than an implicit promise to optimize later;
 - `./h doctor` passes and the macro report reflects the charter.
